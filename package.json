@@ -1,0 +1,11 @@
+{
+  "name": "core-ewallet-manager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "QuanTM <quantm@vnpost.vn>",
+  "license": "MIT",
+  "scripts": {
+    "sync": "node scripts/sync.js",
+    "build": "node scripts/build.js"
+  }
+}
