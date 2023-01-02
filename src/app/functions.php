@@ -399,31 +399,6 @@ function dbConnection(string $name): \Illuminate\Database\ConnectionInterface
 {
     return DB::connection($name);
 
-    /*$env = config_env('REPORT_ENV', 'local');
-    $connection = DB::table('db_connections')
-        ->where('name', $name)
-        ->where('env', $env)
-        ->first();
-
-    if (!$connection) {
-        throw new Exception("Connection $name not found");
-    }
-
-    $prefix = 'sbv__';
-    $connectionName = $prefix . $name;
-
-    config(['database.connections.'.$connectionName => [
-        'driver' => $connection->driver,
-        'host' => $connection->host,
-        'username' => $connection->username,
-        'password' => $connection->password,
-        'port' => $connection->port,
-        'database' => $connection->dbname,
-        'charset' => 'utf8',
-        'collation' => 'utf8_unicode_ci',
-    ]]);
-
-    return DB::connection($connectionName);*/
 }
 
 function config_env(string $key, $defaultValue = null)

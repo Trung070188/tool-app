@@ -3,9 +3,9 @@
         <aside id="sidebar" ref='sidebar' class="app-sidebar ps--active-y navbar-nav-scroll">
 
                 <div class="main-sidebar-header active"><a class="header-logo active d-flex" href="/xadmin/dashboard/index">
-                <img src="/assets/img/brand/logo.svg" class="main-logo desktop-logo" alt="logo">
-                <img src="/assets/img/brand/logo.svg" class="main-logo desktop-logo desktop-dark" alt="logo">
-                <img src="/assets/img/brand/vnpost_logo.svg" style="position: absolute" class="main-logo  mobile-logo" alt="logo">
+                <img src="/images/logo.png" class="main-logo desktop-logo" alt="logo">
+                <img src="/images/logo.png" class="main-logo desktop-logo desktop-dark" alt="logo">
+                <img src="/images/logo.png" style="position: absolute" class="main-logo  mobile-logo" alt="logo">
                 <!--                <img src="/assets/img/brand/vnpost_logo.svg" class="main-logo  mobile-dark" alt="logo">-->
             </a></div>
             <div class="main-sidemenu is-expanded">

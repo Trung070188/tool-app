@@ -54,74 +54,20 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3">
-                <div class="m-auto box-search">
-                    <div class="card-header pb-0">
-                        <div class="d-flex justify-content-between">
-                            <h4 class="card-title mg-b-0">
-                                XUẤT BÁO CÁO THEO KỲ</h4></div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-xl-12">
-                            <form class="form-inline">
-                                <div class="row mx-sm-3 mb-2">
-                                    <label class="mt-1">Tiêu chí lọc</label>
-                                    <div>
-                                        <select v-model="filter.type"
-                                                @change="doFilter('type', filter.type)"
-                                                class="form-select form-control"
-                                                style="width: 142px">
-                                            <option :value="1">Quý</option>
-                                            <option :value="2">Năm</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mx-sm-3 mb-2">
-                                    <label>Tính đến năm</label>
-                                    <SelectYear @update:modelValue="value => doFilter('filterYear', value)"
-                                                v-model="filter.year"></SelectYear>
-                                </div>
-                                <div class="row mx-sm-3 mb-2"
-                                     v-bind:class="{'d-none': filter.type == 2 }">
-                                    <label>Tính đến quý</label>
-                                    <SelectQuarter :year="filter.year"
-                                                   @selectOneQuarter="(quarter)=> clickChoseQuarter(quarter)"
-                                                   v-model="filter.quarter"></SelectQuarter>
-                                </div>
-                                <div class="btn-export">
-                                    <button type="button" @click="onExport()" class="btn btn-primary mb-2">Xuất excel</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
 
-                </div>
-            </div>
         </div>
     </div>
 </template>
 
 <script>
 
-import QFileManagerInput from "../../components/QFileManagerInput";
-import QImage from "../../components/QImage";
-import SelectQuarter from "../../components/SelectQuarter";
-import SelectYear from "../../components/SelectYear";
-import config_select from "../connection_units/config_select";
 import $router from "../../lib/SimpleRouter";
-import {$post, getQuarterMonths, getTimeRangeAll, getYearMonths} from "../../utils";
 import moment from "moment/moment";
-let created = getTimeRangeAll();
 const $q = $router.getQuery();
-const TRANS_STATUS = {
-    FAILED: 0,
-    SUCCESS: 1,
-    IN_PROGRESS: 2,
-    PENDING: 3
-}
+
 export default {
   name: "DashboardIndex",
-  components: {SelectYear, SelectQuarter, QImage, QFileManagerInput},
+  components: {},
     data() {
         return {
             entries: [],
@@ -140,26 +86,12 @@ export default {
         }
     },
     mounted() {
-        $router.on('/', this.load).init();
+        //$router.on('/', this.load).init();
     },
     methods: {
         async load() {
             let query = $router.getQuery();
-            // const res = await $get('/xadmin/wallets/data', query);
-            // this.paginate = res.paginate;
-            // this.entries = res.data;
-        },
-        async remove(entry) {
-            if (!confirm('Xóa bản ghi: ' + entry.id)) {
-                return;
-            }
-            const res = await $post('/xadmin/connection_units/remove', {id: entry.id});
-            if (res.code) {
-                toastr.error(res.message);
-            } else {
-                toastr.success(res.message);
-            }
-            $router.updateQuery({page: this.paginate.currentPage, _: Date.now()});
+
         },
         filterClear() {
             for (var key in this.filter) {
@@ -176,18 +108,6 @@ export default {
             params[field] = value;
             $router.updateQuery(params)
         },
-        async toggleStatus(entry) {
-            const res = await $post('/xadmin/connection_units/toggleStatus', {
-                id: entry.id,
-                status: entry.status
-            });
-
-            if (res.code === 200) {
-                toastr.success(res.message);
-            } else {
-                toastr.error(res.message);
-            }
-        },
         clickChose(year) {
             this.doFilter('year', year)
         },
@@ -197,32 +117,6 @@ export default {
         async changePageSize(size) {
             $router.updateQuery({pageSize: this.filter.pageSize})
         },
-        async onExport() {
-            let query = $router.getQuery();
-            const year = query.year || moment().year();
-            let months = getYearMonths(year);
-            const type = query.type || '1';
-            const quarter = query.quarter || parseInt(moment().subtract(1, 'Q').format('Q'));
-            const {SUCCESS, FAILED, PENDING} = TRANS_STATUS;
-            if (type === '1') {
-                months = getQuarterMonths(quarter);
-            }
-
-
-            location.href  = '/xadmin/dashboard/export?' + (new URLSearchParams({
-                type: type,
-                year: year,
-                quarter: quarter,
-                months: months
-            }));
-
-            // const res = await $post('/xadmin/dashboard/export?' , {
-            //     type: type,
-            //     year: year,
-            //     quarter: quarter,
-            //     months: months
-            // });
-        }
     }
 }
 </script>

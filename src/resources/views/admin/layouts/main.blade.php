@@ -13,8 +13,8 @@ $serverTime = date('Y-m-d H:i:s');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="Description" content="Báo cáo ngân hàng nhà nước">
-    <meta name="Author" content="Vietnam Post Digital">
+    <meta name="Description" content="ASOAPP">
+    <meta name="Author" content="ASOAPP">
     <meta name="Keywords"
           content="">
     <!-- Title --> <title>{{$pageTitle}}</title> <!-- Favicon -->
@@ -42,8 +42,6 @@ $serverTime = date('Y-m-d H:i:s');
         window.$csrf = '{{csrf_token()}}';
         window.$pageTitle = '{{$title}}';
         window.$scripts = JSON.parse('{!! addslashes(json_encode(@$scripts)) !!}');
-        window.$reportDatabases = JSON.parse('{!! addslashes(json_encode(getReportDatabases())) !!}');
-        window.$LAST_REPORT_AT = '{{\App\Models\ConfigModel::readConfig('last_report_at')}}';
         <?php
         $user = auth_user();
         $auth = [

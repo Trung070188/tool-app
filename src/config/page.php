@@ -1,6 +1,6 @@
 <?php
 return [
-    'defaultTitle' => 'PostPay - Báo cáo ngân hàng nhà nước',
+    'defaultTitle' => 'ASOAPP',
     'favicon' => 'images/favicon.svg',
     'logo' => ''
 ];

@@ -18,7 +18,7 @@
                     src="/assets/img/brand/logo.svg" class="mobile-logo dark-logo-1" alt="logo">
                 </a></div>
                 <div class="main-header-center ms-4 d-sm-none d-md-none d-lg-block form-group" style="font-size: 20px;font-weight: 500;color: #0090D0">
-                    BÁO CÁO NGÂN HÀNG NHÀ NƯỚC
+                    ASOAPP
                 </div>
             </div>
             <div class="main-header-right">
@@ -62,9 +62,7 @@
         </div>
     </div>
 
-    <Teleport to="body">
-        <ModalSelectDB ref="modalSelectDB"/>
-    </Teleport>
+
 
 </template>
 
