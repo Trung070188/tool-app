@@ -43,15 +43,15 @@
 </template>
 
 <script>
-import ActionBar from "../includes/ActionBar";
-import AutoComplete from "../../components/AutoComplete";
+import ActionBar from "../../components/ActionBar";
+// import AutoComplete from "../../components/AutoComplete";
 import {$post} from "../../utils";
 import swal from "sweetalert";
 import $router from "../../lib/SimpleRouter";
 
 export default {
   name: "UserDetail",
-  components: {ActionBar, AutoComplete},
+  components: {ActionBar},
   data() {
     return {
       entry: $json.entry || {},
