@@ -14,6 +14,12 @@ return [
 //        'permission' => 'EWALLET.RequestLogs.index',
         'subs' => [
             [
+                "name" => "campaign index",
+                "icon" => "fas fa-list ",
+                "group" => 3,
+                'url' => '/xadmin/campaigns/index',
+            ],
+            [
                 "name" => "Tạo campaign",
                 "icon" => "fas fa-list ",
                 "group" => 3,
