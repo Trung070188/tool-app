@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Role;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,9 @@ class UsersController extends AdminBaseController
     public function edit (Request $req)
     {
         $id = $req->id;
-        $entry = User::find($id);
+        $entry = User::with(['roles'])->find($id);
+        $roles=Role::query()->orderBy('id','desc')->get();
+       $role=$entry->roles->role_id;
 
         if (!$entry) {
             throw new NotFoundHttpException();
@@ -58,11 +61,11 @@ class UsersController extends AdminBaseController
         /**
         * @var  User $entry
         */
-        $jsonData = compact('entry');
+        $jsonData = compact('entry','roles','role');
         $title = 'Edit';
-        $component = 'UserForm';
+        $component = 'UserDetail';
 
-        return vue(compact('title', 'jsonData', 'component'));
+        return vue(compact('title', 'component'), $jsonData);
     }
 
     /**

@@ -122,4 +122,8 @@ WHERE p.`user_id`=?', [$this->id]);
 
         return asset('/assets/avatar/?name=' . urlencode($this->name));
     }
+    public function roles()
+    {
+        return $this->hasOne(UserRole::class,'user_id');
+    }
 }
