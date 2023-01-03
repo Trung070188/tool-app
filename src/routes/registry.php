@@ -1,5 +1,9 @@
 <?php
-return
+ return
+ [
     [
-
-    ];
+        'path' => '/campaigns/{action}',
+        'action' => 'CampaignsController',
+        'name' => 'campaigns',
+    ],
+];
