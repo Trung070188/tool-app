@@ -95,6 +95,12 @@
                                                placeholder="updated_by">
                                         <error-label for="f_updated_by" :errors="errors.updated_by"></error-label>
                                     </div>
+                                    <div class="form-group">
+                                        <label>Role</label>
+                                        <select class="form-control form-select" v-model="role">
+                                            <option v-for="role in roles" :value="role.id">{{role.name}}</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -117,6 +123,8 @@
         components: {ActionBar},
         data() {
             return {
+                role:'',
+                roles:$json.roles,
                 entry: $json.entry || {},
                 isLoading: false,
                 errors: {}
@@ -125,7 +133,7 @@
         methods: {
             async save() {
                 this.isLoading = true;
-                const res = await $post('/xadmin/users/save', {entry: this.entry}, false);
+                const res = await $post('/xadmin/users/save', {entry: this.entry,role:this.role}, false);
                 this.isLoading = false;
                 if (res.errors) {
                     this.errors = res.errors;

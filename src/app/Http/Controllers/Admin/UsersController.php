@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Role;
+use App\Models\UserRole;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,9 +38,11 @@ class UsersController extends AdminBaseController
     */
     public function create (Request $req)
     {
+        $roles=Role::query()->orderBy('id','desc')->get();
+        $jsonData = compact('roles');
         $component = 'UserForm';
         $title = 'Create users';
-        return vue(compact('title', 'component'));
+        return vue(compact('title', 'component'),$jsonData);
     }
 
     /**
@@ -52,7 +55,7 @@ class UsersController extends AdminBaseController
         $id = $req->id;
         $entry = User::with(['roles'])->find($id);
         $roles=Role::query()->orderBy('id','desc')->get();
-       $role=$entry->roles->role_id;
+       @$role=$entry->roles->role_id;
 
         if (!$entry) {
             throw new NotFoundHttpException();
@@ -61,7 +64,7 @@ class UsersController extends AdminBaseController
         /**
         * @var  User $entry
         */
-        $jsonData = compact('entry','roles','role');
+        $jsonData = compact('entry','roles',@'role');
         $title = 'Edit';
         $component = 'UserDetail';
 
@@ -111,8 +114,8 @@ class UsersController extends AdminBaseController
     'address' => 'max:255',
     'status' => 'required|numeric',
     'type' => 'numeric',
-    'created_by' => 'numeric',
-    'updated_by' => 'numeric',
+//    'created_by' => 'numeric',
+//    'updated_by' => 'numeric',
 ];
 
         $v = Validator::make($data, $rules);
@@ -138,7 +141,8 @@ class UsersController extends AdminBaseController
 
             $entry->fill($data);
             $entry->save();
-
+            UserRole::query()->where('user_id',$entry->id)->delete();
+                UserRole::create(['user_id'=>$entry->id,'role_id'=>$req->role]);
             return [
                 'code' => 0,
                 'message' => 'Đã cập nhật',
@@ -148,7 +152,7 @@ class UsersController extends AdminBaseController
             $entry = new User();
             $entry->fill($data);
             $entry->save();
-
+            UserRole::create(['user_id'=>$entry->id,'role_id'=>$req->role]);
             return [
                 'code' => 0,
                 'message' => 'Đã thêm',
@@ -188,7 +192,7 @@ class UsersController extends AdminBaseController
     */
     public function data(Request $req)
     {
-        $query = User::query()->orderBy('id', 'desc');
+        $query = User::query()->with(['role'])->orderBy('id', 'desc');
 
         if ($req->keyword) {
             //$query->where('title', 'LIKE', '%' . $req->keyword. '%');
@@ -197,10 +201,33 @@ class UsersController extends AdminBaseController
         $query->createdIn($req->created);
 
         $entries = $query->paginate();
+        $data=[];
+        foreach ($entries as $entry)
+        {
+            $role_name='';
+           foreach ($entry->role as $role)
+           {
+               $role_name=$role->name;
+           }
+           $data[]=[
+               'id'=>$entry->id,
+               'sap_id'=>$entry->id,
+               'username'=>$entry->username,
+               'name'=>$entry->name,
+               'birthday'=>$entry->birthday,
+               'phone'=>$entry->phone,
+               'email'=>$entry->email,
+               'address'=>$entry->address,
+               'status'=>$entry->status,
+               'type'=>$entry->type,
+               'created_by'=>$entry->created_by,
+               'role_name'=>$role_name,
+           ];
+        }
 
         return [
             'code' => 0,
-            'data' => $entries->items(),
+            'data' => $data,
             'paginate' => [
                 'currentPage' => $entries->currentPage(),
                 'lastPage' => $entries->lastPage(),

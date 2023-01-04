@@ -126,4 +126,8 @@ WHERE p.`user_id`=?', [$this->id]);
     {
         return $this->hasOne(UserRole::class,'user_id');
     }
+    public function role()
+    {
+        return $this->belongsToMany(Role::class,'user_roles');
+    }
 }

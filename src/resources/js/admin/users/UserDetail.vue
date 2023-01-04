@@ -1,6 +1,6 @@
 <template>
     <div class="main-content app-content">
-        <ActionBar type="detail" @remove="save()"
+        <ActionBar type="detail" @action="save()"
                    backUrl="/xadmin/users/index"
                    title="Chi tiết người dùng"/>
         <div class="main-container container-fluid">
@@ -118,20 +118,20 @@
                                                placeholder="type">
                                         <error-label for="f_type" :errors="errors.type"></error-label>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Created By</label>
-                                        <input id="f_created_by" v-model="entry.created_by" name="name"
-                                               class="form-control"
-                                               placeholder="created_by">
-                                        <error-label for="f_created_by" :errors="errors.created_by"></error-label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Updated By</label>
-                                        <input id="f_updated_by" v-model="entry.updated_by" name="name"
-                                               class="form-control"
-                                               placeholder="updated_by">
-                                        <error-label for="f_updated_by" :errors="errors.updated_by"></error-label>
-                                    </div>
+<!--                                    <div class="form-group">-->
+<!--                                        <label>Created By</label>-->
+<!--                                        <input id="f_created_by" v-model="entry.created_by" name="name"-->
+<!--                                               class="form-control"-->
+<!--                                               placeholder="created_by">-->
+<!--                                        <error-label for="f_created_by" :errors="errors.created_by"></error-label>-->
+<!--                                    </div>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <label>Updated By</label>-->
+<!--                                        <input id="f_updated_by" v-model="entry.updated_by" name="name"-->
+<!--                                               class="form-control"-->
+<!--                                               placeholder="updated_by">-->
+<!--                                        <error-label for="f_updated_by" :errors="errors.updated_by"></error-label>-->
+<!--                                    </div>-->
 
                                     <div class="form-group">
                                         <label>Role</label>
@@ -198,7 +198,7 @@ export default {
     },
       async save() {
           this.isLoading = true;
-          const res = await $post('/xadmin/users/save', {entry: this.entry}, false);
+          const res = await $post('/xadmin/users/save', {entry: this.entry,role:this.role}, false);
           this.isLoading = false;
           if (res.errors) {
               this.errors = res.errors;
