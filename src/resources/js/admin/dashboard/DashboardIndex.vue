@@ -1,33 +1,33 @@
 <template>
-    <div class="main-content app-content"> <!-- container -->
-        <div class="main-container container-fluid"> <!-- breadcrumb -->
-            <div class="breadcrumb-header justify-content-between">
-                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">DASHBOARD</span></div>
-                <div class="justify-content-center mt-2">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item tx-15"><a href="javascript:void(0);">TRANG CHỦ</a></li>
-                        <li class="breadcrumb-item tx-15 active" aria-current="page">DASHBOARD</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-sm-12">
-                    <div class="card" style="width: 90%">
+<!--    <div class="main-content app-content"> &lt;!&ndash; container &ndash;&gt;-->
+<!--        <div class="main-container container-fluid"> &lt;!&ndash; breadcrumb &ndash;&gt;-->
+<!--            <div class="breadcrumb-header justify-content-between">-->
+<!--                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">DASHBOARD</span></div>-->
+<!--                <div class="justify-content-center mt-2">-->
+<!--                    <ol class="breadcrumb">-->
+<!--                        <li class="breadcrumb-item tx-15"><a href="javascript:void(0);">TRANG CHỦ</a></li>-->
+<!--                        <li class="breadcrumb-item tx-15 active" aria-current="page">DASHBOARD</li>-->
+<!--                    </ol>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-12 col-sm-12">-->
+<!--                    <div class="card" style="width: 90%">-->
 
-                        <div class="card-body row">
+<!--                        <div class="card-body row">-->
 
-                            <div class="col-xl-12 col-md-12 col-xs-12">
-                                <switch-button v-model="testButton"/>
-                                <RichtextEditor : v-model="testContent"/>
-                                <button type="button" @click="clickMe()" class="btn btn-primary">ClickMe</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--                            <div class="col-xl-12 col-md-12 col-xs-12">-->
+<!--                                <switch-button v-model="testButton"/>-->
+<!--                                <RichtextEditor : v-model="testContent"/>-->
+<!--                                <button type="button" @click="clickMe()" class="btn btn-primary">ClickMe</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-        </div>
-    </div>
+<!--        </div>-->
+<!--    </div>-->
 </template>
 
 <script>

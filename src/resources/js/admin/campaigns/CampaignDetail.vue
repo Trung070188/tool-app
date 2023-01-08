@@ -78,9 +78,6 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Status</label>
-                                    <!--                                    <input  v-model="entry.status" name="name"-->
-                                    <!--                                            class="form-control"-->
-                                    <!--                                            placeholder="status">-->
                                     <div>
                                         <switch-button v-model="entry.status" class="form-control"></switch-button>
 
@@ -88,10 +85,14 @@
                                     <error-label for="f_status" :errors="errors.status"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <label>Daily fake install</label>
+                                    <input  v-model="entry.daily_fake_install" name="name"
+                                            class="form-control"
+                                            placeholder="Daily fake install">
+                                    <error-label for="f_status" :errors="errors.daily_fake_install"></error-label>
+                                </div>
+                                <div class="form-group col-lg-6">
                                     <label>Open next day</label>
-                                    <!--                                    <input i v-model="entry.open_next_day" name="name"-->
-                                    <!--                                           class="form-control"-->
-                                    <!--                                           placeholder="Open next day">-->
                                     <div>
                                         <switch-button class="form-control" v-model="entry.open_next_day"></switch-button>
 
@@ -99,13 +100,7 @@
                                     <error-label for="f_status" :errors="errors.open_next_day"></error-label>
                                 </div>
 
-                                <div class="form-group col-lg-6">
-                                    <label>daily fake install</label>
-                                    <input  v-model="entry.daily_fake_install" name="name"
-                                            class="form-control"
-                                            placeholder="status">
-                                    <error-label for="f_status" :errors="errors.daily_fake_install"></error-label>
-                                </div>
+
                                 <div class="form-group col-lg-6">
                                     <label>Store url</label>
                                     <input  v-model="entry.store_url" name="name"
@@ -121,13 +116,6 @@
                                     <error-label for="f_status" :errors="errors.is_fake_on"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <label>Note</label>
-                                    <input  v-model="entry.note" name="name"
-                                            class="form-control"
-                                            placeholder="Note">
-                                    <error-label for="f_status" :errors="errors.note"></error-label>
-                                </div>
-                                <div class="form-group col-lg-6">
                                     <label>Total install</label>
                                     <input  v-model="entry.total_install" name="name"
                                             class="form-control"
@@ -136,17 +124,22 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Auto on at</label>
-                                    <input  v-model="entry.auto_on_at" name="name"
+                                    <Datepicker  v-model="entry.auto_on_at" name="name"
                                             class="form-control"
-                                            placeholder="Auto on at">
+                                                 placeholder="Auto on at"></Datepicker>
                                     <error-label for="f_status" :errors="errors.auto_on_at"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Auto off at</label>
-                                    <input  v-model="entry.auto_off_at" name="name"
+                                    <Datepicker  v-model="entry.auto_off_at" name="name"
                                             class="form-control"
-                                            placeholder="Auto off at">
+                                                 placeholder="Auto off at"></Datepicker>
                                     <error-label for="f_status" :errors="errors.auto_off_at"></error-label>
+                                </div>
+                                <div class="form-group col-lg-12">
+                                    <label>Note</label>
+                                    <RichtextEditor  v-model="entry.note" ></RichtextEditor>
+                                    <error-label for="f_status" :errors="errors.note"></error-label>
                                 </div>
 
                             </div>
@@ -169,10 +162,12 @@
     import Uploader from "../../components/Uploader";
     import FileManagerInput from "../../components/FileManagerInput";
     import SwitchButton from "../../components/SwitchButton";
+    import Datepicker from "../../components/Datepicker";
+    import RichtextEditor from "../../components/RichtextEditor";
 
     export default {
         name: "CampaignDetail.vue",
-        components: {SwitchButton, FileManagerInput, Uploader, ActionBar},
+        components: {RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
             console.log($json.customer);
             return {

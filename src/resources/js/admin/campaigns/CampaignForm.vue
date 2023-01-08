@@ -93,8 +93,7 @@
 <!--                                           class="form-control"-->
 <!--                                           placeholder="Open next day">-->
                                     <div>
-                                        <switch-button  v-model="entry.isChecked"></switch-button>
-                                        {{isChecked}}
+                                        <switch-button  v-model="entry.open_next_day"></switch-button>
 
                                     </div>
                                     <error-label for="f_status" :errors="errors.open_next_day"></error-label>
@@ -123,9 +122,10 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Note</label>
-                                    <input  v-model="entry.note" name="name"
-                                            class="form-control"
-                                            placeholder="Note">
+<!--                                    <input  v-model="entry.note" name="name"-->
+<!--                                            class="form-control"-->
+<!--                                            placeholder="Note">-->
+                                    <RichtextEditor v-model="entry.note"></RichtextEditor>
                                     <error-label for="f_status" :errors="errors.note"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -173,10 +173,11 @@
     import FileManagerInput from "../../components/FileManagerInput";
     import SwitchButton from "../../components/SwitchButton";
     import Datepicker from "../../components/Datepicker";
+    import RichtextEditor from "../../components/RichtextEditor";
 
     export default {
         name: "CampaignsForm.vue",
-        components: {Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
+        components: {RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
             console.log($json.customer);
             return {

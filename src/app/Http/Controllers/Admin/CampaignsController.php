@@ -143,7 +143,6 @@ class CampaignsController extends AdminBaseController
         } else {
             $entry = new Campaign();
             $entry->fill($data);
-            dd(1);
             $entry->save();
 
             return [
