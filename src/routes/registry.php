@@ -31,4 +31,9 @@
         'action' => 'UsersController',
         'name' => 'user',
     ],
+    [
+        'path' => '/files/{action}',
+        'action' => 'FilesController',
+        'name' => 'files',
+    ],
 ];

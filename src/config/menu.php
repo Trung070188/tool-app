@@ -28,41 +28,41 @@ return [
         ]
 
     ],
+//    [
+//        "name" => "User",
+//        "icon" => "fa fa-user",
+//        "group" => 3,
+//        'base' => '/xadmin/users/index',
+//        'subs' => [
+//            [
+//                "name" => "User Index",
+//                "icon" => "fas fa-list ",
+//                "group" => 3,
+//                'url' => '/xadmin/users/index',
+//            ],
+//            [
+//                "name" => "User Form",
+//                "icon" => "fas fa-list ",
+//                "group" => 3,
+//                'url' => '/xadmin/users/create',
+//            ]
+//        ]
+//
+//    ],
     [
-        "name" => "User",
-        "icon" => "fa fa-user",
-        "group" => 3,
-        'base' => '/xadmin/users/index',
-        'subs' => [
-            [
-                "name" => "User Index",
-                "icon" => "fas fa-list ",
-                "group" => 3,
-                'url' => '/xadmin/users/index',
-            ],
-            [
-                "name" => "User Form",
-                "icon" => "fas fa-list ",
-                "group" => 3,
-                'url' => '/xadmin/users/create',
-            ]
-        ]
-
-    ],
-    [
-        "name" => "Customer",
+        "name" => "Khách hàng",
         "icon" => "fa fa-user",
         "group" => 3,
         'base' => '/xadmin/customers/index',
         'subs' => [
             [
-                "name" => "Customer Index",
+                "name" => "Thông tin khách hàng",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/customers/index',
             ],
             [
-                "name" => "Customer Form",
+                "name" => "Thêm mới khách hàng",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/customers/create',
@@ -71,54 +71,54 @@ return [
 
     ],
 
-    [
-        "name" => "Permission",
-        "icon" => "fa fa-lock",
-        "url" => "/xadmin/permissions/index",
-        "group" => 2
-    ],
+//    [
+//        "name" => "Permission",
+//        "icon" => "fa fa-lock",
+//        "url" => "/xadmin/permissions/index",
+//        "group" => 2
+//    ],
 
     [
-        "name" => "Partner",
+        "name" => "Đối tác",
         "icon" => "fas fa-user-friends
 ",
         "group" => 3,
         'base' => '/xadmin/partners/index',
         'subs' => [
             [
-                "name" => "Partners Index",
+                "name" => "Thông tin đối tác",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/partners/index',
             ],
             [
-                "name" => "Partner Form",
+                "name" => "Thêm mới đối tác",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/partners/create',
             ]
         ]
     ],
-    [
-        "name" => "Roles",
-        "icon" => "fa fa-users",
-        "group" => 3,
-        'base' => '/xadmin/roles/index',
-        'subs' => [
-            [
-                "name" => "Roles Index",
-                "icon" => "fas fa-list ",
-                "group" => 3,
-                'url' => '/xadmin/roles/index',
-            ],
-            [
-                "name" => "Roles Form",
-                "icon" => "fas fa-list ",
-                "group" => 3,
-                'url' => '/xadmin/roles/create',
-            ]
-        ]
-    ]
+//    [
+//        "name" => "Roles",
+//        "icon" => "fa fa-users",
+//        "group" => 3,
+//        'base' => '/xadmin/roles/index',
+//        'subs' => [
+//            [
+//                "name" => "Roles Index",
+//                "icon" => "fas fa-list ",
+//                "group" => 3,
+//                'url' => '/xadmin/roles/index',
+//            ],
+//            [
+//                "name" => "Roles Form",
+//                "icon" => "fas fa-list ",
+//                "group" => 3,
+//                'url' => '/xadmin/roles/create',
+//            ]
+//        ]
+//    ]
 
 
 ];

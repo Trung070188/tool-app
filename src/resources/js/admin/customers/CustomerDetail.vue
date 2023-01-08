@@ -59,22 +59,8 @@
                                            placeholder="Địa chỉ">
                                     <error-label for="f_description" :errors="errors.description"></error-label>
                                 </div>
-                                <div class="form-group col-lg-6">
-                                    <label>Mật khẩu</label>
-                                    <input  v-model="entry.password" name="name" type="password"
-                                           class="form-control"
-                                           placeholder="Mật khẩu">
-                                    <error-label for="f_description" :errors="errors.password"></error-label>
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <label>Nhập lại mật khẩu</label>
-                                    <input  v-model="entry.password_conf" name="name" type="password"
-                                           class="form-control"
-                                           placeholder="Nhập lại mật khẩu">
-                                    <error-label for="f_description" :errors="errors.password_conf"></error-label>
-                                </div>
                             </div>
-                            </div>
+                        </div>
 
                     </div>
                 </div> <!--/div--> <!--div-->
@@ -92,7 +78,7 @@
     import ActionBar from '../../components/ActionBar';
 
     export default {
-        name: "CustomersForm.vue",
+        name: "CustomerDetail.vue",
         components: {ActionBar},
         data() {
             return {

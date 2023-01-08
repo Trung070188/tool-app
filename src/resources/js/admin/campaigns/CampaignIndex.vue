@@ -63,7 +63,7 @@
                                                                                     <th>Icon</th>
                                                                                     <th>Price</th>
                                                                                     <th>Os</th>
-                                                                                    <th>Customer Id</th>
+                                                                                    <th>Tên khách hàng</th>
                                                                                     <th>Type</th>
                                                                                     <th>Status</th>
                                                                                 <th>Action</th>
@@ -83,7 +83,7 @@
                                                                                     <td v-text="entry.customer_id"></td>
                                                                                     <td v-text="entry.type"></td>
                                                                                     <td v-text="entry.status"></td>
-                                        
+
                                         <td class="">
                                             <a :href="'/xadmin/campaigns/edit?id='+entry.id" class="btn "><i
                                                     class="fa fa-edit"></i></a>

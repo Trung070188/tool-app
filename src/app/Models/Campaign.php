@@ -28,5 +28,13 @@ class Campaign extends BaseModel
     'customer_id',
     'type',
     'status',
+    'open_next_day',
+    'daily_fake_install',
+    'store_url',
+    'is_fake_on',
+    'note',
+    'total_install',
+    'auto_on_at',
+    'auto_off_at'
 ];
 }

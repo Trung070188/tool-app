@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -60,7 +61,7 @@ class CustomersController extends AdminBaseController
         */
         $jsonData = compact('entry');
         $title = 'Edit';
-        $component = 'CustomerForm';
+        $component = 'CustomerDetail';
 
         return vue(compact('title', 'component'), $jsonData);
     }
@@ -137,8 +138,9 @@ class CustomersController extends AdminBaseController
         } else {
             $entry = new Customer();
             $entry->fill($data);
+            $password=(Hash::make($data['password']));
+            $entry->password=$password;
             $entry->save();
-
             return [
                 'code' => 0,
                 'message' => 'Đã thêm',

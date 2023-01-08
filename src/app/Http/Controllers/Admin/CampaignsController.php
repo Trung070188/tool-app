@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Customer;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +39,9 @@ class CampaignsController extends AdminBaseController
     {
         $component = 'CampaignForm';
         $title = 'Create campaigns';
-        return vue(compact('title', 'component'));
+        $customer=Customer::query()->orderBy('id','desc')->get();
+        $jsonData=compact('customer');
+        return vue(compact('title', 'component'),$jsonData);
     }
 
     /**
@@ -58,9 +61,11 @@ class CampaignsController extends AdminBaseController
         /**
         * @var  Campaign $entry
         */
-        $jsonData = compact('entry');
+
+        $customer=Customer::query()->orderBy('id','desc')->get();
+        $jsonData = compact('entry','customer');
         $title = 'Edit';
-        $component = 'CampaignForm';
+        $component = 'CampaignDetail';
 
         return vue(compact('title', 'component'), $jsonData);
     }
@@ -138,6 +143,7 @@ class CampaignsController extends AdminBaseController
         } else {
             $entry = new Campaign();
             $entry->fill($data);
+            dd(1);
             $entry->save();
 
             return [

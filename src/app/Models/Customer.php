@@ -21,6 +21,7 @@ class Customer extends BaseModel
     'email',
     'phone',
     'company',
+    'password',
     'description',
 ];
 }

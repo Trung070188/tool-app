@@ -60,9 +60,9 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Tên khách hàng</label>
-<!--                                    <input id="f_customer_id" v-model="entry.customer_id" name="name"-->
-<!--                                           class="form-control"-->
-<!--                                           placeholder="Tên khách hàng">-->
+                                    <!--                                    <input id="f_customer_id" v-model="entry.customer_id" name="name"-->
+                                    <!--                                           class="form-control"-->
+                                    <!--                                           placeholder="Tên khách hàng">-->
                                     <select class="form-control form-select" v-model="entry.customer_id">
                                         <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
                                     </select>
@@ -78,9 +78,9 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Status</label>
-<!--                                    <input  v-model="entry.status" name="name"-->
-<!--                                            class="form-control"-->
-<!--                                            placeholder="status">-->
+                                    <!--                                    <input  v-model="entry.status" name="name"-->
+                                    <!--                                            class="form-control"-->
+                                    <!--                                            placeholder="status">-->
                                     <div>
                                         <switch-button v-model="entry.status" class="form-control"></switch-button>
 
@@ -89,12 +89,11 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Open next day</label>
-<!--                                    <input i v-model="entry.open_next_day" name="name"-->
-<!--                                           class="form-control"-->
-<!--                                           placeholder="Open next day">-->
+                                    <!--                                    <input i v-model="entry.open_next_day" name="name"-->
+                                    <!--                                           class="form-control"-->
+                                    <!--                                           placeholder="Open next day">-->
                                     <div>
-                                        <switch-button  v-model="entry.isChecked"></switch-button>
-                                        {{isChecked}}
+                                        <switch-button class="form-control" v-model="entry.open_next_day"></switch-button>
 
                                     </div>
                                     <error-label for="f_status" :errors="errors.open_next_day"></error-label>
@@ -137,18 +136,16 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Auto on at</label>
-<!--                                    <input  v-model="entry.auto_on_at" name="name"-->
-<!--                                            class="form-control"-->
-<!--                                            placeholder="Auto on at">-->
-                                    <datepicker v-model="entry.auto_on_at" class="form-control"></datepicker>
+                                    <input  v-model="entry.auto_on_at" name="name"
+                                            class="form-control"
+                                            placeholder="Auto on at">
                                     <error-label for="f_status" :errors="errors.auto_on_at"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Auto off at</label>
-<!--                                    <input  v-model="entry.auto_off_at" name="name"-->
-<!--                                            class="form-control"-->
-<!--                                            placeholder="Auto off at">-->
-                                    <datepicker class="form-control" v-model="entry.auto_off_at"></datepicker>
+                                    <input  v-model="entry.auto_off_at" name="name"
+                                            class="form-control"
+                                            placeholder="Auto off at">
                                     <error-label for="f_status" :errors="errors.auto_off_at"></error-label>
                                 </div>
 
@@ -172,11 +169,10 @@
     import Uploader from "../../components/Uploader";
     import FileManagerInput from "../../components/FileManagerInput";
     import SwitchButton from "../../components/SwitchButton";
-    import Datepicker from "../../components/Datepicker";
 
     export default {
-        name: "CampaignsForm.vue",
-        components: {Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
+        name: "CampaignDetail.vue",
+        components: {SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
             console.log($json.customer);
             return {

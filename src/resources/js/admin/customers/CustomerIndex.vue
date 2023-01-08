@@ -2,11 +2,11 @@
     <div class="main-content app-content"> <!-- container -->
         <div class="main-container container-fluid"> <!-- breadcrumb -->
             <div class="breadcrumb-header justify-content-between">
-                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">Customer</span></div>
+                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">Khách hàng</span></div>
                 <div class="justify-content-center mt-2">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Customer</li>
+                        <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Khách hàng</li>
                     </ol>
                 </div>
             </div> <!-- /breadcrumb --> <!-- row -->
@@ -17,7 +17,7 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Customer Index</h4></div>
+                                <h4 class="card-title mg-b-0">Thông tin khách hàng</h4></div>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -77,7 +77,7 @@
                                                                                     <td v-text="entry.phone"></td>
                                                                                     <td v-text="entry.company"></td>
                                                                                     <td v-text="entry.description"></td>
-                                        
+
                                         <td class="">
                                             <a :href="'/xadmin/customers/edit?id='+entry.id" class="btn "><i
                                                     class="fa fa-edit"></i></a>
