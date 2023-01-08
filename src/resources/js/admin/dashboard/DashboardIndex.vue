@@ -15,40 +15,11 @@
                     <div class="card" style="width: 90%">
 
                         <div class="card-body row">
-                            <div class="col-xl-7 col-md-7 col-xs-12 float-left">
-                                <div class="font-weight-bold my-5 font-large">
-                                    PostPay là hệ sinh thái thanh toán được phát triển bởi Tổng công ty Bưu Điện Việt
-                                    Nam,
-                                    được Ngân hàng Nhà nước cấp phép số 13/GP-NHNN ngày 12/04/2021
-                                </div>
-                                <div class="d-flex mt-5">
-                                    <div>
-                                        <img src="/assets/img/qr-taiapp.svg">
-                                    </div>
-                                    <div>
-                                        <div class="mt-2 font-large mb-5">Cùng trải nghiệm PostPay<br>
-                                            Ứng dụng thuần Việt dành cho người Việt
-                                        </div>
-                                        <ul>
-                                            <li style="padding-right: 2px">
-                                                <a href="https://postpay.vn/tai-app/ios" target="_blank">
-                                                    <img class="btn-download-app" src="/assets/img/btn-app-store.svg">
-                                                </a>
 
-                                            </li>
-                                            <li>
-                                                <a href="https://play.google.com/store/apps/details?id=com.vnpost.postpay">
-                                                    <img class="btn-download-app" src="/assets/img/btn-google-play.svg">
-                                                </a>
-
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-xl-5 col-md-5 col-xs-12 float-right">
-                                <img src=/assets/img/image-in-banner.png>
+                            <div class="col-xl-12 col-md-12 col-xs-12">
+                                <switch-button v-model="testButton"/>
+                                <RichtextEditor : v-model="testContent"/>
+                                <button type="button" @click="clickMe()" class="btn btn-primary">ClickMe</button>
                             </div>
                         </div>
                     </div>
@@ -63,15 +34,19 @@
 
 import $router from "../../lib/SimpleRouter";
 import moment from "moment/moment";
+import SwitchButton from "../../components/SwitchButton";
+import RichtextEditor from "../../components/RichtextEditor";
 const $q = $router.getQuery();
 
 export default {
   name: "DashboardIndex",
-  components: {},
+  components: {RichtextEditor, SwitchButton},
     data() {
         return {
             entries: [],
             dataList: [],
+            testButton: false,
+            testContent: '<h1>hello World</h1>',
             filter: {
                 type: $q.type || 1,
                 quarter: $q.quarter || parseInt(moment().subtract(1, 'Q').format('Q')),
@@ -89,6 +64,10 @@ export default {
         //$router.on('/', this.load).init();
     },
     methods: {
+        clickMe() {
+            this.testButton = !this.testButton;
+            console.log(this.testButton)
+        },
         async load() {
             let query = $router.getQuery();
 

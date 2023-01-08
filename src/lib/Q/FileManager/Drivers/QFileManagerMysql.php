@@ -189,7 +189,7 @@ class QFileManagerMysql implements QFileManagerPrototype
         }
 
         if ($this->checkFileNameExists($parentId, $info['filename'])) {
-            return new QFileUploadResponse(21, "File ${$info['filename']} already exists");
+            return new QFileUploadResponse(21, "File {$info['filename']} already exists");
         }
 
 
