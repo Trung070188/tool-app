@@ -100,13 +100,21 @@ class CustomersController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-    'name' => 'max:200',
-    'email' => 'max:200',
+    'name' => 'required|max:200',
+    'email' => 'required|max:200',
     'phone' => 'max:100',
     'company' => 'max:200',
+    'password'=>'required'
 ];
 
         $v = Validator::make($data, $rules);
+        $v->after(function ($valiadte) use ($data)
+        {
+           if($data['password_conf']!=$data['password'])
+           {
+              $valiadte->errors()->add('password_conf','The password and confirmation password do not match.');
+           }
+        });
 
         if ($v->fails()) {
             return [
@@ -140,6 +148,7 @@ class CustomersController extends AdminBaseController
             $entry->fill($data);
             $password=(Hash::make($data['password']));
             $entry->password=$password;
+            dd(1);
             $entry->save();
             return [
                 'code' => 0,

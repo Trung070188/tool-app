@@ -184,7 +184,7 @@ class CampaignsController extends AdminBaseController
     */
     public function data(Request $req)
     {
-        $query = Campaign::query()->orderBy('id', 'desc');
+        $query = Campaign::query()->with(['customer'])->orderBy('id', 'desc');
 
         if ($req->keyword) {
             //$query->where('title', 'LIKE', '%' . $req->keyword. '%');

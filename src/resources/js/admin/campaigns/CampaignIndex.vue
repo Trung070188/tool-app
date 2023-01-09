@@ -58,15 +58,18 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                                                                    <th>Name</th>
-                                                                                    <th>Package Id</th>
-                                                                                    <th>Icon</th>
-                                                                                    <th>Price</th>
-                                                                                    <th>Os</th>
-                                                                                    <th>Tên khách hàng</th>
-                                                                                    <th>Type</th>
-                                                                                    <th>Status</th>
-                                                                                <th>Action</th>
+                                        <th>Name</th>
+                                        <th>Package Id</th>
+                                        <th>Icon</th>
+                                        <th>Price</th>
+                                        <th>Os</th>
+                                        <th>Tên khách hàng</th>
+                                        <th>Type</th>
+                                        <th>Auto on at</th>
+                                        <th>Auto off at</th>
+                                        <th>Open next day</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -75,15 +78,17 @@
                                             <a class="edit-link" :href="'/xadmin/campaigns/edit?id='+entry.id"
                                                v-text="entry.id"></a>
                                         </td>
-                                                                                    <td v-text="entry.name"></td>
-                                                                                    <td v-text="entry.package_id"></td>
-                                                                                    <td v-text="entry.icon"></td>
-                                                                                    <td v-text="entry.price"></td>
-                                                                                    <td v-text="entry.os"></td>
-                                                                                    <td v-text="entry.customer_id"></td>
-                                                                                    <td v-text="entry.type"></td>
-                                                                                    <td v-text="entry.status"></td>
-
+                                            <td v-text="entry.name"></td>
+                                            <td v-text="entry.package_id"></td>
+                                            <td v-text="entry.icon"></td>
+                                            <td v-text="entry.price"></td>
+                                            <td v-text="entry.os"></td>
+                                            <td v-text="entry.customer.name"></td>
+                                            <td v-text="entry.type"></td>
+                                            <td>{{entry.auto_on_at}}</td>
+                                            <td>{{(entry.auto_off_at)}}</td>
+                                            <td><switch-button v-model="entry.open_next_day"></switch-button></td>
+                                            <td><switch-button v-model="entry.status"></switch-button></td>
                                         <td class="">
                                             <a :href="'/xadmin/campaigns/edit?id='+entry.id" class="btn "><i
                                                     class="fa fa-edit"></i></a>
@@ -113,6 +118,7 @@
     import {$get, $post, getTimeRangeAll} from "../../utils";
     import $router from '../../lib/SimpleRouter';
     import ActionBar from '../../components/ActionBar';
+    import SwitchButton from "../../components/SwitchButton";
 
 
     let created = getTimeRangeAll();
@@ -120,7 +126,7 @@
 
     export default {
         name: "CampaignsIndex.vue",
-        components: {ActionBar},
+        components: {SwitchButton, ActionBar},
         data() {
             return {
                 entries: [],
