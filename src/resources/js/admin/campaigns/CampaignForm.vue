@@ -40,8 +40,8 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Icon</label>
-                                    <file-manager-input v-model="entry.icon" :hide-preview="true"
-                                                        placeholder="icon"></file-manager-input>
+                                    <q-file-manager-input v-model="entry.icon"
+                                                        placeholder="icon"></q-file-manager-input>
                                     <error-label for="f_icon" :errors="errors.icon"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -138,7 +138,7 @@
                                 </div>
                                 <div class="form-group col-lg-12">
                                     <label>Note</label>
-                                    <RichtextEditor  v-model="entry.note" ></RichtextEditor>
+                                    <RichtextEditor  v-model="entry.note"></RichtextEditor>
                                     <error-label for="f_status" :errors="errors.note"></error-label>
                                 </div>
 
@@ -164,10 +164,11 @@
     import SwitchButton from "../../components/SwitchButton";
     import Datepicker from "../../components/Datepicker";
     import RichtextEditor from "../../components/RichtextEditor";
+    import QFileManagerInput from "../../components/QFileManagerInput";
 
     export default {
         name: "CampaignsForm.vue",
-        components: {RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
+        components: {QFileManagerInput, RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
             console.log($json.customer);
             return {

@@ -60,8 +60,8 @@
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Package Id</th>
-                                        <th>Icon</th>
                                         <th>Price</th>
+                                        <th>Icon</th>
                                         <th>Os</th>
                                         <th>Tên khách hàng</th>
                                         <th>Type</th>
@@ -80,10 +80,10 @@
                                         </td>
                                             <td v-text="entry.name"></td>
                                             <td v-text="entry.package_id"></td>
-                                            <td v-text="entry.icon"></td>
                                             <td v-text="entry.price"></td>
+                                            <td ><img :src="entry.icon" style="width: 32px;height: 32px"></td>
                                             <td v-text="entry.os"></td>
-                                            <td v-text="entry.customer.name"></td>
+                                            <td>{{entry.customer.name}}</td>
                                             <td v-text="entry.type"></td>
                                             <td>{{entry.auto_on_at}}</td>
                                             <td>{{(entry.auto_off_at)}}</td>

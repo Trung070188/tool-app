@@ -125,6 +125,7 @@ class CampaignsController extends AdminBaseController
         */
         if (isset($data['id'])) {
             $entry = Campaign::find($data['id']);
+
             if (!$entry) {
                 return [
                     'code' => 3,
@@ -133,6 +134,7 @@ class CampaignsController extends AdminBaseController
             }
 
             $entry->fill($data);
+
             $entry->save();
 
             return [
@@ -143,6 +145,7 @@ class CampaignsController extends AdminBaseController
         } else {
             $entry = new Campaign();
             $entry->fill($data);
+            $entry->icon=($data['icon'][0]['url']);
             $entry->save();
 
             return [
