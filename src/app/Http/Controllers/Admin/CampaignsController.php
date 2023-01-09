@@ -176,6 +176,26 @@ class CampaignsController extends AdminBaseController
             'message' => 'Đã lưu'
         ];
     }
+    public function openNextDay(Request $req)
+    {
+        $id=$req->entry['id'];
+        Campaign::where('id',$id)->update(['open_next_day'=>$req->entry['open_next_day']]);
+        return [
+            'code'=>200,
+            'message'=>'Đã lưu'
+        ];
+
+    }
+    public function switchStatus(Request $req)
+    {
+        $id=$req->entry['id'];
+        Campaign::where('id',$id)->update(['status'=>$req->entry['status']]);
+        return [
+            'code'=>200,
+            'message'=>'Đã lưu'
+        ];
+
+    }
 
     /**
     * Ajax data for index page

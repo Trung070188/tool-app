@@ -87,8 +87,8 @@
                                             <td v-text="entry.type"></td>
                                             <td>{{entry.auto_on_at}}</td>
                                             <td>{{(entry.auto_off_at)}}</td>
-                                            <td><switch-button v-model="entry.open_next_day"></switch-button></td>
-                                            <td><switch-button v-model="entry.status"></switch-button></td>
+                                            <td><switch-button v-model="entry.open_next_day" @change="OpenNextDay(entry)"></switch-button></td>
+                                            <td><switch-button v-model="entry.status" @change="switchStatus(entry)"></switch-button></td>
                                         <td class="">
                                             <a :href="'/xadmin/campaigns/edit?id='+entry.id" class="btn "><i
                                                     class="fa fa-edit"></i></a>
@@ -144,6 +144,26 @@
             $router.on('/', this.load).init();
         },
         methods: {
+            async OpenNextDay(entry)
+            {
+                const res= await $post('/xadmin/campaigns/openNextDay',{entry:entry})
+                if (res.code) {
+                    toastr.success(res.message);
+                } else {
+                    toastr.error(res.message);
+                }
+
+            },
+            async switchStatus(entry)
+            {
+                const res= await $post('/xadmin/campaigns/switchStatus',{entry:entry})
+                if (res.code) {
+                    toastr.success(res.message);
+                } else {
+                    toastr.error(res.message);
+                }
+
+            },
             async load() {
                 let query = $router.getQuery();
                 const res = await $get('/xadmin/campaigns/data', query);
