@@ -19,13 +19,10 @@ namespace App\Models;
 class Campaign extends BaseModel
 {
     protected $table = 'campaigns';
-    protected $casts=[
-      'icon'=>'array'
-    ];
     protected $fillable = [
     'name',
     'package_id',
-//    'icon',
+    'icon',
     'price',
     'os',
     'customer_id',
@@ -40,6 +37,9 @@ class Campaign extends BaseModel
     'auto_on_at',
     'auto_off_at'
 ];
+    protected $casts=[
+        'icon'=>'array'
+    ];
 
     public function customer()
     {

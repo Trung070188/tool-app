@@ -216,7 +216,6 @@ class CampaignsController extends AdminBaseController
         $query->createdIn($req->created);
 
         $entries = $query->paginate();
-
         return [
             'code' => 0,
             'data' => $entries->items(),
