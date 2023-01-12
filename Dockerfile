@@ -21,7 +21,7 @@ RUN mv /usr/local/bin/composer.phar /usr/local/bin/composer
 #RUN groupadd -g 1000 www
 #RUN useradd -u 1000 -ms /bin/bash -g www www
 #USER www
-#COPY ./src /usr/share/nginx/sites
+COPY ./src /usr/share/nginx/sites
 #RUN chown -R www /usr/share/nginx/sites
 RUN apt-get update
 RUN apt-get install -y nginx
