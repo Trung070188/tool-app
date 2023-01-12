@@ -24,6 +24,24 @@ return [
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/campaigns/create',
+            ] ,
+            [
+                "name" => "CampaignPartner Create",
+                "icon" => "fas fa-list ",
+                "group" => 3,
+                'url' => '/xadmin/campaign_partners/create',
+            ] ,
+            [
+                "name" => "CampaignPartner Index",
+                "icon" => "fas fa-list ",
+                "group" => 3,
+                'url' => '/xadmin/campaign_partners/index',
+            ] ,
+        [
+                "name" => "CampaignInstall",
+                "icon" => "fas fa-list ",
+                "group" => 3,
+                'url' => '/xadmin/campaign_installs/index',
             ]
         ]
 
