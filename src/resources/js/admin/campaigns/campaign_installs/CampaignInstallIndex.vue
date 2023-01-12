@@ -23,10 +23,20 @@
                             <div class="row">
                                 <div class="col-xl-8">
                                     <form class="form-inline">
+<!--                                        <div class="form-group mx-sm-3 mb-2">-->
+<!--                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword"-->
+<!--                                                   type="text"-->
+<!--                                                   class="form-control" placeholder="tìm kiếm" >-->
+<!--                                        </div>-->
                                         <div class="form-group mx-sm-3 mb-2">
-                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword"
+                                            <input @keydown.enter="doFilter('campaign', filter.campaign, $event)" v-model="filter.campaign"
                                                    type="text"
-                                                   class="form-control" placeholder="tìm kiếm" >
+                                                   class="form-control" placeholder="Campaign" >
+                                        </div>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input @keydown.enter="doFilter('partner_name', filter.partner_name, $event)" v-model="filter.partner_name"
+                                                   type="text"
+                                                   class="form-control" placeholder="Partner" >
                                         </div>
                                         <div class="form-group mx-sm-3 mb-2">
                                             <Daterangepicker
@@ -72,11 +82,11 @@
                                             <a class="edit-link" :href="'/xadmin/campaign_installs/edit?id='+entry.id"
                                                v-text="entry.id"></a>
                                         </td>
-                                                                                    <td v-text="entry.campaign"></td>
-                                                                                    <td v-text="entry.partner_name"></td>
-                                                                                    <td v-text="entry.device_id"></td>
-                                                                                    <td v-text="entry.ip"></td>
-                                                                                    <td v-text="entry.os"></td>
+                                        <td v-text="entry.campaign"></td>
+                                        <td v-text="entry.partner_name"></td>
+                                        <td v-text="entry.device_id"></td>
+                                        <td v-text="entry.ip"></td>
+                                        <td v-text="entry.os"></td>
 
                                         <td class="">
                                             <a :href="'/xadmin/campaign_installs/edit?id='+entry.id" class="btn "><i
@@ -119,7 +129,9 @@
             return {
                 entries: [],
                 filter: {
-                    keyword: $q.keyword || '',
+                    // keyword: $q.keyword || '',
+                    campaign:$q.campaign || '',
+                    partner_name:$q.partner_name || '',
                     created: $q.created || created,
                 },
                 paginate: {
