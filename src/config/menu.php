@@ -14,37 +14,47 @@ return [
 //        'permission' => 'EWALLET.RequestLogs.index',
         'subs' => [
             [
-                "name" => "campaign index",
+                "name" => "Danh sách",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/campaigns/index',
             ],
             [
-                "name" => "Tạo campaign",
+                "name" => "Thêm mới",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/campaigns/create',
             ] ,
+
+        ]
+
+    ],
+    [
+        "name" => "Campaign Partner",
+        "icon" => "fa fa-home",
+        "url" => "/xadmin/dashboard/index",
+        "group" => 3,
+        "subs" => [
             [
-                "name" => "CampaignPartner Create",
+                "name" => "Danh sách",
+                "icon" => "fas fa-list ",
+                "group" => 3,
+                'url' => '/xadmin/campaign_partners/index',
+            ] ,
+            [
+                "name" => "Thêm mới",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/campaign_partners/create',
             ] ,
             [
-                "name" => "CampaignPartner Index",
-                "icon" => "fas fa-list ",
-                "group" => 3,
-                'url' => '/xadmin/campaign_partners/index',
-            ] ,
-        [
-                "name" => "CampaignInstall",
+                "name" => " Thông kê",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/campaign_installs/index',
             ]
-        ]
 
+        ]
     ],
 //    [
 //        "name" => "User",
@@ -74,13 +84,13 @@ return [
         'base' => '/xadmin/customers/index',
         'subs' => [
             [
-                "name" => "Thông tin khách hàng",
+                "name" => "Danh sách",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/customers/index',
             ],
             [
-                "name" => "Thêm mới khách hàng",
+                "name" => "Thêm mới",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/customers/create',
@@ -104,13 +114,13 @@ return [
         'base' => '/xadmin/partners/index',
         'subs' => [
             [
-                "name" => "Thông tin đối tác",
+                "name" => "Danh sách",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/partners/index',
             ],
             [
-                "name" => "Thêm mới đối tác",
+                "name" => "Thêm mới",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/partners/create',

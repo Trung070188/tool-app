@@ -108,7 +108,7 @@
     const $q = $router.getQuery();
 
     export default {
-        name: "CampaignPartnersIndex.vue",
+        name: "PartnerCampaignIndex.vue",
         components: {ActionBar},
         data() {
             return {

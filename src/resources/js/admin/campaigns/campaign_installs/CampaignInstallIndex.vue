@@ -52,14 +52,14 @@
 
                                     </form>
                                 </div>
-                                <div class="col-xl-4 d-flex">
-                                    <div class="margin-left-auto mb-1">
-                                        <a href="/xadmin/campaign_installs/create" class="btn btn-primary">
-                                            <i class="fa fa-plus"/>
-                                            Thêm
-                                        </a>
-                                    </div>
-                                </div>
+<!--                                <div class="col-xl-4 d-flex">-->
+<!--                                    <div class="margin-left-auto mb-1">-->
+<!--                                        <a href="/xadmin/campaign_installs/create" class="btn btn-primary">-->
+<!--                                            <i class="fa fa-plus"/>-->
+<!--                                            Thêm-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                             </div>
 
 
@@ -73,7 +73,7 @@
                                         <th>Device Id</th>
                                         <th>Ip</th>
                                         <th>Os</th>
-                                    <th>Action</th>
+<!--                                    <th>Action</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -88,12 +88,12 @@
                                         <td v-text="entry.ip"></td>
                                         <td v-text="entry.os"></td>
 
-                                        <td class="">
-                                            <a :href="'/xadmin/campaign_installs/edit?id='+entry.id" class="btn "><i
-                                                    class="fa fa-edit"></i></a>
-                                            <a @click="remove(entry)" href="javascript:;" class="btn "><i
-                                                    class="fa fa-trash"></i></a>
-                                        </td>
+<!--                                        <td class="">-->
+<!--                                            <a :href="'/xadmin/campaign_installs/edit?id='+entry.id" class="btn "><i-->
+<!--                                                    class="fa fa-edit"></i></a>-->
+<!--                                            <a @click="remove(entry)" href="javascript:;" class="btn "><i-->
+<!--                                                    class="fa fa-trash"></i></a>-->
+<!--                                        </td>-->
                                     </tr>
                                     </tbody>
                                 </table>

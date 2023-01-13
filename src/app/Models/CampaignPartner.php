@@ -10,13 +10,15 @@ namespace App\Models;
  */
 class CampaignPartner extends BaseModel
 {
-    protected $table = 'campaign_partners';
+    protected $table = 'partner_campaigns';
     protected $fillable = [
     'id',
     'name',
     'campaign_id',
     'partner_id',
     'price',
+    'os',
+    'url_partner',
     'open_next_day',
     'status',
     'note'

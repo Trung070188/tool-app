@@ -181,17 +181,17 @@ class CampaignInstallsController extends AdminBaseController
     {
         DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
 
-        $campaignInstall=DB::table('campaign_installs')->join('campaign_partners',function ($join)
+        $campaignInstall=DB::table('campaign_installs')->join('partner_campaigns',function ($join)
         {
-            $join->on('campaign_partners.id','=','campaign_installs.partner_campaign_id');
+            $join->on('partner_campaigns.id','=','campaign_installs.partner_campaign_id');
         })
             ->leftJoin('campaigns',function ($join)
             {
-                $join->on('campaigns.id','=','campaign_partners.campaign_id');
+                $join->on('campaigns.id','=','partner_campaigns.campaign_id');
             })
             ->leftJoin('partners',function ($join)
             {
-                $join->on('partners.id','=','campaign_partners.partner_id');
+                $join->on('partners.id','=','partner_campaigns.partner_id');
             });
         $campaignInstall = $campaignInstall->select([
             'campaigns.name as campaign',

@@ -17,9 +17,9 @@ import PermissionForm from "./admin/permissions/PermissionForm";
 import PermissionAssign from "./admin/permissions/PermissionAssign";
 import CampaignInstallIndex from "./admin/campaigns/campaign_installs/CampaignInstallIndex";
 import CampaignInstallForm from "./admin/campaigns/campaign_installs/CampaignInstallForm";
-import CampaignPartnerIndex from "./admin/campaigns/campaign_partners/CampaignPartnerIndex";
-import CampaignPartnerForm from "./admin/campaigns/campaign_partners/CampaignPartnerForm";
-import CampaignPartnerDetail from "./admin/campaigns/campaign_partners/CampaignPartnerDetail";
+import PartnerCampaignIndex from "./admin/campaigns/campaign_partners/PartnerCampaignIndex";
+import PartnerCampaignForm from "./admin/campaigns/campaign_partners/PartnerCampaignForm";
+import PartnerCampaignDetail from "./admin/campaigns/campaign_partners/PartnerCampaignDetail";
 export default {
     DashboardIndex,
     CampaignForm,
@@ -40,9 +40,9 @@ export default {
     PermissionAssign,
     CampaignInstallIndex,
     CampaignInstallForm,
-    CampaignPartnerIndex,
-    CampaignPartnerForm,
-    CampaignPartnerDetail
+    PartnerCampaignIndex,
+    PartnerCampaignForm,
+    PartnerCampaignDetail
 
 
 };

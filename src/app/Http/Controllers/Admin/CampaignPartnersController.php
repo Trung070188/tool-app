@@ -26,7 +26,7 @@ class CampaignPartnersController extends AdminBaseController
     public function index()
     {
         $title = 'CampaignPartner';
-        $component = 'CampaignPartnerIndex';
+        $component = 'PartnerCampaignIndex';
         return vue(compact('title', 'component'));
     }
 
@@ -38,7 +38,7 @@ class CampaignPartnersController extends AdminBaseController
     */
     public function create (Request $req)
     {
-        $component = 'CampaignPartnerForm';
+        $component = 'PartnerCampaignForm';
         $title = 'Create campaignPartners';
         return vue(compact('title', 'component'));
     }
@@ -62,7 +62,7 @@ class CampaignPartnersController extends AdminBaseController
         */
         $jsonData = compact('entry');
         $title = 'Edit';
-        $component = 'CampaignPartnerDetail';
+        $component = 'PartnerCampaignDetail';
 
         return vue(compact('title', 'component'), $jsonData);
     }
@@ -98,7 +98,6 @@ class CampaignPartnersController extends AdminBaseController
             return ['code' => 405, 'message' => 'Method not allow'];
         }
         $data = $req->get('entry');
-        $dataCampaign=$req->get('dataFilterCampaign');
         $rules = [
 //    ' partner_campaign_id' => 'required|numeric',
 //    'campaign_id' => 'numeric',
@@ -137,13 +136,7 @@ class CampaignPartnersController extends AdminBaseController
         } else {
             $entry = new CampaignPartner();
             $entry->fill($data);
-            $entry->campaign_id=$dataCampaign['id'];
-            $entry->price=$dataCampaign['price'];
-            $entry->open_next_day=$dataCampaign['open_next_day'];
-            $entry->status=$dataCampaign['open_next_day'];
-            $entry->note=$dataCampaign['note'];
             $entry->save();
-
             return [
                 'code' => 0,
                 'message' => 'Đã thêm',
@@ -222,14 +215,8 @@ class CampaignPartnersController extends AdminBaseController
         $campaigns=Campaign::query()->orderBy('id','desc')->get();
 
         $partners=Partner::query()->orderBy('id','desc')->get();
-        if(@$req->campaign_id)
-        {
-            $dataCampaign=Campaign::query()->where('id',$req->campaign_id)->first();
-
-        }
         return [
             'campaigns'=>$campaigns,
-            'data_filter_campaign'=>@$dataCampaign,
             'partners'=>$partners
         ];
     }
