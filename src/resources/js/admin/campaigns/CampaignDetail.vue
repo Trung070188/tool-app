@@ -116,6 +116,7 @@
 <!--                                            placeholder="Is fake on ">-->
                                     <error-label for="f_status" :errors="errors.is_fake_on"></error-label>
                                 </div>
+                                
                                 <div class="form-group col-lg-6">
                                     <label>Total install</label>
                                     <input  v-model="entry.total_install" name="name"
