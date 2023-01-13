@@ -3,11 +3,12 @@
         <ActionBar label="Lưu lại" @action="save()" backUrl="/xadmin/campaign_partners/index"/>
         <div class="main-container container-fluid"> <!-- breadcrumb -->
             <div class="breadcrumb-header justify-content-between">
-                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">CampaignPartner</span></div>
+<!--                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">CampaignPartner</span></div>-->
                 <div class="justify-content-center mt-2">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">PartnerCampaign</li>
+                        <li class="breadcrumb-item active" aria-current="page">Partner Campaign</li>
+                        <li class="breadcrumb-item active" aria-current="page">Thêm mới campaign partner</li>
                     </ol>
                 </div>
             </div> <!-- /breadcrumb --> <!-- row -->
@@ -17,7 +18,7 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">PartnerCampaign Form</h4></div>
+                                <h4 class="card-title mg-b-0">Thêm mới campaign partner</h4></div>
 
                         </div>
                         <div class="card-body">

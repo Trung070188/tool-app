@@ -2,11 +2,12 @@
     <div class="main-content app-content"> <!-- container -->
         <div class="main-container container-fluid"> <!-- breadcrumb -->
             <div class="breadcrumb-header justify-content-between">
-                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">Campaign</span></div>
+<!--                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">Campaign</span></div>-->
                 <div class="justify-content-center mt-2">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Campaign</li>
+                        <li class="breadcrumb-item active" aria-current="page">Danh sách</li>
                     </ol>
                 </div>
             </div> <!-- /breadcrumb --> <!-- row -->
@@ -17,7 +18,7 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Campaign Index</h4></div>
+                                <h4 class="card-title mg-b-0">Danh sách campaign</h4></div>
                         </div>
                         <div class="card-body">
                             <div class="row">

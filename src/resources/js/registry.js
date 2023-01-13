@@ -12,6 +12,7 @@ import UserForm from "./admin/users/UserForm";
 import UserDetail from "./admin/users/UserDetail";
 import PartnerIndex from "./admin/partners/PartnerIndex";
 import PartnerForm from "./admin/partners/PartnerForm";
+import PartnerDetail from "./admin/partners/PartnerDetail";
 import PermissionIndex from "./admin/permissions/PermissionIndex";
 import PermissionForm from "./admin/permissions/PermissionForm";
 import PermissionAssign from "./admin/permissions/PermissionAssign";
@@ -35,6 +36,7 @@ export default {
     UserDetail,
     PartnerIndex,
     PartnerForm,
+    PartnerDetail,
     PermissionIndex,
     PermissionForm,
     PermissionAssign,
