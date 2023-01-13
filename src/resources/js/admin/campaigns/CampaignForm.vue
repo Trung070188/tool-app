@@ -110,9 +110,10 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Is fake on</label>
-                                    <input  v-model="entry.is_fake_on" name="name"
-                                            class="form-control"
-                                            placeholder="Is fake on ">
+                                    <div>
+                                        <switch-button  v-model="entry.is_fake_on"></switch-button>
+
+                                    </div>
                                     <error-label for="f_status" :errors="errors.is_fake_on"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">

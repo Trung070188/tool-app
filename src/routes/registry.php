@@ -36,4 +36,14 @@
         'action' => 'FilesController',
         'name' => 'files',
     ],
+    [
+        'path' => '/campaign_partners/{action}',
+        'action' => 'CampaignPartnersController',
+        'name' => 'campaign_partners',
+    ],
+    [
+        'path' => '/campaign_installs/{action}',
+        'action' => 'CampaignInstallsController',
+        'name' => 'campaign_installs',
+    ],
 ];
