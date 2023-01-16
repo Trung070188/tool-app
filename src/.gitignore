@@ -35,3 +35,4 @@ yarn-error.log
 /storage/csv/
 /public/assets/js/app_customer.js
 /public/assets/css/app_customer.css
+/src/public/mix-manifest.json
