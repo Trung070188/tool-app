@@ -61,19 +61,20 @@
                                     <error-label for="f_description" :errors="errors.password"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <label>Nhập lại mật khẩu</label>
-                                    <input  v-model="entry.password_conf" name="name" type="password"
-                                           class="form-control"
-                                           placeholder="Nhập lại mật khẩu">
-                                    <error-label for="f_description" :errors="errors.password_conf"></error-label>
-                                </div>
-                                <div class="form-group col-lg-6">
                                     <label>Địa chỉ</label>
                                     <input id="f_description" v-model="entry.description" name="name"
                                            class="form-control"
                                            placeholder="Địa chỉ">
                                     <error-label for="f_description" :errors="errors.description"></error-label>
                                 </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Nhập lại mật khẩu</label>
+                                    <input  v-model="entry.password_conf" name="name" type="password"
+                                           class="form-control"
+                                           placeholder="Nhập lại mật khẩu">
+                                    <error-label for="f_description" :errors="errors.password_conf"></error-label>
+                                </div>
+
                             </div>
                             </div>
 

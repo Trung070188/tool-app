@@ -21,7 +21,6 @@ import CampaignInstallForm from "./admin/campaigns/campaign_installs/CampaignIns
 import PartnerCampaignIndex from "./admin/campaigns/campaign_partners/PartnerCampaignIndex";
 import PartnerCampaignForm from "./admin/campaigns/campaign_partners/PartnerCampaignForm";
 import PartnerCampaignDetail from "./admin/campaigns/campaign_partners/PartnerCampaignDetail";
-import TestCustomerIndex from "./customer/TestCustomerIndex";
 
 
 export default {
@@ -48,7 +47,6 @@ export default {
     PartnerCampaignIndex,
     PartnerCampaignForm,
     PartnerCampaignDetail,
-    TestCustomerIndex
 
 
 };
