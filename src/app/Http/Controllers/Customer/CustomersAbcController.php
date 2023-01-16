@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Customer;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
-class CustomersController extends AdminBaseController
+class CustomersAbcController extends CustomerBaseController
 {
 
     /**
@@ -25,7 +25,7 @@ class CustomersController extends AdminBaseController
     public function index()
     {
         $title = 'customer';
-        $component = 'CustomerIndex';
+        $component = 'TestCustomerIndex';
         return vue(compact('title', 'component'));
     }
 

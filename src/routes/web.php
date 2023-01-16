@@ -56,6 +56,13 @@ Route::group(['prefix' => 'xadmin'], function(){
     Route::get('login','Auth\LoginController@showLoginForm')->name('login');
     Route::post('login','Auth\LoginController@login');
     Route::get('logout','Auth\LoginController@logout');
+    Route::get('customer/login','Auth\CustomerLoginController@showLoginForm')->name('customer.login');
+    Route::post('customer/login','Auth\CustomerLoginController@login');
+    Route::get('customer/logout','Auth\CustomerLoginController@logout');
 });
+Route::get('/xadmin/customer','Customer\CustomersAbcController@index')->name('customer.index');
+
+
+
 
 

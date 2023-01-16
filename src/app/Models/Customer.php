@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
 
 
  /**
@@ -13,8 +15,9 @@ namespace App\Models;
  * @property \DateTime $created_at
  * @property \DateTime $updated_at
  */
-class Customer extends BaseModel
+class Customer extends Authenticatable
 {
+    protected  $guarde= 'customer';
     protected $table = 'customers';
     protected $fillable = [
     'name',
