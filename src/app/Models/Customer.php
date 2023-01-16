@@ -17,14 +17,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class Customer extends Authenticatable
 {
-    protected  $guarde= 'customer';
     protected $table = 'customers';
     protected $fillable = [
-    'name',
-    'email',
-    'phone',
-    'company',
-    'password',
-    'description',
-];
+        'name',
+        'email',
+        'phone',
+        'company',
+        'password',
+        'description',
+    ];
 }

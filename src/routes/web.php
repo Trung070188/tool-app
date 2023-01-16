@@ -21,18 +21,21 @@ Route::get('/ping', function() {
     ];
 })->name('ping');
 
-Route::get('/', function() {
-    return redirect('/xadmin/dashboard/index');
-})->name('home');
+
 
 Route::get('/xadmin', function() {
     return redirect('/xadmin/dashboard/index');
 });
 
-//Route::post('/auth/google-sign', 'Auth\GoogleSignController@login');
-//Route::get('/sso', 'SSOController@index');
+Route::get('/customer', function() {
+    return redirect('/customer/dashboard/index');
+});
 
-Route::middleware(['auth'])->namespace('Admin')->prefix('xadmin')->group(function () {
+
+/**
+ * Main admin routes
+ */
+Route::middleware(['auth:web'])->namespace('Admin')->prefix('xadmin')->group(function () {
     Route::any('/files/{action}', 'FilesController')->name('files');
     Route::get('/excel-sample', 'SampleController@excelSample')->name('excelSample');
     Route::any('/dashboard/{action}', 'DashboardController')->name('dashboard');
@@ -43,24 +46,15 @@ Route::middleware(['auth'])->namespace('Admin')->prefix('xadmin')->group(functio
             Route::any($route['path'], $route['action'])->name($route['name']);
         }
     }
-
-});
-
-Route::middleware(['auth'])->namespace('Admin')->prefix('xadmin')->group(function () {
-    Route::post('/data-source/get-many', 'DataSourcesController@getManyAction');
-    Route::get('/data-source/index', 'DataSourcesController@indexAction');
-    Route::post('/data-source/save', 'DataSourcesController@save');
 });
 
 Route::group(['prefix' => 'xadmin'], function(){
     Route::get('login','Auth\LoginController@showLoginForm')->name('login');
     Route::post('login','Auth\LoginController@login');
     Route::get('logout','Auth\LoginController@logout');
-    Route::get('customer/login','Auth\CustomerLoginController@showLoginForm')->name('customer.login');
-    Route::post('customer/login','Auth\CustomerLoginController@login');
-    Route::get('customer/logout','Auth\CustomerLoginController@logout');
 });
-Route::get('/xadmin/customer','Customer\CustomersAbcController@index')->name('customer.index');
+
+
 
 
 

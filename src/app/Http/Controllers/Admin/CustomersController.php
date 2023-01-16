@@ -148,7 +148,7 @@ class CustomersController extends AdminBaseController
             $entry->fill($data);
             $password=(Hash::make($data['password']));
             $entry->password=$password;
-            dd(1);
+
             $entry->save();
             return [
                 'code' => 0,

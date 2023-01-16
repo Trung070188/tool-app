@@ -59,7 +59,7 @@ $googleSignEnabled = config('services.google.enabled');
                     <div class="card-sigin ">
                         <div class="main-card-signin d-md-flex">
                             <div class="wd-100p">
-                                <div class="d-flex mb-4"><a href="{{ route('home') }}" style="margin: auto">
+                                <div class="d-flex mb-4"><a href="/customer" style="margin: auto">
                                         <img src="/images/logo.png" class="sign-favicon"
                                              style="width: 100%"
                                              alt="logo"></a>

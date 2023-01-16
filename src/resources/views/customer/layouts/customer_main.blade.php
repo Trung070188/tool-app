@@ -30,19 +30,19 @@ $serverTime = date('Y-m-d H:i:s');
     <link href="/vendor/toastr/toastr.min.css" rel="stylesheet">
 
     <?php
-        echo asset_css('assets/css/app.css')
+    echo asset_css('assets/css/app_customer.css')
     ?>
     <script>
         window.APP_NAME = 'MAIN';
         window.$SERVER_TIME = '{{$serverTime}}';
         window.$json = JSON.parse('{!! addslashes(json_encode($jsonData?? new stdClass())) !!}');
         window.$componentName = '{{$component}}';
-        window.$sideBarMenus = JSON.parse('{!! addslashes(json_encode(config('menu'))) !!}');
+        window.$sideBarMenus = JSON.parse('{!! addslashes(json_encode(config('menu_customer'))) !!}');
         window.$csrf = '{{csrf_token()}}';
         window.$pageTitle = '{{$title}}';
         window.$scripts = JSON.parse('{!! addslashes(json_encode(@$scripts)) !!}');
         <?php
-        $user = auth_user();
+        $user = auth_customer();
         $auth = [
             'id' => $user->id,
             'email' => $user->email,
@@ -76,7 +76,7 @@ $serverTime = date('Y-m-d H:i:s');
 <script src="/vendor/daterangepicker/moment.min.js"></script>
 <script src="/vendor/daterangepicker/daterangepicker.js"></script>
 <?php
-echo asset_js('assets/js/app.js')
+echo asset_js('assets/js/app_customer.js')
 ?>
 </body>
 </html>

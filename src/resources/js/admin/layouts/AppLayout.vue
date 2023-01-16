@@ -37,13 +37,6 @@ export default {
     mounted() {
         const self = this;
         $('#global-loader').hide();
-        window.showModalPermissionError = function (title, requiredPermission, allowClose) {
-            self.$refs.modalPermissionError.show(title, requiredPermission, allowClose);
-        }
-
-        window.$modalRefs = {
-            modalSelectDB: this.$refs.modalSelectDB
-        }
     },
     data() {
         return {}

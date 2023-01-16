@@ -35,7 +35,7 @@ class CustomerLoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/xadmin/dashboard/index';
+    protected $redirectTo = '/customer/dashboard/index';
 
     /**
      * Attempt to log the user into the application.
@@ -87,11 +87,13 @@ class CustomerLoginController extends Controller
         ];
 
         if (Auth::guard('customer')->attempt($credentials)) {
-            return redirect()->intended(route('customer.index'));
+            return redirect()->to('/customer/dashboard/index');
         }
 
-        return redirect()->back()->withInput($request->only('email', 'remember'));
+        return $this->sendFailedLoginResponse($request);
+        #return redirect()->back()->withInput($request->only('email', 'remember'));
     }
+
     public function logout()
     {
         Auth::guard('customer')->logout();
