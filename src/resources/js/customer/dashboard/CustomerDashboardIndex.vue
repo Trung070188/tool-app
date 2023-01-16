@@ -5,8 +5,8 @@
                 <!--                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">CampaignInstall</span></div>-->
                 <div class="justify-content-center mt-2">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Campaign Partner</li>
+<!--                        <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>-->
+<!--                        <li class="breadcrumb-item active" aria-current="page">Campaign Partner</li>-->
                         <li class="breadcrumb-item active" aria-current="page">Thông kê</li>
                     </ol>
                 </div>
@@ -41,8 +41,8 @@
                                         </div>
                                         <div class="form-group mx-sm-3 mb-2">
                                             <Daterangepicker
-                                                    @update:modelValue="(value) => doFilter('created', value, $event)"
-                                                    v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>
+                                                @update:modelValue="(value) => doFilter('created', value, $event)"
+                                                v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>
                                         </div>
 
                                         <div class="form-group mx-sm-3 mb-2">
@@ -79,22 +79,12 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="entry in entries">
-                                        <td>
-                                            <a class="edit-link" :href="'/xadmin/campaign_installs/edit?id='+entry.id"
-                                               v-text="entry.id"></a>
-                                        </td>
+                                        <td v-text="entry.id"></td>
                                         <td v-text="entry.campaign"></td>
                                         <td v-text="entry.partner_name"></td>
                                         <td v-text="entry.device_id"></td>
                                         <td v-text="entry.ip"></td>
                                         <td v-text="entry.os"></td>
-
-                                        <!--                                        <td class="">-->
-                                        <!--                                            <a :href="'/xadmin/campaign_installs/edit?id='+entry.id" class="btn "><i-->
-                                        <!--                                                    class="fa fa-edit"></i></a>-->
-                                        <!--                                            <a @click="remove(entry)" href="javascript:;" class="btn "><i-->
-                                        <!--                                                    class="fa fa-trash"></i></a>-->
-                                        <!--                                        </td>-->
                                     </tr>
                                     </tbody>
                                 </table>
@@ -111,6 +101,7 @@
 
 
     </div> <!-- /main-content -->
+ <!-- /main-content -->
 </template>
 
 <script>
@@ -130,13 +121,12 @@ export default {
             entries: [],
             dataList: [],
             testButton: false,
-            testContent: '<h1>hello World</h1>',
             filter: {
-                type: $q.type || 1,
-                quarter: $q.quarter || parseInt(moment().subtract(1, 'Q').format('Q')),
-                year: $q.year || moment().year(),
-                pageSize: $q.pageSize || 10,
-                currentPage: $q.currentPage || 1
+                // type: $q.type || 1,
+                // quarter: $q.quarter || parseInt(moment().subtract(1, 'Q').format('Q')),
+                // year: $q.year || moment().year(),
+                // pageSize: $q.pageSize || 10,
+                // currentPage: $q.currentPage || 1
             },
             paginate: {
                 currentPage: 1,
@@ -193,39 +183,39 @@ export default {
 </script>
 
 <style scoped>
-.font-large{
-    font-size: 18px;
-}
-.btn-download-app {
-    width: 170px;
-}
-.box-search {
-    width: 90%;
-    min-height: 150px;
-    border: 1px solid #000;
-    border-radius: 5px
-}
-.btn-export{
-    margin-left: auto;
-    order: 2;
-    padding-right: 10px;
-}
-ul{
-    margin-top: 58px !important;
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-    margin-bottom: 10px;
-    display: block;
-    list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
-}
-ul li {
-    list-style: none;
-    display: inline-block;
-}
+/*.font-large{*/
+/*    font-size: 18px;*/
+/*}*/
+/*.btn-download-app {*/
+/*    width: 170px;*/
+/*}*/
+/*.box-search {*/
+/*    width: 90%;*/
+/*    min-height: 150px;*/
+/*    border: 1px solid #000;*/
+/*    border-radius: 5px*/
+/*}*/
+/*.btn-export{*/
+/*    margin-left: auto;*/
+/*    order: 2;*/
+/*    padding-right: 10px;*/
+/*}*/
+/*ul{*/
+/*    margin-top: 58px !important;*/
+/*    margin-left: 0 !important;*/
+/*    padding-left: 0 !important;*/
+/*    margin-bottom: 10px;*/
+/*    display: block;*/
+/*    list-style-type: disc;*/
+/*    margin-block-start: 1em;*/
+/*    margin-block-end: 1em;*/
+/*    margin-inline-start: 0px;*/
+/*    margin-inline-end: 0px;*/
+/*    padding-inline-start: 40px;*/
+/*}*/
+/*ul li {*/
+/*    list-style: none;*/
+/*    display: inline-block;*/
+/*}*/
 
 </style>
