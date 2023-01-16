@@ -18,7 +18,6 @@ $serverTime = date('Y-m-d H:i:s');
     <meta name="Keywords"
           content="">
     <!-- Title --> <title>{{$pageTitle}}</title> <!-- Favicon -->
-    <link rel="icon" href="/assets/img/brand/vnpost_logo.svg" type="image/x-icon"> <!-- Icons css -->
     <link href="/assets/css/icons.css" rel="stylesheet"> <!--  bootstrap css-->
     <link id="style" href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"> <!-- style css -->
     <link href="/assets/css/style.css" rel="stylesheet">

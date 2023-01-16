@@ -53,7 +53,7 @@
 
 <script>
     import {$post} from "../../utils";
-    import ActionBar from "../includes/ActionBar";
+    import ActionBar from "../../components/ActionBar";
 
     export default {
         name: "PermissionsForm.vue",

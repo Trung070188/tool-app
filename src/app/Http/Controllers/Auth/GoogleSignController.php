@@ -43,7 +43,7 @@ class GoogleSignController
 
                 return [
                     'code' => 200,
-                    'redirect' => route('home'),
+                    'redirect' => '/'
                 ];
             }
         } catch (\Exception $e) {

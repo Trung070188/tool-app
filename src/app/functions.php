@@ -297,6 +297,15 @@ function auth_user()
     return auth()->user();
 }
 
+/**
+ * @return \App\Models\Customer
+ */
+function auth_customer()
+{
+    return auth()->user();
+}
+
+
 function googleClientId(): string
 {
     static $clientID;
@@ -316,6 +325,17 @@ function vue(array $vars = [], array $jsonData = [])
     $vars['jsonData'] = $jsonData;
 
     return view('admin.layouts.main', $vars);
+}
+
+function customerVue(array $vars = [], array $jsonData = [])
+{
+    if (isset($var['title'])) {
+        $jsonData['pageTitle'] = $var['title'];
+    }
+
+    $vars['jsonData'] = $jsonData;
+
+    return view('customer.layouts.customer_main', $vars);
 }
 
 function get_gravatar(string $id, $s = 128, $d = 'identicon', $r = 'g', $img = false, $atts = array()): string
@@ -827,3 +847,15 @@ function numberFormatArray($array): array
 
     return $array;
 }
+
+function getCurrentModuleName(): string
+{
+    $parts = explode('/', $_SERVER['REQUEST_URI']);
+    if (isset($parts[1])) {
+        return $parts[1];
+    }
+
+    return '';
+}
+
+getCurrentModuleName();

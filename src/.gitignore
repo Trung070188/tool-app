@@ -33,3 +33,5 @@ yarn-error.log
 *.xlsx
 /storage/reports/
 /storage/csv/
+/public/assets/js/app_customer.js
+/public/assets/css/app_customer.css

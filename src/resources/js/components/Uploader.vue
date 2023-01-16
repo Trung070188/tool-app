@@ -91,7 +91,7 @@ export default {
 
 
     return {
-      baseUrl: $uploadBaseUrl.replace('{alias}', baseAlias),
+          baseUrl: $uploadBaseUrl.replace('{alias}', baseAlias),
       imgSrc: this.value || '',
       images: this.value || [],
       url: '',

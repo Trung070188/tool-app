@@ -1,115 +1,120 @@
 <template>
-    <div class="container-fluid">
-        <ActionBar type="index"
-                   title="PermissionIndex"/>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card card-custom card-stretch gutter-b">
-                    <div class="card-header border-0 pt-5">
+    <div class="main-content app-content">
+        <div class="main-container container-fluid">
+<!--            <ActionBar type="index"-->
+<!--                       title="PermissionIndex"/>-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-custom card-stretch gutter-b">
+                        <div class="card-header border-0 pt-5">
 
-                        <div class="row width-full">
-                            <div class="col-lg-12">
-                                <form class="form-inline">
-                                    <div class="form-group mx-sm-3 mb-4">
-                                        <input @keydown.enter="doFilter('keyword', filter.keyword, $event)"
-                                               v-model="filter.keyword"
-                                               type="text"
-                                               class="form-control" placeholder="tìm kiếm">
-                                    </div>
+                            <div class="row width-full">
+                                <div class="col-lg-12">
+                                    <form class="form-inline">
+                                        <div class="form-group mx-sm-3 mb-4">
+                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)"
+                                                   v-model="filter.keyword"
+                                                   type="text"
+                                                   class="form-control" placeholder="tìm kiếm">
+                                        </div>
 
 
-                                    <div class="form-group mx-sm-3 mb-2">
-                                        <button @click="filterClear()" type="button"
-                                                class="btn btn-default btn-sm btn-clear">Xóa
-                                        </button>
-                                    </div>
-
-                                </form>
-                            </div>
-                            <div class="col-lg-12">
-                                <form class="form-inline">
-                                    <template v-if="editMode">
                                         <div class="form-group mx-sm-3 mb-2">
-                                            <button @click="saveAll()" type="button"
-                                                    class="btn btn-primary btn-sm btn-clear">Lưu lại
+                                            <button @click="filterClear()" type="button"
+                                                    class="btn btn-default btn-sm btn-clear">Xóa
                                             </button>
                                         </div>
-                                        <div class="form-group mx-sm-3 mb-2">
-                                            <button @click="cancelAll()" type="button"
-                                                    class="btn btn-default btn-sm btn-clear"> Hủy
-                                            </button>
-                                        </div>
-                                    </template>
-                                    <template v-else>
-                                        <div class="form-group mx-sm-3 mb-2">
-                                            <button @click="renameAll()" type="button"
-                                                    class="btn btn-primary btn-sm btn-clear">Đổi tên hiển thị
-                                            </button>
-                                        </div>
-                                    </template>
 
-                                </form>
+                                    </form>
+                                </div>
+                                <div class="col-lg-12">
+                                    <form class="form-inline">
+                                        <template v-if="editMode">
+                                            <div class="form-group mx-sm-3 mb-2">
+                                                <button @click="saveAll()" type="button"
+                                                        class="btn btn-primary btn-sm btn-clear">Lưu lại
+                                                </button>
+                                            </div>
+                                            <div class="form-group mx-sm-3 mb-2">
+                                                <button @click="cancelAll()" type="button"
+                                                        class="btn btn-default btn-sm btn-clear"> Hủy
+                                                </button>
+                                            </div>
+                                        </template>
+                                        <template v-else>
+                                            <div class="form-group mx-sm-3 mb-2">
+                                                <button @click="renameAll()" type="button"
+                                                        class="btn btn-primary btn-sm btn-clear">Đổi tên hiển thị
+                                                </button>
+                                            </div>
+                                        </template>
+
+                                    </form>
+
+                                </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+                        <div class="card-body d-flex flex-column">
+                            <table class="table table-head-custom table-head-bg table-vertical-center">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Module</th>
+                                    <th>Tên</th>
+                                    <th>Tên hiển thị</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="entry in entries">
+                                    <td>
+                                        <a class="edit-link" :href="'/xadmin/permissions/edit?id='+entry.id"
+                                           v-text="entry.id"></a>
+                                    </td>
+                                    <td v-text="entry.module"></td>
+                                    <td v-text="entry.name"></td>
+                                    <td >
+                                        <template v-if="!entry.editMode">
+                                            <span v-text="entry.display_name"></span>
+                                        </template>
+                                        <template v-else>
+                                            <input class="form-control" placeholder="Nhập tên hiển thị mới" v-model="entry.display_name_new"/>
+                                        </template>
+                                    </td>
 
-                    <div class="card-body d-flex flex-column">
-                        <table class="table table-head-custom table-head-bg table-vertical-center">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Module</th>
-                                <th>Tên</th>
-                                <th>Tên hiển thị</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="entry in entries">
-                                <td>
-                                    <a class="edit-link" :href="'/xadmin/permissions/edit?id='+entry.id"
-                                       v-text="entry.id"></a>
-                                </td>
-                                <td v-text="entry.module"></td>
-                                <td v-text="entry.name"></td>
-                                <td >
-                                    <template v-if="!entry.editMode">
-                                        <span v-text="entry.display_name"></span>
-                                    </template>
-                                    <template v-else>
-                                        <input class="form-control" placeholder="Nhập tên hiển thị mới" v-model="entry.display_name_new"/>
-                                    </template>
-                                </td>
+                                    <td class="">
+                                        <a :href="'/xadmin/permissions/edit?id='+entry.id" class="btn "><i
+                                            class="fa fa-edit"></i></a>
 
-                                <td class="">
-                                    <a :href="'/xadmin/permissions/edit?id='+entry.id" class="btn "><i
-                                        class="fa fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="float-right" style="margin-top:10px; ">
+                                <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>
+                            </div>
 
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div class="float-right" style="margin-top:10px; ">
-                            <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>
+
                         </div>
-
-
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
+<!--    <div class="container-fluid">-->
+<!--       -->
+<!--    </div>-->
 
 </template>
 
 <script>
 import {$alert, $get, $post, getTimeRangeAll} from "../../utils";
 import $router from '../../lib/SimpleRouter';
-import ActionBar from "../includes/ActionBar";
+import ActionBar from "../../components/ActionBar";
 
 let created = getTimeRangeAll();
 const $q = $router.getQuery();

@@ -22,7 +22,7 @@
 <script>
     import QTreeSelect from "../../components/qtreeselect/QTreeSelect";
     import {$alert, $post, clone} from "../../utils";
-    import ActionBar from "../includes/ActionBar";
+    import ActionBar from "../../components/ActionBar";
 
     export default {
         name: "PermissionAssign",
