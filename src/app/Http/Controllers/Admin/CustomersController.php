@@ -148,7 +148,6 @@ class CustomersController extends AdminBaseController
             $entry->fill($data);
             $password=(Hash::make($data['password']));
             $entry->password=$password;
-
             $entry->save();
             return [
                 'code' => 0,
@@ -195,7 +194,7 @@ class CustomersController extends AdminBaseController
             //$query->where('title', 'LIKE', '%' . $req->keyword. '%');
         }
 
-        $query->createdIn($req->created);
+//        $query->createdIn($req->created);
 
         $entries = $query->paginate();
 
