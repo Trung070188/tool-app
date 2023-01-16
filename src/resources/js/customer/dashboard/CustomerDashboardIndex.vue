@@ -2,29 +2,115 @@
     <div class="main-content app-content"> <!-- container -->
         <div class="main-container container-fluid"> <!-- breadcrumb -->
             <div class="breadcrumb-header justify-content-between">
-                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">DASHBOARD</span></div>
+                <!--                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">CampaignInstall</span></div>-->
                 <div class="justify-content-center mt-2">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item tx-15"><a href="javascript:void(0);">TRANG CHỦ</a></li>
-                        <li class="breadcrumb-item tx-15 active" aria-current="page">DASHBOARD</li>
+                        <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Campaign Partner</li>
+                        <li class="breadcrumb-item active" aria-current="page">Thông kê</li>
                     </ol>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-sm-12">
-                    <div class="card" style="width: 90%">
+            </div> <!-- /breadcrumb --> <!-- row -->
 
-                        <div class="card-body row">
+            <div class="row row-sm">
+
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <div class="d-flex justify-content-between">
+                                <h4 class="card-title mg-b-0">Thông kê</h4></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-8">
+                                    <form class="form-inline">
+                                        <!--                                        <div class="form-group mx-sm-3 mb-2">-->
+                                        <!--                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword"-->
+                                        <!--                                                   type="text"-->
+                                        <!--                                                   class="form-control" placeholder="tìm kiếm" >-->
+                                        <!--                                        </div>-->
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input @keydown.enter="doFilter('campaign', filter.campaign, $event)" v-model="filter.campaign"
+                                                   type="text"
+                                                   class="form-control" placeholder="Campaign" >
+                                        </div>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <input @keydown.enter="doFilter('partner_name', filter.partner_name, $event)" v-model="filter.partner_name"
+                                                   type="text"
+                                                   class="form-control" placeholder="Partner" >
+                                        </div>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <Daterangepicker
+                                                    @update:modelValue="(value) => doFilter('created', value, $event)"
+                                                    v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>
+                                        </div>
+
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <button @click="filterClear()" type="button"
+                                                    class="btn btn-light">Xóa
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <!--                                <div class="col-xl-4 d-flex">-->
+                                <!--                                    <div class="margin-left-auto mb-1">-->
+                                <!--                                        <a href="/xadmin/campaign_installs/create" class="btn btn-primary">-->
+                                <!--                                            <i class="fa fa-plus"/>-->
+                                <!--                                            Thêm-->
+                                <!--                                        </a>-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+                            </div>
 
 
-                            <h1>HEllo world</h1>
+                            <div class="table-responsive">
+                                <table class="table mg-b-0 text-md-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Campaign</th>
+                                        <th>Partner</th>
+                                        <th>Device Id</th>
+                                        <th>Ip</th>
+                                        <th>Os</th>
+                                        <!--                                    <th>Action</th>-->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="entry in entries">
+                                        <td>
+                                            <a class="edit-link" :href="'/xadmin/campaign_installs/edit?id='+entry.id"
+                                               v-text="entry.id"></a>
+                                        </td>
+                                        <td v-text="entry.campaign"></td>
+                                        <td v-text="entry.partner_name"></td>
+                                        <td v-text="entry.device_id"></td>
+                                        <td v-text="entry.ip"></td>
+                                        <td v-text="entry.os"></td>
+
+                                        <!--                                        <td class="">-->
+                                        <!--                                            <a :href="'/xadmin/campaign_installs/edit?id='+entry.id" class="btn "><i-->
+                                        <!--                                                    class="fa fa-edit"></i></a>-->
+                                        <!--                                            <a @click="remove(entry)" href="javascript:;" class="btn "><i-->
+                                        <!--                                                    class="fa fa-trash"></i></a>-->
+                                        <!--                                        </td>-->
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="float-right" style="margin-top:10px; ">
+                                    <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div> <!--/div--> <!--div-->
 
+            </div> <!-- /row -->
         </div>
-    </div>
+
+
+    </div> <!-- /main-content -->
 </template>
 
 <script>
@@ -33,6 +119,7 @@ import $router from "../../lib/SimpleRouter";
 import moment from "moment/moment";
 import SwitchButton from "../../components/SwitchButton";
 import RichtextEditor from "../../components/RichtextEditor";
+import {$get} from "../../utils";
 const $q = $router.getQuery();
 
 export default {
@@ -58,18 +145,25 @@ export default {
         }
     },
     mounted() {
-        //$router.on('/', this.load).init();
+        $router.on('/', this.load).init();
         console.log('Loaded')
     },
     methods: {
+        async load() {
+            let query = $router.getQuery();
+            const res = await $get('/customer/dashboard/data', query);
+            this.paginate = res.paginate;
+            this.entries = res.data;
+            console.log(this.entries);
+        },
         clickMe() {
             this.testButton = !this.testButton;
             console.log(this.testButton)
         },
-        async load() {
-            let query = $router.getQuery();
-
-        },
+        // async load() {
+        //     let query = $router.getQuery();
+        //
+        // },
         filterClear() {
             for (var key in this.filter) {
                 this.filter[key] = '';
