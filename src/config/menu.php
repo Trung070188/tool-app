@@ -32,7 +32,7 @@ return [
     [
         "name" => "Campaign Partner",
         "icon" => "fa fa-home",
-        "url" => "/xadmin/dashboard/index",
+        "url" => "/xadmin/campaign_partners/index",
         "group" => 3,
         "subs" => [
             [
