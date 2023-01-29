@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Campaign;
+use App\Models\Partner;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -213,11 +215,11 @@ class CampaignInstallsController extends AdminBaseController
         }
         if($req->campaign)
         {
-           $campaignInstall->where('campaigns.name', 'LIKE','%' . $req->campaign . '%');
+           $campaignInstall->where('campaigns.name', $req->campaign);
         }
         if($req->partner_name)
         {
-            $campaignInstall->where('partners.name', 'LIKE','%' . $req->partner_name . '%');
+            $campaignInstall->where('partners.name',  $req->partner_name);
         }
        if($req->created)
        {
@@ -227,16 +229,20 @@ class CampaignInstallsController extends AdminBaseController
            $end_date = $date_range[1];
            $campaignInstall->whereBetween('campaigns.created_at',[$start_date,$end_date]);
        }
-        $limit = 25;
+        $limit = 50;
         if ($req->limit) {
             $limit = $req->limit;
         }
+        $campaigns=Campaign::query()->orderBy('name','desc')->get();
+        $partners=Partner::query()->orderBy('name','desc')->get();
 
         $entries = $campaignInstall->paginate($limit);
 
         return [
             'code' => 0,
             'data' => $entries->items(),
+            'campaigns'=>$campaigns,
+            'partners'=>$partners,
             'paginate' => [
                 'currentPage' => $entries->currentPage(),
                 'lastPage' => $entries->lastPage(),

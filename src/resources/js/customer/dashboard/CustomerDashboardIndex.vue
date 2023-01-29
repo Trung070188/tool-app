@@ -64,27 +64,59 @@
                             </div>
 
 
+                            <hr>
+                            <h3>Bảng dữ liệu</h3>
+                            <div style="margin-bottom:50px">
+                                <div style="float: left;display: inline-block">
+                                    <select class="form-select form-select-sm form-select-solid" v-model="limit" @change="changeLimit">
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                        <option value="200">200</option>
+                                    </select>
+
+                                </div>
+                                <div style="display: inline-block;float: left;margin: 4px 4px">Record per page</div>
+                                <div style="float: right;display: inline-block">
+                                    <div style="float: left;margin: 2px 4px">Search</div>
+                                    <input type="text">
+                                    <button>Print</button>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
                                         <th>Campaign</th>
                                         <th>Partner</th>
-                                        <th>Device Id</th>
-                                        <th>Ip</th>
-                                        <th>Os</th>
+                                        <th>Total</th>
+                                        <th>Click</th>
+                                        <th>Send Postback</th>
+                                        <th>Rate</th>
+                                        <th></th>
+                                        <th>Chưa thanh toán</th>
+                                        <th>Thanh toán</th>
                                         <!--                                    <th>Action</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="entry in entries">
-                                        <td v-text="entry.id"></td>
                                         <td v-text="entry.campaign"></td>
                                         <td v-text="entry.partner_name"></td>
-                                        <td v-text="entry.device_id"></td>
-                                        <td v-text="entry.ip"></td>
-                                        <td v-text="entry.os"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td ></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td ></td>
+                                        <td ></td>
+
+                                        <!--                                        <td class="">-->
+                                        <!--                                            <a :href="'/xadmin/campaign_installs/edit?id='+entry.id" class="btn "><i-->
+                                        <!--                                                    class="fa fa-edit"></i></a>-->
+                                        <!--                                            <a @click="remove(entry)" href="javascript:;" class="btn "><i-->
+                                        <!--                                                    class="fa fa-trash"></i></a>-->
+                                        <!--                                        </td>-->
                                     </tr>
                                     </tbody>
                                 </table>
@@ -128,6 +160,8 @@ export default {
                 // pageSize: $q.pageSize || 10,
                 // currentPage: $q.currentPage || 1
             },
+            limit: $q.limit || 50,
+
             paginate: {
                 currentPage: 1,
                 lastPage: 1
@@ -139,6 +173,12 @@ export default {
         console.log('Loaded')
     },
     methods: {
+        changeLimit() {
+            let params = $router.getQuery();
+            params['page'] = 1;
+            params['limit'] = this.limit;
+            $router.setQuery(params)
+        },
         async load() {
             let query = $router.getQuery();
             const res = await $get('/customer/dashboard/data', query);
