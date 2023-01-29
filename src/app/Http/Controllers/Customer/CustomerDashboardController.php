@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Models\Campaign;
+use App\Models\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,11 +54,11 @@ class CustomerDashboardController extends CustomerBaseController
         }
         if($req->campaign)
         {
-            $campaignInstall->where('campaigns.name', 'LIKE','%' . $req->campaign . '%');
+            $campaignInstall->where('campaigns.name',  $req->campaign );
         }
         if($req->partner_name)
         {
-            $campaignInstall->where('partners.name', 'LIKE','%' . $req->partner_name . '%');
+            $campaignInstall->where('partners.name',  $req->partner_name);
         }
         if($req->created)
         {
@@ -70,12 +72,17 @@ class CustomerDashboardController extends CustomerBaseController
         if ($req->limit) {
             $limit = $req->limit;
         }
+        $campaigns=Campaign::query()->orderBy('name','desc')->get();
+        $partners=Partner::query()->orderBy('name','desc')->get();
 
         $entries = $campaignInstall->paginate($limit);
 
         return [
             'code' => 0,
             'data' => $entries->items(),
+            'campaigns'=>$campaigns,
+            'partners'=>$partners,
+
             'paginate' => [
                 'currentPage' => $entries->currentPage(),
                 'lastPage' => $entries->lastPage(),

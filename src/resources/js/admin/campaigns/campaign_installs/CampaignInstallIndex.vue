@@ -44,7 +44,7 @@
 <!--                                                   class="form-control" placeholder="Partner" >-->
                                         </div>
                                         <div class="form-group col-lg-3">
-                                            <label>Chọn thời gian thông kê</label>
+                                            <label>Chọn thời gian thống kê</label>
                                             <Daterangepicker
                                                 @update:modelValue="(value) => doFilter('created', value, $event)"
                                                 v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>
@@ -106,12 +106,6 @@
                                         <td ></td>
                                         <td ></td>
 
-                                        <!--                                        <td class="">-->
-                                        <!--                                            <a :href="'/xadmin/campaign_installs/edit?id='+entry.id" class="btn "><i-->
-                                        <!--                                                    class="fa fa-edit"></i></a>-->
-                                        <!--                                            <a @click="remove(entry)" href="javascript:;" class="btn "><i-->
-                                        <!--                                                    class="fa fa-trash"></i></a>-->
-                                        <!--                                        </td>-->
                                     </tr>
                                     </tbody>
                                 </table>

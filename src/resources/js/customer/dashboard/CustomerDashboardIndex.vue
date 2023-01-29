@@ -22,48 +22,42 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-xl-8">
-                                    <form class="form-inline">
-                                        <!--                                        <div class="form-group mx-sm-3 mb-2">-->
-                                        <!--                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword"-->
-                                        <!--                                                   type="text"-->
-                                        <!--                                                   class="form-control" placeholder="tìm kiếm" >-->
-                                        <!--                                        </div>-->
-                                        <div class="form-group mx-sm-3 mb-2">
-                                            <input @keydown.enter="doFilter('campaign', filter.campaign, $event)" v-model="filter.campaign"
-                                                   type="text"
-                                                   class="form-control" placeholder="Campaign" >
-                                        </div>
-                                        <div class="form-group mx-sm-3 mb-2">
-                                            <input @keydown.enter="doFilter('partner_name', filter.partner_name, $event)" v-model="filter.partner_name"
-                                                   type="text"
-                                                   class="form-control" placeholder="Partner" >
-                                        </div>
-                                        <div class="form-group mx-sm-3 mb-2">
-                                            <Daterangepicker
-                                                @update:modelValue="(value) => doFilter('created', value, $event)"
-                                                v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>
-                                        </div>
-
-                                        <div class="form-group mx-sm-3 mb-2">
-                                            <button @click="filterClear()" type="button"
-                                                    class="btn btn-light">Xóa
-                                            </button>
-                                        </div>
-
-                                    </form>
+                                <!--                                        <div class="form-group mx-sm-3 mb-2">-->
+                                <!--                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword"-->
+                                <!--                                                   type="text"-->
+                                <!--                                                   class="form-control" placeholder="tìm kiếm" >-->
+                                <!--                                        </div>-->
+                                <div class="form-group col-lg-3">
+                                    <label>Campaign</label>
+                                    <select class="form-control form-select" v-model="filter.campaign">
+                                        {{filter.campaign}}
+                                        <option v-for="campaign in campaigns" :value="campaign.name">{{campaign.name}}</option>
+                                    </select>
                                 </div>
-                                <!--                                <div class="col-xl-4 d-flex">-->
-                                <!--                                    <div class="margin-left-auto mb-1">-->
-                                <!--                                        <a href="/xadmin/campaign_installs/create" class="btn btn-primary">-->
-                                <!--                                            <i class="fa fa-plus"/>-->
-                                <!--                                            Thêm-->
-                                <!--                                        </a>-->
-                                <!--                                    </div>-->
-                                <!--                                </div>-->
+                                <div class="form-group col-lg-3">
+                                    <label>Partner</label>
+                                    <select class="form-select form-control" v-model="filter.partner_name">
+                                        <option v-for="partner in partners" :value="partner.name">{{partner.name}}</option>
+                                    </select>
+                                    <!--                                            <input @keydown.enter="doFilter('partner_name', filter.partner_name, $event)" v-model="filter.partner_name"-->
+                                    <!--                                                   type="text"-->
+                                    <!--                                                   class="form-control" placeholder="Partner" >-->
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    <label>Chọn thời gian thống kê</label>
+                                    <Daterangepicker
+                                        @update:modelValue="(value) => doFilter('created', value, $event)"
+                                        v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label></label>
+                                    <button @click="filterClear()" type="button" style="margin-top: 30px"
+                                            class="btn btn-light">Xóa
+                                    </button>
+                                </div>
                             </div>
-
-
+                            <button class="btn btn-primary ml-1" @click="doFilter">Submit</button>
                             <hr>
                             <h3>Bảng dữ liệu</h3>
                             <div style="margin-bottom:50px">
@@ -111,15 +105,10 @@
                                         <td ></td>
                                         <td ></td>
 
-                                        <!--                                        <td class="">-->
-                                        <!--                                            <a :href="'/xadmin/campaign_installs/edit?id='+entry.id" class="btn "><i-->
-                                        <!--                                                    class="fa fa-edit"></i></a>-->
-                                        <!--                                            <a @click="remove(entry)" href="javascript:;" class="btn "><i-->
-                                        <!--                                                    class="fa fa-trash"></i></a>-->
-                                        <!--                                        </td>-->
                                     </tr>
                                     </tbody>
                                 </table>
+                                <div style="float: left;display: inline-block;margin-top: 10px" v-text=" 'Showing '+from +' to '+ to +' of '+ entries.length + ' entries' " v-if="entries.length > 0"></div>
                                 <div class="float-right" style="margin-top:10px; ">
                                     <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>
                                 </div>
@@ -142,18 +131,24 @@ import $router from "../../lib/SimpleRouter";
 import moment from "moment/moment";
 import SwitchButton from "../../components/SwitchButton";
 import RichtextEditor from "../../components/RichtextEditor";
-import {$get} from "../../utils";
+import {$get, getTimeRangeAll} from "../../utils";
 const $q = $router.getQuery();
+let created = getTimeRangeAll();
 
 export default {
   name: "CustomerDashboardIndex",
   components: {RichtextEditor, SwitchButton},
     data() {
         return {
+            campaigns:[],
+            partners:[],
             entries: [],
             dataList: [],
             testButton: false,
             filter: {
+                campaign:$q.campaign || '',
+                partner_name:$q.partner_name || '',
+                created: $q.created || created,
                 // type: $q.type || 1,
                 // quarter: $q.quarter || parseInt(moment().subtract(1, 'Q').format('Q')),
                 // year: $q.year || moment().year(),
@@ -173,6 +168,9 @@ export default {
         console.log('Loaded')
     },
     methods: {
+        onPageChange(page) {
+            $router.updateQuery({page: page})
+        },
         changeLimit() {
             let params = $router.getQuery();
             params['page'] = 1;
@@ -184,7 +182,10 @@ export default {
             const res = await $get('/customer/dashboard/data', query);
             this.paginate = res.paginate;
             this.entries = res.data;
-            console.log(this.entries);
+            this.campaigns=res.campaigns;
+            this.partners=res.partners;
+            this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
+            this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
         },
         clickMe() {
             this.testButton = !this.testButton;
