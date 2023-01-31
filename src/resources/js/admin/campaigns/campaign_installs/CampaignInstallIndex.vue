@@ -29,14 +29,15 @@
                                         <!--                                        </div>-->
                                         <div class="form-group col-lg-3">
                                             <label>Campaign</label>
-                                            <select class="form-control form-select" v-model="filter.campaign">
-                                                {{filter.campaign}}
+                                            <select class="form-control form-select" v-model="filter.campaign" required>
+                                                <option value="" disabled selected>Chọn campaign</option>
                                                 <option v-for="campaign in campaigns" :value="campaign.name">{{campaign.name}}</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-lg-3">
                                             <label>Partner</label>
-                                            <select class="form-select form-control" v-model="filter.partner_name">
+                                            <select class="form-select form-control" v-model="filter.partner_name" required>
+                                                <option value="" disabled selected>Chọn partner</option>
                                                 <option v-for="partner in partners" :value="partner.name">{{partner.name}}</option>
                                             </select>
 <!--                                            <input @keydown.enter="doFilter('partner_name', filter.partner_name, $event)" v-model="filter.partner_name"-->
@@ -223,5 +224,16 @@
 </script>
 
 <style scoped>
+    select:required:invalid {
+        color: #adadad;
+    }
+
+    option[value=""][disabled] {
+        display: none;
+    }
+
+    option {
+        color: black;
+    }
 
 </style>
