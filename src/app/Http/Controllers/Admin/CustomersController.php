@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -101,13 +102,27 @@ class CustomersController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-    'name' => 'required|max:200',
-    'email' => 'required|max:200',
-    'phone' => 'required|max:100',
-    'company' => 'required|max:200',
-    'password'=>'required'
+            'email'=>'required',
+            'name' => 'max:200',
+            'company' => 'max:200',
+            'password'=>'required'
 ];
+        if($data['phone'])
+        {
+            $rules['phone']=['numeric'];
+        }
+        if (!isset($data['id'])) {
+            if ($data['email']) {
+                $rules['email'] = ['email', Rule::unique('customers')];
+            }
+        }
+        if (isset($data['id'])) {
+            $user = Customer::find($data['id']);
+            if ($data['email']) {
+                $rules['email'] = ['email', Rule::unique('customers')->ignore($user->id),];
 
+            }
+        }
         $v = Validator::make($data, $rules);
         $v->after(function ($valiadte) use ($data,$req)
         {
