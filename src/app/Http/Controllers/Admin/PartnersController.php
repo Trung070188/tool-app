@@ -99,8 +99,8 @@ class PartnersController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-    'name' => 'max:200',
-    'ip' => 'max:50',
+    'name' => 'required|max:200',
+    'ip' => 'required|max:50',
 ];
 
         $v = Validator::make($data, $rules);

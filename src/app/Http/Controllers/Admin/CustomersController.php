@@ -103,8 +103,8 @@ class CustomersController extends AdminBaseController
         $rules = [
     'name' => 'required|max:200',
     'email' => 'required|max:200',
-    'phone' => 'max:100',
-    'company' => 'max:200',
+    'phone' => 'required|max:100',
+    'company' => 'required|max:200',
     'password'=>'required'
 ];
 

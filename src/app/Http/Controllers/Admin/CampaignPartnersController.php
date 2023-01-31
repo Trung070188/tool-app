@@ -99,9 +99,11 @@ class CampaignPartnersController extends AdminBaseController
         }
         $data = $req->get('entry');
         $rules = [
-//    ' partner_campaign_id' => 'required|numeric',
-//    'campaign_id' => 'numeric',
-//    'partner_id' => 'numeric',
+            'name'=>'required',
+            'os'=>'required',
+            ' partner_campaign_id' => 'required|numeric',
+            'campaign_id' => 'required|numeric',
+             'partner_id' => 'required|numeric',
 ];
 
         $v = Validator::make($data, $rules);

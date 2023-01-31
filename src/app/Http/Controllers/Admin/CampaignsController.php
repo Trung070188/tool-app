@@ -104,11 +104,18 @@ class CampaignsController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-    'name' => 'max:300',
-    'package_id' => 'max:200',
-    'icon' => 'max:300',
-    'customer_id' => 'numeric',
+    'name' => 'max:300|required',
+    'package_id' => 'max:200|required',
+    'icon' => 'max:300|required',
+    'customer_id' => 'numeric|required',
     'status' => 'numeric',
+    'price'=>'required',
+    'os'=>'required',
+    'store_url'=>'required',
+    'type'=>'required',
+    'total_install'=>'required',
+    'auto_off_at'=>'required',
+    'auto_on_at'=>'required'
 ];
 
         $v = Validator::make($data, $rules);

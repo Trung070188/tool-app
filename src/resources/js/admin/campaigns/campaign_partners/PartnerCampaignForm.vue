@@ -42,35 +42,35 @@
                                         <option value="android">Android</option>
                                         <option value="ios">Ios</option>
                                     </select>
-                                    <error-label for="f_ partner_campaign_id" ></error-label>
+                                    <error-label :errors="errors.os" ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Campaign</label>
                                     <select class="form-select form-control" v-model="entry.campaign_id" @change="load()">
                                         <option v-for="campaign in campaigns" :value="campaign.id">{{campaign.name}}</option>
                                     </select>
-                                    <error-label for="f_ partner_campaign_id" ></error-label>
+                                    <error-label :errors="errors.campaign_id" ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Partner</label>
                                     <select class="form-select form-control" v-model="entry.partner_id">
                                         <option v-for="partner in partners" :value="partner.id">{{partner.name}}</option>
                                     </select>
-                                    <error-label for="f_campaign_id" ></error-label>
+                                    <error-label :errors="errors.partner_id" ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Price</label>
                                     <input v-model="entry.price"  name="name"
                                            class="form-control"
                                            placeholder="price">
-                                    <error-label for="f_partner_id"></error-label>
+                                    <error-label :errors="errors.price"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Url Partner</label>
                                     <input  name="name"
                                             class="form-control"
                                             placeholder="url partner">
-                                    <error-label for="f_partner_id"></error-label>
+                                    <error-label ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Status</label>
