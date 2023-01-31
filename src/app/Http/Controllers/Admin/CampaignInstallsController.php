@@ -211,7 +211,8 @@ class CampaignInstallsController extends AdminBaseController
         ]);
 
         if ($req->keyword) {
-//            $query->where('title', 'LIKE', '%' . $req->keyword. '%');
+            $campaignInstall->where('campaigns.name', 'LIKE', '%' . $req->keyword. '%')
+                ->orWhere('partners.name', 'LIKE', '%' . $req->keyword. '%');
         }
         if($req->campaign)
         {

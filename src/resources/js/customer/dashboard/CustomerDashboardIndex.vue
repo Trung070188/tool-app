@@ -29,14 +29,15 @@
                                 <!--                                        </div>-->
                                 <div class="form-group col-lg-3">
                                     <label>Campaign</label>
-                                    <select class="form-control form-select" v-model="filter.campaign">
-                                        {{filter.campaign}}
+                                    <select class="form-control form-select" v-model="filter.campaign" required>
+                                        <option value="" disabled selected>Chọn campaign</option>
                                         <option v-for="campaign in campaigns" :value="campaign.name">{{campaign.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-lg-3">
                                     <label>Partner</label>
-                                    <select class="form-select form-control" v-model="filter.partner_name">
+                                    <select class="form-select form-control" v-model="filter.partner_name" required>
+                                        <option value="" disabled selected>Chọn partner</option>
                                         <option v-for="partner in partners" :value="partner.name">{{partner.name}}</option>
                                     </select>
                                     <!--                                            <input @keydown.enter="doFilter('partner_name', filter.partner_name, $event)" v-model="filter.partner_name"-->
@@ -72,7 +73,7 @@
                                 <div style="display: inline-block;float: left;margin: 4px 4px">Record per page</div>
                                 <div style="float: right;display: inline-block">
                                     <div style="float: left;margin: 2px 4px">Search</div>
-                                    <input type="text">
+                                    <input type="text" @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword">
                                 </div>
                             </div>
 
@@ -145,6 +146,7 @@ export default {
             dataList: [],
             testButton: false,
             filter: {
+                keyword: $q.keyword || '',
                 campaign:$q.campaign || '',
                 partner_name:$q.partner_name || '',
                 created: $q.created || created,
@@ -223,6 +225,17 @@ export default {
 </script>
 
 <style scoped>
+    select:required:invalid {
+        color: #adadad;
+    }
+
+    option[value=""][disabled] {
+        display: none;
+    }
+
+    option {
+        color: black;
+    }
 /*.font-large{*/
 /*    font-size: 18px;*/
 /*}*/

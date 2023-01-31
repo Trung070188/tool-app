@@ -73,8 +73,8 @@
                                 </div>
                                 <div style="display: inline-block;float: left;margin: 4px 4px">Record per page</div>
                                 <div style="float: right;display: inline-block">
-                                    <div style="float: left;margin: 2px 4px">Search</div>
-                                    <input type="text">
+                                    <div style="float: left;margin: 2px 4px" >Search</div>
+                                    <input type="text"  @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword">
                                 </div>
                             </div>
 
@@ -144,7 +144,7 @@
                 partners:[],
                 entries: [],
                 filter: {
-                    // keyword: $q.keyword || '',
+                    keyword: $q.keyword || '',
                     campaign:$q.campaign || '',
                     partner_name:$q.partner_name || '',
                     created: $q.created || created,
