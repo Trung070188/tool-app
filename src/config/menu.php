@@ -48,7 +48,7 @@ return [
                 'url' => '/xadmin/campaign_partners/create',
             ] ,
             [
-                "name" => " Thông kê",
+                "name" => " Thống kê",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/campaign_installs/index',

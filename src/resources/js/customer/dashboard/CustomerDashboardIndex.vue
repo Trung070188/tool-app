@@ -7,7 +7,7 @@
                     <ol class="breadcrumb">
 <!--                        <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>-->
 <!--                        <li class="breadcrumb-item active" aria-current="page">Campaign Partner</li>-->
-                        <li class="breadcrumb-item active" aria-current="page">Thông kê</li>
+                        <li class="breadcrumb-item active" aria-current="page">Thống kê</li>
                     </ol>
                 </div>
             </div> <!-- /breadcrumb --> <!-- row -->
@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Thông kê</h4></div>
+                                <h4 class="card-title mg-b-0">Thống kê</h4></div>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -73,7 +73,6 @@
                                 <div style="float: right;display: inline-block">
                                     <div style="float: left;margin: 2px 4px">Search</div>
                                     <input type="text">
-                                    <button>Print</button>
                                 </div>
                             </div>
 

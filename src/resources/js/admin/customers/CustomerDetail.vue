@@ -53,11 +53,25 @@
                                     <error-label for="f_company" :errors="errors.company"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <label>Mật khẩu</label>
+                                    <input  v-model="password" name="name" type="password"
+                                            class="form-control"
+                                            placeholder="Mật khẩu">
+                                    <error-label for="f_description" :errors="errors.password"></error-label>
+                                </div>
+                                <div class="form-group col-lg-6">
                                     <label>Địa chỉ</label>
                                     <input id="f_description" v-model="entry.description" name="name"
                                            class="form-control"
                                            placeholder="Địa chỉ">
                                     <error-label for="f_description" :errors="errors.description"></error-label>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Nhập lại mật khẩu</label>
+                                    <input  v-model="password_conf" name="name" type="password"
+                                            class="form-control"
+                                            placeholder="Nhập lại mật khẩu">
+                                    <error-label for="f_description" :errors="errors.password_conf"></error-label>
                                 </div>
                             </div>
                         </div>
@@ -82,6 +96,8 @@
         components: {ActionBar},
         data() {
             return {
+                password_conf:'',
+                password:'',
                 entry: $json.entry || {},
                 isLoading: false,
                 errors: {}
@@ -90,7 +106,7 @@
         methods: {
             async save() {
                 this.isLoading = true;
-                const res = await $post('/xadmin/customers/save', {entry: this.entry});
+                const res = await $post('/xadmin/customers/save', {entry: this.entry,password:this.password,password_conf:this.password_conf});
                 this.isLoading = false;
                 if (res.errors) {
                     this.errors = res.errors;

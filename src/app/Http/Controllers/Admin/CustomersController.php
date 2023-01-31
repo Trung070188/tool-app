@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,9 +109,13 @@ class CustomersController extends AdminBaseController
 ];
 
         $v = Validator::make($data, $rules);
-        $v->after(function ($valiadte) use ($data)
+        $v->after(function ($valiadte) use ($data,$req)
         {
-           if($data['password_conf']!=$data['password'])
+           if(!isset($data['id']) && $data['password_conf']!=$data['password'])
+           {
+              $valiadte->errors()->add('password_conf','The password and confirmation password do not match.');
+           }
+           if(isset($data['id']) && $req->password_conf!=$req->password)
            {
               $valiadte->errors()->add('password_conf','The password and confirmation password do not match.');
            }
@@ -137,6 +142,8 @@ class CustomersController extends AdminBaseController
 
             $entry->fill($data);
             $entry->save();
+            $password=Hash::make($req->password);
+            Customer::query()->where('id',$entry->id)->update(['password'=>$password]);
 
             return [
                 'code' => 0,
