@@ -3,6 +3,8 @@
 namespace App\Models;
 
 
+ use Illuminate\Database\Eloquent\SoftDeletes;
+
  /**
  * @property int       $id
  * @property string    $name
@@ -18,6 +20,7 @@ namespace App\Models;
  */
 class Campaign extends BaseModel
 {
+    use SoftDeletes;
     protected $table = 'campaigns';
     protected $fillable = [
     'name',

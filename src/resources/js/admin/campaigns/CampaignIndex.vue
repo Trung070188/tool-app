@@ -26,7 +26,7 @@
                                         <input type="text" @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword" placeholder="Tìm kiếm..." class="form-control col-lg-4"/>
                                     </div>
                                 <div class="card-toolbar">
-                                    <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base" style="position: absolute;top: 25px;right: 0px">
+                                    <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base" style="position: absolute;top: 25px;right: 0px" v-if="campaignIds=='' ">
 
                                         <button type="button" style="margin-left: 10px" @click="advanceSearch" class="btn btn-light" v-if="isShowFilter">
                                             <i style="margin-left: 5px" class="fas fa-times"></i>
@@ -37,6 +37,12 @@
                                             Advanced Search
                                         </button>
                                         <a href="/xadmin/campaigns/create" class="btn btn-primary" style="margin-left: 10px"><i class="fa fa-plus"/> Thêm</a>
+                                    </div>
+                                    <div class="d-flex justify-content-end align-items-center d-none"
+                                         data-kt-customer-table-toolbar="selected" v-if="campaignIds!='' " style="position: absolute;top: 25px;right: 0px">
+                                        <button   type="button" class="btn btn-danger"
+                                                  data-kt-customer-table-select="delete_selected" @click="removeAllCampaign">Xóa campaign đã chọn
+                                        </button>
                                     </div>
                                 </div>
                                 <form class="col-lg-12" v-if="!isShowFilter">
@@ -134,6 +140,11 @@
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>
+                                        <td width = "25">
+                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="checkbox" v-model="allSelected" @change="selectAll()">
+                                            </div>
+                                        </td>
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Package Id</th>
@@ -151,6 +162,19 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="entry in entries">
+                                        <td class="">
+                                            <div
+                                                class="form-check form-check-sm form-check-custom form-check-solid"
+                                            >
+                                                <input
+                                                    class="form-check-input"
+                                                    type="checkbox"
+                                                    v-model="campaignIds"
+                                                    :value="entry.id"
+                                                    @change="updateCheckAll"
+                                                />
+                                            </div>
+                                        </td>
                                         <td>
                                             <a class="edit-link" :href="'/xadmin/campaigns/edit?id='+entry.id"
                                                v-text="entry.id"></a>
@@ -219,6 +243,9 @@
                 }
             }
             return {
+                campaign:'',
+                allSelected:false,
+                campaignIds:[],
                 customers:[],
                 isShowFilter:isShowFilter,
                 entries: [],
@@ -233,6 +260,50 @@
             $router.on('/', this.load).init();
         },
         methods: {
+            async removeAllCampaign()
+            {
+                if (!confirm('Xóa bản ghi')) {
+                    return;
+                }
+
+                const res = await $post('/xadmin/campaigns/removeCampaign', {campaignIds: this.campaignIds});
+
+                if (res.code) {
+                    toastr.error(res.message);
+                } else {
+                    toastr.success(res.message);
+                    this.campaignIds=[];
+                    this.campaign='';
+                }
+
+                $router.updateQuery({page: this.paginate.currentPage, _: Date.now()});
+            },
+            selectAll() {
+                if (this.allSelected) {
+                    const selected = this.entries.map(u => u.id);
+                    this.campaignIds = selected;
+                    this.campaign = this.entries;
+                } else {
+                    this.campaignIds = [];
+                    this.campaign = [];
+                }
+            },
+            updateCheckAll() {
+                this.campaign = [];
+                if (this.campaignIds.length === this.entries.length) {
+                    this.allSelected = true;
+                } else {
+                    this.allSelected = false;
+                }
+                let self = this;
+                self.campaignIds.forEach(function(e) {
+                    self.entries.forEach(function(e1) {
+                        if (e1.id == e) {
+                            self.campaign.push(e1);
+                        }
+                    });
+                });
+            },
             advanceSearch()
             {
                 this.isShowFilter=!this.isShowFilter;

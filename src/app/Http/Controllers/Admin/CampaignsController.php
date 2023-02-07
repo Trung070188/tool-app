@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Customer;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,6 +89,14 @@ class CampaignsController extends AdminBaseController
         return [
             'code' => 0,
             'message' => 'Đã xóa'
+        ];
+    }
+    public function removeCampaign(Request $req)
+    {
+        Campaign::query()->whereIn('id',$req->campaignIds)->update(['deleted_at'=>Carbon::now()]);
+        return [
+          'code'=> 0,
+          'message'=>'Đã xóa'
         ];
     }
 
