@@ -25,6 +25,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <input v-model="entry.id" type="hidden" name="id">
+
+                                <div class="form-group col-lg-6">
+                                    <label>Store url</label>
+                                    <input  v-model="entry.store_url" name="name"
+                                            class="form-control"
+                                            placeholder="Store url">
+                                    <error-label for="f_status" :errors="errors.store_url"></error-label>
+                                </div>
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
                                     <input id="f_name" v-model="entry.name" name="name"
@@ -33,11 +41,17 @@
                                     <error-label for="f_name" :errors="errors.name"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <label>Package Id</label>
-                                    <input id="f_package_id" v-model="entry.package_id" name="name"
-                                           class="form-control"
-                                           placeholder="package_id">
-                                    <error-label for="f_package_id" :errors="errors.package_id"></error-label>
+                                    <label>Type</label>
+                                    <br>
+                                    <input  v-model="entry.type" type="radio" value="cpi"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">CPI</label>
+                                    <input  v-model="entry.type" type="radio" value="rate"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">Rate</label>
+                                    <input  v-model="entry.type" type="radio" value="map"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">Map</label>
+                                    <input  v-model="entry.type" type="radio" value="top_keyword"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">Top keyword</label>
+                                    <error-label for="f_type" :errors="errors.type"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Icon</label>
@@ -54,9 +68,13 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Os</label>
-                                    <input id="f_os" v-model="entry.os" name="name"
-                                           class="form-control"
-                                           placeholder="os">
+                                    <br>
+                                    <input  id="f_os" v-model="entry.os" type="radio" value="ios"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">ios</label>
+                                    <input  id="f_os1" v-model="entry.os" type="radio" value="android"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">android</label>
+                                    <input  id="f_os2" v-model="entry.os" type="radio" value="all"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">all</label>
                                     <error-label for="f_os" :errors="errors.os"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -70,12 +88,11 @@
                                     <error-label for="f_customer_id" :errors="errors.customer_id"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <label>Type</label>
-                                    <select class="form-control form-select" v-model="entry.type">
-                                        <option value="cpi">Cpi</option>
-                                        <option value="rate">Rate</option>
-                                    </select>
-                                    <error-label for="f_type" :errors="errors.type"></error-label>
+                                    <label>Package Id</label>
+                                    <input id="f_package_id" v-model="entry.package_id" name="name"
+                                           class="form-control"
+                                           placeholder="package_id">
+                                    <error-label for="f_package_id" :errors="errors.package_id"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Status</label>
@@ -100,14 +117,12 @@
                                     </div>
                                     <error-label for="f_status" :errors="errors.open_next_day"></error-label>
                                 </div>
-
-
                                 <div class="form-group col-lg-6">
-                                    <label>Store url</label>
-                                    <input  v-model="entry.store_url" name="name"
+                                    <label>Total install</label>
+                                    <input  v-model="entry.total_install" name="name"
                                             class="form-control"
-                                            placeholder="Store url">
-                                    <error-label for="f_status" :errors="errors.store_url"></error-label>
+                                            placeholder="Total install">
+                                    <error-label for="f_status" :errors="errors.total_install"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Is fake on</label>
@@ -116,13 +131,6 @@
 
                                     </div>
                                     <error-label for="f_status" :errors="errors.is_fake_on"></error-label>
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <label>Total install</label>
-                                    <input  v-model="entry.total_install" name="name"
-                                            class="form-control"
-                                            placeholder="Total install">
-                                    <error-label for="f_status" :errors="errors.total_install"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Auto on at</label>
@@ -205,5 +213,8 @@
 </script>
 
 <style scoped>
-
+    input[type="radio"] {
+        width: 15px;
+        height: 15px;
+    }
 </style>

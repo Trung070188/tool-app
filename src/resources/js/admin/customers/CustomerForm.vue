@@ -55,7 +55,7 @@
 
                                 <div class="form-group col-lg-6">
                                     <label>Mật khẩu</label>
-                                    <input  v-model="entry.password" name="name" type="password"
+                                    <input  v-model="entry.password" name="name" type="text"
                                            class="form-control"
                                            placeholder="Mật khẩu">
                                     <error-label for="f_description" :errors="errors.password"></error-label>
