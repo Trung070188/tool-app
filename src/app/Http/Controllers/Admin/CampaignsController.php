@@ -215,6 +215,7 @@ class CampaignsController extends AdminBaseController
     public function data(Request $req)
     {
         $query = Campaign::query()->with(['customer'])->orderBy('id', 'desc');
+        $customers=Customer::query()->orderBy('id','desc')->get();
 
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword. '%')
@@ -223,6 +224,18 @@ class CampaignsController extends AdminBaseController
             {
                 $join->where('name','LIKE','%'.$req->keyword .'%');
             });
+        }
+        if($req->customer_id)
+        {
+            $query->where('customer_id',$req->customer_id);
+        }
+        if($req->os)
+        {
+            $query->where('os',$req->os);
+        }
+        if($req->type)
+        {
+            $query->where('type',$req->type);
         }
         if($req->created)
         {
@@ -240,6 +253,7 @@ class CampaignsController extends AdminBaseController
         $entries = $query->paginate();
         return [
             'code' => 0,
+            'customers'=>$customers,
             'data' => $entries->items(),
             'paginate' => [
                 'currentPage' => $entries->currentPage(),
