@@ -98,12 +98,7 @@ return [
         ]
 
     ],
-    [
-        "name"=>"Thông kê công nợ" ,
-        "icon"=>"fas fa-lis",
-        "group"=>3,
-        "url"=>"/xadmin/debt_settle/index"
-    ],
+
 
 //    [
 //        "name" => "Permission",
@@ -153,6 +148,13 @@ return [
 //            ]
 //        ]
 //    ]
+    [
+        "name"=> "Công nợ",
+        "icon"=> "bi bi-credit-card-2-front-fill",
+        "group"=> 3,
+        "url"=> '/xadmin/debt_settle/index'
+    ],
+
 
 
 ];

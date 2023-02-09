@@ -183,7 +183,8 @@ class DebtSettlesController extends AdminBaseController
             'debt_settle.id as id',
            'customers.name as customer_name',
            'debt_settle.pay_booking as pay_booking',
-           'debt_settle.pay_debt as pay_debt'
+           'debt_settle.pay_debt as pay_debt',
+            'debt_settle.note as note'
         ]);
 
         if ($req->keyword) {

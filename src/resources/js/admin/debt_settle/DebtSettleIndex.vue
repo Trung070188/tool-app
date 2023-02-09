@@ -62,6 +62,7 @@
                                         <th>Cần thu</th>
                                         <th>Đã thu</th>
                                         <th>Nợ</th>
+                                        <th>Note</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -71,6 +72,7 @@
                                         <td v-text="entry.pay_booking"></td>
                                         <td v-text="entry.pay_debt"></td>
                                         <td>{{entry.owe}}</td>
+                                        <td v-text="entry.note"></td>
 
 
                                         <td class="">

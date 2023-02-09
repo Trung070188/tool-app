@@ -38,13 +38,18 @@
                                        placeholder="pay_booking" @input="formatValueBooking(formatBooking)">
                                 <error-label for="f_pay_booking" :errors="errors.pay_booking"></error-label>
                             </div>
-                            {{entry.for}}
                             <div class="form-group">
                                 <label>Pay Debt</label>
                                 <input id="f_pay_debt" v-model="formatDebt" name="name"
                                        class="form-control"
                                        placeholder="pay_debt" @input="formatValueDebt(formatDebt)">
                                 <error-label for="f_pay_debt" :errors="errors.pay_debt"></error-label>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label>Note</label>
+                                <textarea class="form-control" v-model="entry.note"></textarea>
+<!--                                <RichtextEditor  v-model="entry.note"></RichtextEditor>-->
+                                <error-label for="f_status" :errors="errors.note"></error-label>
                             </div>
                         </div>
                     </div>
@@ -62,10 +67,12 @@
     import {$get, $post} from "../../utils";
     import ActionBar from '../../components/ActionBar';
     import $router from "../../lib/SimpleRouter";
+    import RichtextEditor from "../../components/RichtextEditor";
+
 
     export default {
         name: "DebtSettleForm.vue",
-        components: {ActionBar},
+        components: {ActionBar,RichtextEditor},
         data() {
             const entry= $json.entry;
             return {
