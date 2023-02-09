@@ -46,4 +46,9 @@
         'action' => 'CampaignInstallsController',
         'name' => 'campaign_installs',
     ],
+    [
+        'path' => '/debt_settle/{action}',
+        'action' => 'DebtSettlesController',
+        'name' => 'debt_settle',
+    ],
 ];

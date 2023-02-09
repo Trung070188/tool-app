@@ -21,6 +21,9 @@ import CampaignInstallForm from "./admin/campaigns/campaign_installs/CampaignIns
 import PartnerCampaignIndex from "./admin/campaigns/campaign_partners/PartnerCampaignIndex";
 import PartnerCampaignForm from "./admin/campaigns/campaign_partners/PartnerCampaignForm";
 import PartnerCampaignDetail from "./admin/campaigns/campaign_partners/PartnerCampaignDetail";
+import DebtSettleForm from "./admin/debt_settle/DebtSettleForm";
+import DebtSettleIndex from "./admin/debt_settle/DebtSettleIndex";
+import DebtSettleDetail from "./admin/debt_settle/DebtSettleDetail";
 
 
 export default {
@@ -47,6 +50,10 @@ export default {
     PartnerCampaignIndex,
     PartnerCampaignForm,
     PartnerCampaignDetail,
+    DebtSettleForm,
+    DebtSettleIndex,
+    DebtSettleDetail
+
 
 
 };

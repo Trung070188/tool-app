@@ -98,6 +98,12 @@ return [
         ]
 
     ],
+    [
+        "name"=>"Thông kê công nợ" ,
+        "icon"=>"fas fa-lis",
+        "group"=>3,
+        "url"=>"/xadmin/debt_settle/index"
+    ],
 
 //    [
 //        "name" => "Permission",
