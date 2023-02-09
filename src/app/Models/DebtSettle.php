@@ -19,6 +19,7 @@ class DebtSettle extends BaseModel
     'customer_id',
     'pay_booking',
     'pay_debt',
-    'note'
+    'note',
+    'created_at'
 ];
 }

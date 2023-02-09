@@ -231,7 +231,7 @@ class CampaignsController extends AdminBaseController
                 ->orWhere('package_id','LIKE','%'. $req->keyword. '%')
                 ->orWhereHas('customer',function ($join) use ($req)
             {
-                $join->where('name','LIKE','%'.$req->keyword .'%');
+                $join->where('name','LIKE','%'.$req->keyword .'%')->orwhere('id','LIKE','%'.$req->keyword .'%');
             });
         }
         if($req->customer_id)
