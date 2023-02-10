@@ -59,6 +59,7 @@
                                     <thead>
                                     <tr>
                                         <th>Khách hàng</th>
+                                        <th>Ngày</th>
                                         <th>Cần thu</th>
                                         <th>Đã thu</th>
                                         <th>Nợ</th>
@@ -68,7 +69,8 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="(entry,index) in entries">
-                                        <td >{{entry.id}} - {{entry.customer_name}}</td>
+                                        <td >{{entry.customer_id}} - {{entry.customer_name}}</td>
+                                        <td>{{d(entry.created_at)}}</td>
                                         <td v-text="entry.pay_booking"></td>
                                         <td v-text="entry.pay_debt"></td>
                                         <td>{{entry.owe}}</td>
@@ -81,6 +83,16 @@
                                             <a @click="remove(entry)" href="javascript:;" class="btn "><i
                                                     class="fa fa-trash"></i></a>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tổng</td>
+                                        <td></td>
+                                        <td>{{totalPayBooking}}</td>
+                                        <td>{{totalPayDebt}}</td>
+                                        <td>{{totalOwe}}</td>
+                                        <td>
+                                        </td>
+                                        <td></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -114,6 +126,9 @@
         components: {ActionBar},
         data() {
             return {
+                totalOwe:'',
+                totalPayBooking:'',
+                totalPayDebt:'',
                 entries: [],
                 filter: {
                     keyword: $q.keyword || '',
@@ -134,8 +149,28 @@
                 const res = await $get('/xadmin/debt_settle/data', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
+                this.totalPayBooking=this.entries.reduce((accumulator, currentValue)=>{
+                    return accumulator + parseInt(currentValue['pay_booking']);
+                },0);
+                this.totalPayDebt=this.entries.reduce((accumulator, currentValue)=>{
+                    return accumulator + parseInt(currentValue['pay_debt']);
+                },0);
+
+                this.totalOwe=(this.totalPayBooking)-(this.totalPayDebt);
+                this.totalOwe=parseFloat(this.totalOwe).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+                this.totalPayBooking=parseFloat(this.totalPayBooking).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+
+                this.totalPayDebt=parseFloat(this.totalPayDebt).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
                 for (let item of this.entries) {
-                    item.id=item.id.toString().padStart(4, '0');
                     let owe=(item.pay_booking)-(item.pay_debt)
                     if (item.pay_booking) {
                         item.pay_booking = parseFloat(item.pay_booking).toLocaleString('en-US', {
@@ -157,7 +192,6 @@
                     }
                 }
 
-                console.log(this.entries);
             },
             async remove(entry) {
                 if (!confirm('Xóa bản ghi: ' + entry.id)) {

@@ -149,10 +149,9 @@ return [
 //        ]
 //    ]
     [
-        "name"=> "Công nợ",
-        "icon"=> "bi bi-credit-card-2-front-fill",
-        "group"=> 3,
-        "url"=> '/xadmin/debt_settle/index'
+        "name"=> "Thống kê công nợ",
+        "url"=> '/xadmin/debt_settle/index',
+        "group"=> 1,
     ],
 
 

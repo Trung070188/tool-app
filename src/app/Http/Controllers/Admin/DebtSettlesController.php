@@ -180,6 +180,8 @@ class DebtSettlesController extends AdminBaseController
             $join->on('debt_settle.customer_id','=','customers.id');
         });
         $query->select([
+            'customers.id as customer_id',
+            'debt_settle.created_at as created_at',
             'debt_settle.id as id',
            'customers.name as customer_name',
            'debt_settle.pay_booking as pay_booking',
@@ -188,7 +190,8 @@ class DebtSettlesController extends AdminBaseController
         ]);
 
         if ($req->keyword) {
-            $query->where('customers.name', 'LIKE', '%' . $req->keyword. '%');
+            $query->where('customers.name', 'LIKE', '%' . $req->keyword. '%')
+                ->orWhere('customers.id',$req->keyword);
         }
         if($req->created)
         {
@@ -205,7 +208,6 @@ class DebtSettlesController extends AdminBaseController
 //        $query->createdIn($req->created);
 
         $entries = $query->paginate();
-
         return [
             'code' => 0,
             'data' => $entries->items(),
