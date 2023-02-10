@@ -73,7 +73,7 @@
                                             <a class="edit-link" :href="'/xadmin/customers/edit?id='+entry.id"
                                                v-text="entry.id"></a>
                                         </td>
-                                                                                    <td v-text="entry.name"></td>
+                                                                                    <td>{{entry.id}} - {{entry.name}}</td>
                                                                                     <td v-text="entry.email"></td>
                                                                                     <td v-text="entry.phone"></td>
                                                                                     <td v-text="entry.company"></td>

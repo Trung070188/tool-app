@@ -214,7 +214,7 @@ class CustomersController extends AdminBaseController
 
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword. '%')
-            ->orWhere('email','LIKE', '%' . $req->keyword. '%');
+            ->orWhere('email','LIKE', '%' . $req->keyword. '%')->orWhere('id',$req->keyword);
         }
         if($req->created)
         {
