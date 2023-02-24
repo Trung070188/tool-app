@@ -55,8 +55,9 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Icon</label>
-                                    <q-file-manager-input v-model="entry.icon"
-                                                        placeholder="icon"></q-file-manager-input>
+                                    <QFileManagerInput v-model="entry.icon"
+                                                          input-id="campaign_icon"
+                                                        placeholder="icon"/>
                                     <error-label for="f_icon" :errors="errors.icon"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">

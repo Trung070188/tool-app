@@ -1,6 +1,8 @@
 <template>
     <div>
-        <QFileManagerInput :hideFileList="true" v-model="files" @update:modelValue="value => onSelected(value)"/>
+        <QFileManagerInput
+            :input-id="richTextId"
+            :hideFileList="true" v-model="files" @update:modelValue="value => onSelected(value)"/>
         <textarea ref="textarea" :id="id">{{modelValue}}</textarea>
     </div>
 </template>
@@ -8,15 +10,17 @@
 <script>
 
 import QFileManagerInput from "./QFileManagerInput";
-
+let richtextId = 0;
 export default {
     name: "RichtextEditor",
     data() {
+        richtextId++;
         return {
             watchIgnored: true,
             files: true,
             hasEmoji: false,
             style: {position: 'absolute', zIndex: 99},
+            richTextId: 'richText-' + richtextId,
         }
     },
     methods: {
@@ -27,6 +31,7 @@ export default {
             }
         },
         onSelected(files) {
+            console.log(files);
             if (files && files[0]) {
                 if (this.editor) {
                     const fileUrl = files[0].url;

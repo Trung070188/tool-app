@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "ext-curl": "*",
         "ext-json": "*",
+        "ext-zip": "*",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
@@ -16,8 +17,8 @@
         "phpmyadmin/sql-parser": "^5.3",
         "phpoffice/phpspreadsheet": "*",
         "ramsey/uuid": "^4.3",
-        "symfony/var-exporter": "^5.3",
-        "ext-zip": "*"
+        "symfony/dom-crawler": "^6.2",
+        "symfony/var-exporter": "^5.3"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.0",
