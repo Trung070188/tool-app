@@ -205,6 +205,7 @@ class CampaignInstallsController extends AdminBaseController
             'campaign_installs.ip as campaign_installs',
             'campaign_installs.os as os',
             'campaign_installs.ip as ip',
+            'partner_campaigns.price as price',
             'campaign_installs.partner_id as partner_id',
             'partners.name as partner_name',
 
