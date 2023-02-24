@@ -73,14 +73,30 @@ export default {
     name: "DebtSettleForm.vue",
     components: {ActionBar,RichtextEditor},
     data() {
-        return {
-            formatBooking:'',
-            formatDebt:'',
-            entries:[],
-            entry: $json.entry || {
+        let entry
+        let formatBooking
+        let formatDebt
+        if($json.entry)
+        {
+           entry =$json.entry
+            formatBooking=entry.pay_booking
+            formatDebt=entry.pay_debt
+        }
+        else {
+            entry={
                 pay_booking:'',
                 pay_debt:''
-            },
+            }
+            formatBooking=''
+            formatDebt=''
+
+
+        }
+        return {
+            formatBooking:formatBooking,
+            formatDebt:formatDebt,
+            entries:[],
+            entry: entry,
             isLoading: false,
             errors: {}
         }
@@ -91,7 +107,7 @@ export default {
     methods: {
         formatValueBooking() {
             {
-                console.log(this.entry.pay_booking)
+
 
                 this.entry.pay_booking = this.formatBooking.replace(/[^0-9.-]+/g, '');
                 if (this.entry.pay_booking === '') {
