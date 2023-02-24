@@ -19,40 +19,38 @@
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
                                 <h4 class="card-title mg-b-0">DebtSettle Form</h4></div>
-
                         </div>
                         <div class="card-body">
-
                             <input v-model="entry.id" type="hidden" name="id">
-                                                            <div class="form-group">
-                                    <label>Customer</label>
-                                    <select class="form-control form-select" v-model="entry.customer_id">
-                                        <option v-for="customer in entries" :value="customer.id">{{customer.name}}</option>
-                                    </select>
-                                    <error-label for="f_customer_id" :errors="errors.customer_id"></error-label>
-                                </div>
-                                                            <div class="form-group">
-                                    <label>Pay Booking</label>
-                                    <input id="inputNumber" v-model="formatBooking" name="name"
-                                           class="form-control"
-                                           placeholder="pay_booking" @input="formatValueBooking(formatBooking)">
-                                    <error-label for="f_pay_booking" :errors="errors.pay_booking"></error-label>
-                                </div>
-                                                            <div class="form-group">
-                                    <label>Pay Debt</label>
-                                    <input id="f_pay_debt" v-model="formatDebt" name="name"
-                                           class="form-control"
-                                           placeholder="pay_debt" @input="formatValueDebt(formatDebt)">
-                                    <error-label for="f_pay_debt" :errors="errors.pay_debt"></error-label>
-                                </div>
-                                <div class="form-group col-lg-12">
-                                    <label>Note</label>
-                                    <br>
-                                    <textarea class="form-control" v-model="entry.note"></textarea>
-<!--                                    <RichtextEditor  v-model="entry.note"></RichtextEditor>-->
-                                    <error-label for="f_status" :errors="errors.note"></error-label>
-                                </div>
-                                                    </div>
+                            <div class="form-group">
+                                <label>Customer</label>
+                                <select class="form-control form-select" v-model="entry.customer_id">
+                                    <option v-for="customer in entries" :value="customer.id">{{customer.name}}</option>
+                                </select>
+                                <error-label for="f_customer_id" :errors="errors.customer_id"></error-label>
+                            </div>
+                            <div class="form-group">
+                                <label>Pay Booking</label>
+                                <input id="inputNumber" v-model="formatBooking" name="name"
+                                       class="form-control"
+                                       placeholder="pay_booking" @input="formatValueBooking(formatBooking)">
+                                <error-label for="f_pay_booking" :errors="errors.pay_booking"></error-label>
+                            </div>
+                            <div class="form-group">
+                                <label>Pay Debt</label>
+                                <input id="f_pay_debt" v-model="formatDebt" name="name"
+                                       class="form-control"
+                                       placeholder="pay_debt" @input="formatValueDebt(formatDebt)">
+                                <error-label for="f_pay_debt" :errors="errors.pay_debt"></error-label>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label>Note</label>
+                                <br>
+                                <textarea class="form-control" v-model="entry.note"></textarea>
+                                <!--                                    <RichtextEditor  v-model="entry.note"></RichtextEditor>-->
+                                <error-label for="f_status" :errors="errors.note"></error-label>
+                            </div>
+                        </div>
                     </div>
                 </div> <!--/div--> <!--div-->
 
@@ -65,89 +63,92 @@
 </template>
 
 <script>
-    import {$get, $post} from "../../utils";
-    import ActionBar from '../../components/ActionBar';
-    import $router from "../../lib/SimpleRouter";
-    import RichtextEditor from "../../components/RichtextEditor";
+import {$get, $post} from "../../utils";
+import ActionBar from '../../components/ActionBar';
+import $router from "../../lib/SimpleRouter";
+import RichtextEditor from "../../components/RichtextEditor";
 
 
-    export default {
-        name: "DebtSettleForm.vue",
-        components: {ActionBar,RichtextEditor},
-        data() {
-            return {
-                formatBooking:'',
-                formatDebt:'',
-                entries:[],
-                entry: $json.entry || {
-                    pay_booking:'',
-                    pay_debt:''
-                },
-                isLoading: false,
-                errors: {}
+export default {
+    name: "DebtSettleForm.vue",
+    components: {ActionBar,RichtextEditor},
+    data() {
+        return {
+            formatBooking:'',
+            formatDebt:'',
+            entries:[],
+            entry: $json.entry || {
+                pay_booking:'',
+                pay_debt:''
+            },
+            isLoading: false,
+            errors: {}
+        }
+    },
+    mounted() {
+        $router.on('/', this.load).init();
+    },
+    methods: {
+        formatValueBooking() {
+            {
+                console.log(this.entry.pay_booking)
+
+                this.entry.pay_booking = this.formatBooking.replace(/[^0-9.-]+/g, '');
+                if (this.entry.pay_booking === '') {
+                    this.formatBooking = '0';
+                }
+                else {
+                    this.formatBooking = parseFloat(this.entry.pay_booking).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'VND'
+                    });
+                    console.log(this.formatBooking);
+                }
             }
+
         },
-        mounted() {
-            $router.on('/', this.load).init();
+        formatValueDebt() {
+            {
+                this.entry.pay_debt = this.formatDebt.replace(/[^0-9.-]+/g, '');
+                if (this.entry.pay_debt === '') {
+                    this.formatDebt = '0';
+                }
+                else {
+                    this.formatDebt = parseFloat(this.entry.pay_debt).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'VND'
+                    });
+                }
+            }
+
         },
-        methods: {
-            formatValueBooking() {
-                {
-                    this.entry.pay_booking = this.formatBooking.replace(/[^0-9.-]+/g, '');
-                    if (this.entry.pay_booking === '') {
-                        this.formatBooking = '0';
-                    }
-                    else {
-                        this.formatBooking = parseFloat(this.entry.pay_booking).toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'VND'
-                        });
-                    }
-                }
 
-            },
-            formatValueDebt() {
-                {
-                    this.entry.pay_debt = this.formatDebt.replace(/[^0-9.-]+/g, '');
-                    if (this.entry.pay_debt === '') {
-                        this.formatDebt = '0';
-                    }
-                    else {
-                        this.formatDebt = parseFloat(this.entry.pay_debt).toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'VND'
-                        });
-                    }
-                }
+        async load() {
+            let query = $router.getQuery();
+            const res = await $get('/xadmin/debt_settle/dataCreate', query);
+            this.entries = res.customers;
+        },
+        async save() {
+            this.isLoading = true;
+            const res = await $post('/xadmin/debt_settle/save', {entry: this.entry});
+            this.isLoading = false;
+            if (res.errors) {
+                this.errors = res.errors;
+                return;
+            }
+            if (res.code) {
+                toastr.error(res.message);
+            } else {
+                this.errors = {};
+                toastr.success(res.message);
 
-            },
-
-            async load() {
-                let query = $router.getQuery();
-                const res = await $get('/xadmin/debt_settle/dataCreate', query);
-                this.entries = res.customers;
-            },
-            async save() {
-                this.isLoading = true;
-                const res = await $post('/xadmin/debt_settle/save', {entry: this.entry});
-                this.isLoading = false;
-                if (res.errors) {
-                    this.errors = res.errors;
-                    return;
-                }
-                if (res.code) {
-                    toastr.error(res.message);
-                } else {
-                    this.errors = {};
-                    toastr.success(res.message);
-
-                    if (!this.entry.id) {
-                        location.replace('/xadmin/debt_settle/edit?id=' + res.id);
-                    }
+                if (!this.entry.id) {
+                    location.replace('/xadmin/debt_settle/edit?id=' + res.id);
                 }
             }
         }
     }
+}
 </script>
 
 <style scoped>

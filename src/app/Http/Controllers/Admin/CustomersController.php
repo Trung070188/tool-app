@@ -63,7 +63,7 @@ class CustomersController extends AdminBaseController
         */
         $jsonData = compact('entry');
         $title = 'Edit';
-        $component = 'CustomerDetail';
+        $component = 'CustomerForm';
 
         return vue(compact('title', 'component'), $jsonData);
     }

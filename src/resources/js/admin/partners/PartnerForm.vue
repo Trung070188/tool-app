@@ -8,7 +8,8 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Đối tác</li>
-                        <li class="breadcrumb-item active" aria-current="page">Thêm mới đối tác</li>
+                        <li v-if="entry.id" class="breadcrumb-item active" aria-current="page">Sửa đối tác</li>
+                        <li v-else class="breadcrumb-item active" aria-current="page">Thêm mới đối tác</li>
                     </ol>
                 </div>
             </div> <!-- /breadcrumb --> <!-- row -->
@@ -19,7 +20,9 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Thêm mới đối tác</h4></div>
+                                <h4 v-if="entry.id" class="card-title mg-b-0">Sửa đối tác</h4>
+                                <h4 v-else class="card-title mg-b-0">Thêm mới đối tác</h4>
+                            </div>
 
                         </div>
                         <div class="card-body">
