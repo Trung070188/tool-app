@@ -85,6 +85,7 @@
                                         <th>Campaign</th>
                                         <th>Partner</th>
                                         <th>Total</th>
+                                        <th>Price</th>
                                         <th>Click</th>
                                         <th>Send Postback</th>
                                         <th>Rate</th>
@@ -99,7 +100,7 @@
                                         <td v-text="entry.campaign"></td>
                                         <td v-text="entry.partner_name"></td>
                                         <td></td>
-                                        <td></td>
+                                        <td v-text="entry.price"></td>
                                         <td ></td>
                                         <td></td>
                                         <td></td>
