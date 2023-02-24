@@ -1,14 +1,15 @@
 <template>
-    <div>
+    <div >
         <div>
             <button class="btn btn-primary" type="button" @click="openModal()">Chọn file</button>
 
             <div v-if="!hideFileList">
                 <ul class="q-selected-files">
                     <li v-for="(file, index) in selectedFiles" :key="file.id">
-                        <a target="_blank" :href="file.url">
+                        <a v-if="!file.is_image" target="_blank" :href="file.url">
                             <span v-text="file.name + '(' + humanFileSize(file.size) + ')' "></span>
                         </a>
+                        <img class="preview-image" v-else :src="file.url">
                         <a class="q-selected-files__remove-btn" href="" @click.prevent="removeFile(file, index)">
                             <i class="fa fa-trash"/>
                         </a>
@@ -43,8 +44,9 @@ const storageKey = 'QFileManagerInput.parentId'
 export default {
     name: "QFileManagerInput",
     components: {QImage},
-    props: ['limit', 'modelValue', 'hideFileList'],
+    props: ['limit', 'modelValue', 'hideFileList', 'inputId'],
     data() {
+        console.log('AAA1', this.inputId);
         let selectedFiles = [];
         if (Array.isArray(this.modelValue)) {
             selectedFiles = this.modelValue
@@ -90,7 +92,12 @@ export default {
             }
 
             if (handler[raw.action]) {
-                handler[raw.action](raw.payload)
+                const payload = raw.payload;
+
+                if (raw.inputId === this.inputId) {
+                    handler[raw.action](raw.payload)
+                }
+
             } else {
                 console.warn('Warning', `${raw.action} has no handler`)
             }
@@ -108,8 +115,17 @@ export default {
                     selectedFiles.push(files[i])
                 }
             }
+
             this.selectedFiles = selectedFiles;
-            this.$emit('update:modelValue', selectedFiles)
+            const modelValue = selectedFiles.map(e => {
+                return {
+                    id: e.id,
+                    is_image: e.is_image,
+                    url: e.url
+                }
+            });
+
+            this.$emit('update:modelValue', modelValue)
         },
         closeModal() {
             this.modal.hide()
@@ -118,18 +134,22 @@ export default {
             this.selectedFiles.splice(index, 1)
         },
         openModal() {
+
             const limit = Math.max(1, this.limit ? this.limit : 1)
             const parentId = localStorage.getItem(storageKey)
             if (parentId) {
                 const queryStr = buildQuery({
                     id: parentId,
-                    limit: limit
+                    limit: limit,
+                    inputId: this.inputId,
                 })
                 this.iframeSrc = '/xadmin/files/index#' + queryStr
             } else {
                 const queryStr = buildQuery({
-                    limit: limit
+                    limit: limit,
+                    inputId: this.inputId,
                 })
+                console.log(queryStr)
                 this.iframeSrc = '/xadmin/files/index#' + queryStr
             }
 
@@ -141,7 +161,8 @@ export default {
 
 <style scoped>
 .q-selected-files {
-    margin-top: 10px
+    margin-top: 10px;
+    list-style: none;
 }
 
 .q-selected-files__remove-btn {
@@ -152,6 +173,10 @@ export default {
     color: darkred;
 }
 
+.preview-image {
+    width: 64px;
+    height: 64px;
+}
 .modal-iframe {
     overflow: hidden;
     border: 0;

@@ -8,7 +8,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Campaign</li>
-                        <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
+                        <li class="breadcrumb-item active" aria-current="page">Sửa campaign</li>
                     </ol>
                 </div>
             </div> <!-- /breadcrumb --> <!-- row -->
@@ -19,9 +19,8 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 v-if="entry.id" class="card-title mg-b-0">Sửa campaign</h4>
-                                <h4 v-else class="card-title mg-b-0">Thêm mới campaign</h4>
-                            </div>
+                                <h4 class="card-title mg-b-0">Thêm mới campaign</h4></div>
+
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -30,6 +29,7 @@
                                 <div class="form-group col-lg-6">
                                     <label>Store url</label>
                                     <input  v-model="entry.store_url" name="name"
+                                            @update:modelValue="value => onUrlStoreChange(value)"
                                             class="form-control"
                                             placeholder="Store url">
                                     <error-label for="f_status" :errors="errors.store_url"></error-label>
@@ -56,9 +56,9 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Icon</label>
-                                    <QFileManagerInput v-model="entry.icon"
-                                                          input-id="campaign_icon"
-                                                        placeholder="icon"/>
+                                    <q-file-manager-input v-model="entry.icon"
+                                                          :input-id="'campaign-icon'"
+                                                          placeholder="icon"></q-file-manager-input>
                                     <error-label for="f_icon" :errors="errors.icon"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -179,9 +179,10 @@
     import QFileManagerInput from "../../components/QFileManagerInput";
 
     export default {
-        name: "CampaignsForm.vue",
+        name: "CampaignDetail.vue",
         components: {QFileManagerInput, RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
+            console.log($json.customer);
             return {
                 customers:$json.customer || [],
                 entry: $json.entry || {},
@@ -190,6 +191,9 @@
             }
         },
         methods: {
+            onUrlStoreChange(value) {
+
+            },
             async save() {
                 this.isLoading = true;
                 const res = await $post('/xadmin/campaigns/save', {entry: this.entry});
