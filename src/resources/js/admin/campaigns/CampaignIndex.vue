@@ -184,7 +184,11 @@
                                             <td v-text="entry.price"></td>
                                             <td ><img :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
                                             <td v-text="entry.os"></td>
-                                            <td>{{entry.customer.id}} - {{entry.customer.name}}</td>
+                                            <td>
+                                                <template v-if="entry.customer">
+                                                    {{entry.customer.id}} - {{entry.customer.name}}
+                                                </template>
+                                            </td>
                                             <td v-text="entry.type"></td>
                                             <td>{{d(entry.auto_on_at)}}</td>
                                             <td>{{d(entry.auto_off_at)}}</td>
