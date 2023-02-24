@@ -29,6 +29,7 @@
                                 <div class="form-group col-lg-6">
                                     <label>Store url</label>
                                     <input  v-model="entry.store_url" name="name"
+                                            @update:modelValue="value => onUrlStoreChange(value)"
                                             class="form-control"
                                             placeholder="Store url">
                                     <error-label for="f_status" :errors="errors.store_url"></error-label>
@@ -190,6 +191,9 @@
             }
         },
         methods: {
+            onUrlStoreChange(value) {
+
+            },
             async save() {
                 this.isLoading = true;
                 const res = await $post('/xadmin/campaigns/save', {entry: this.entry});
