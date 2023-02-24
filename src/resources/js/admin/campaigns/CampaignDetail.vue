@@ -191,8 +191,20 @@
             }
         },
         methods: {
-            onUrlStoreChange(value) {
+            async onUrlStoreChange(value) {
+                const res = await $post('/xadmin/campaigns/getAppIcon', {
+                    url: value
+                });
 
+                if (res.code === 200) {
+                    this.entry.icon = [{
+                        is_image:true,
+                        id: res.data.id,
+                        url: res.data.icon
+                    }];
+                } else {
+                    toastr.error('Không lấy được icon');
+                }
             },
             async save() {
                 this.isLoading = true;

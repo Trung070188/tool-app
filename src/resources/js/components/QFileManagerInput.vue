@@ -46,7 +46,7 @@ export default {
     components: {QImage},
     props: ['limit', 'modelValue', 'hideFileList', 'inputId'],
     data() {
-        console.log('AAA1', this.inputId);
+
         let selectedFiles = [];
         if (Array.isArray(this.modelValue)) {
             selectedFiles = this.modelValue
@@ -58,6 +58,18 @@ export default {
             iframeSrc: '',
             selectedFiles: selectedFiles
         }
+    },
+    watch: {
+        modelValue: function (newValue) {
+            console.log(newValue)
+            let selectedFiles = [];
+            if (Array.isArray(newValue)) {
+                selectedFiles =newValue
+            } else {
+                console.error('QFileManagerInput:', 'modelValue must be an Array')
+            }
+            this.selectedFiles = selectedFiles;
+        },
     },
     mounted() {
         this.modal = new bootstrap.Modal(this.$refs.modal, {

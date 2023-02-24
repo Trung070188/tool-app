@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Customer;
+use App\Services\AppStoreService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -16,6 +17,11 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class CampaignsController extends AdminBaseController
 {
+    private AppStoreService $appStoreService;
+    public function __construct(AppStoreService $appStoreService)
+    {
+        $this->appStoreService = $appStoreService;
+    }
 
     /**
     * Index page
@@ -269,6 +275,31 @@ class CampaignsController extends AdminBaseController
                 'lastPage' => $entries->lastPage(),
             ]
         ];
+    }
+
+    public function getAppIcon(Request $request)
+    {
+        try {
+            $url = $request->get('url');
+
+            $info = parse_url($url);
+            $query = $info['query'];
+            parse_str($query, $queryOutput);
+            $id = $queryOutput['id'];
+
+
+            return [
+                'code' => 200,
+                'data' => $this->appStoreService->getAppInfo($id)
+            ];
+        } catch (\Throwable $ex) {
+            return [
+                'code' => 503,
+                'message' => $ex->getMessage(),
+                'trace' => explode("\n", $ex->getTraceAsString())
+            ];
+        }
+
     }
 
     public function export()

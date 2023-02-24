@@ -69,6 +69,7 @@ class AppStoreService
 
 
                     $appData = [
+                        'id' => md5($icon),
                         'os' => 'android',
                         'name' => $title,
                         'icon' => $icon,
