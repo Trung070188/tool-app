@@ -62,7 +62,7 @@ class CampaignPartnersController extends AdminBaseController
         */
         $jsonData = compact('entry');
         $title = 'Edit';
-        $component = 'PartnerCampaignDetail';
+        $component = 'PartnerCampaignForm';
 
         return vue(compact('title', 'component'), $jsonData);
     }

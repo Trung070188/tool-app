@@ -60,7 +60,7 @@ class PartnersController extends AdminBaseController
         */
         $jsonData = compact('entry');
         $title = 'Edit';
-        $component = 'PartnerDetail';
+        $component = 'PartnerForm';
 
         return vue(compact('title', 'component'), $jsonData);
     }

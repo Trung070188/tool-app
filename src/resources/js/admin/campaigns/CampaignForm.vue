@@ -19,8 +19,9 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Thêm mới campaign</h4></div>
-
+                                <h4 v-if="entry.id" class="card-title mg-b-0">Sửa campaign</h4>
+                                <h4 v-else class="card-title mg-b-0">Thêm mới campaign</h4>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -182,7 +183,6 @@
         name: "CampaignsForm.vue",
         components: {QFileManagerInput, RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
-            console.log($json.customer);
             return {
                 customers:$json.customer || [],
                 entry: $json.entry || {},

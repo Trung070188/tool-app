@@ -72,7 +72,7 @@ class CampaignsController extends AdminBaseController
         $customer=Customer::query()->orderBy('id','desc')->get();
         $jsonData = compact('entry','customer');
         $title = 'Edit';
-        $component = 'CampaignDetail';
+        $component = 'CampaignForm';
 
         return vue(compact('title', 'component'), $jsonData);
     }

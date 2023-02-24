@@ -61,7 +61,7 @@ class DebtSettlesController extends AdminBaseController
         */
         $jsonData = compact('entry');
         $title = 'Edit';
-        $component = 'DebtSettleDetail';
+        $component = 'DebtSettleForm';
 
         return vue(compact('title', 'component'), $jsonData);
     }
