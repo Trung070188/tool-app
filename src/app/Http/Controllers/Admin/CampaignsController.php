@@ -229,7 +229,7 @@ class CampaignsController extends AdminBaseController
     */
     public function data(Request $req)
     {
-        $query = Campaign::query()->with(['customer'])->orderBy('id', 'desc');
+        $query = Campaign::query()->with(['campaignPartner','customer'])->orderBy('id', 'desc');
         $customers=Customer::query()->orderBy('id','desc')->get();
 
         if ($req->keyword) {

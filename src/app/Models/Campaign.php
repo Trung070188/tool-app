@@ -48,4 +48,8 @@ class Campaign extends BaseModel
     {
         return $this->belongsTo(Customer::class,'customer_id');
     }
+    public function campaignPartner()
+    {
+       return $this->hasOne(CampaignPartner::class,'campaign_id');
+    }
 }

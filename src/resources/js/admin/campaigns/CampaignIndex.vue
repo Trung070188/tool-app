@@ -151,6 +151,12 @@
                                         <th>Price</th>
                                         <th>Icon</th>
                                         <th>Os</th>
+                                        <th>Tổng lượt cài</th>
+                                        <th>Thành tiền</th>
+                                        <th>SL cài từ partner</th>
+                                        <th>Giá share partner</th>
+                                        <th>Chi phí share partner</th>
+                                        <th>Số lượng fake</th>
                                         <th>Tên khách hàng</th>
                                         <th>Type</th>
                                         <th>Auto on at</th>
@@ -184,6 +190,16 @@
                                             <td v-text="entry.price"></td>
                                             <td ><img :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
                                             <td v-text="entry.os"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <template v-if="entry.campaign_partner">
+                                                    {{entry.campaign_partner.price}}
+                                                </template>
+                                            </td>
+                                            <td ></td>
+                                            <td v-text="entry.daily_fake_install"></td>
                                             <td>
                                                 <template v-if="entry.customer">
                                                     {{entry.customer.id}} - {{entry.customer.name}}
