@@ -190,12 +190,24 @@
                                             <td v-text="entry.price"></td>
                                             <td ><img :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
                                             <td v-text="entry.os"></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
                                             <td>
                                                 <template v-if="entry.campaign_partner">
-                                                    {{entry.campaign_partner.price}}
+                                                    {{entry.campaign_partner.length * entry.daily_fake_install}}
+                                                </template>
+                                            </td>
+                                            <td>
+                                                <template v-if="entry.campaign_partner">
+                                                    {{entry.price * (entry.campaign_partner.length * entry.daily_fake_install)}}
+                                                </template>
+                                            </td>
+                                            <td>
+                                                <template v-if="entry.campaign_partner">
+                                                    {{entry.campaign_partner.length}}
+                                                </template>
+                                            </td>
+                                            <td>
+                                                <template v-if="entry.campaign_partner" v-for="partner in entry.campaign_partner">
+                                                    {{partner.price}}
                                                 </template>
                                             </td>
                                             <td ></td>

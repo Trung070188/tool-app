@@ -50,6 +50,6 @@ class Campaign extends BaseModel
     }
     public function campaignPartner()
     {
-       return $this->hasOne(CampaignPartner::class,'campaign_id');
+       return $this->hasMany(CampaignPartner::class,'campaign_id');
     }
 }
