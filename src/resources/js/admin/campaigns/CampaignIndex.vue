@@ -192,17 +192,17 @@
                                             <td v-text="entry.os"></td>
                                             <td>
                                                 <template v-if="entry.campaign_partner">
-                                                    {{entry.campaign_partner.length * entry.daily_fake_install}}
+<!--                                                    {{entry.campaign_partner.length * entry.daily_fake_install}}-->
                                                 </template>
                                             </td>
                                             <td>
                                                 <template v-if="entry.campaign_partner">
-                                                    {{entry.price * (entry.campaign_partner.length * entry.daily_fake_install)}}
+<!--                                                    {{entry.price * (entry.campaign_partner.length * entry.daily_fake_install)}}-->
                                                 </template>
                                             </td>
                                             <td>
                                                 <template v-if="entry.campaign_partner">
-                                                    {{entry.campaign_partner.length}}
+<!--                                                    {{entry.campaign_partner.length}}-->
                                                 </template>
                                             </td>
                                             <td>
