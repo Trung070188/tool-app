@@ -146,21 +146,14 @@
                                             </div>
                                         </td>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Package Id</th>
-                                        <th>Price</th>
                                         <th>Icon</th>
-                                        <th>Os</th>
-                                        <th>Tổng lượt cài</th>
-                                        <th>Thành tiền</th>
-                                        <th>SL cài từ partner</th>
-                                        <th>Giá share partner</th>
-                                        <th>Chi phí share partner</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Đối tác</th>
+
                                         <th>Số lượng fake</th>
                                         <th>Tên khách hàng</th>
-                                        <th>Type</th>
-                                        <th>Auto on at</th>
-                                        <th>Auto off at</th>
+                                        <th>Auto On/OFF</th>
                                         <th>Open next day</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -185,41 +178,39 @@
                                             <a class="edit-link" :href="'/xadmin/campaigns/edit?id='+entry.id"
                                                v-text="entry.id"></a>
                                         </td>
-                                            <td v-text="entry.name"></td>
-                                            <td v-text="entry.package_id"></td>
+                                        <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
+                                            <td >
+                                                <ul class="list-style-none">
+                                                    <li v-text="entry.name"></li>
+                                                    <li v-text="'Package: ' + entry.package_id"></li>
+                                                    <li v-text="'OS: ' + entry.os"></li>
+                                                    <li v-text="'Type: ' + entry.type"></li>
+                                                </ul>
+                                            </td>
                                             <td v-text="entry.price"></td>
-                                            <td ><img :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
-                                            <td v-text="entry.os"></td>
+
+
                                             <td>
-                                                <template v-if="entry.campaign_partner">
-<!--                                                    {{entry.campaign_partner.length * entry.daily_fake_install}}-->
-                                                </template>
+                                                <ul class="list-style-none">
+                                                    <li>Số lượng: 0</li>
+                                                    <li>Giá: 0</li>
+                                                    <li>Chi phí: 0</li>
+                                                </ul>
+
                                             </td>
-                                            <td>
-                                                <template v-if="entry.campaign_partner">
-<!--                                                    {{entry.price * (entry.campaign_partner.length * entry.daily_fake_install)}}-->
-                                                </template>
-                                            </td>
-                                            <td>
-                                                <template v-if="entry.campaign_partner">
-<!--                                                    {{entry.campaign_partner.length}}-->
-                                                </template>
-                                            </td>
-                                            <td>
-                                                <template v-if="entry.campaign_partner" v-for="partner in entry.campaign_partner">
-                                                    {{partner.price}}
-                                                </template>
-                                            </td>
-                                            <td ></td>
+
                                             <td v-text="entry.daily_fake_install"></td>
                                             <td>
                                                 <template v-if="entry.customer">
                                                     {{entry.customer.id}} - {{entry.customer.name}}
                                                 </template>
                                             </td>
-                                            <td v-text="entry.type"></td>
-                                            <td>{{d(entry.auto_on_at)}}</td>
-                                            <td>{{d(entry.auto_off_at)}}</td>
+                                            <td>
+                                                <ul class="list-style-none">
+                                                    <li>ON: {{d(entry.auto_on_at)}}</li>
+                                                    <li>OFF: {{d(entry.auto_off_at)}}</li>
+                                                </ul>
+                                            </td>
                                             <td><switch-button v-model="entry.open_next_day" @change="OpenNextDay(entry)"></switch-button></td>
                                             <td><switch-button v-model="entry.status" @change="switchStatus(entry)"></switch-button></td>
                                         <td class="">
