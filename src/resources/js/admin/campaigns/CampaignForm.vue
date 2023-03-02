@@ -86,6 +86,7 @@
                                     <!--                                           class="form-control"-->
                                     <!--                                           placeholder="Tên khách hàng">-->
                                     <select class="form-control form-select" v-model="entry.customer_id">
+                                        <option value="">Chọn khách hàng</option>
                                         <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
                                     </select>
                                     <error-label for="f_customer_id" :errors="errors.customer_id"></error-label>
@@ -202,6 +203,9 @@
                         id: res.data.id,
                         url: res.data.icon
                     }];
+                    this.entry.package_id = res.data.package_id;
+                    this.entry.name = res.data.name;
+                    this.entry.os = res.data.os;
                 } else {
                     toastr.error('Không lấy được icon');
                 }

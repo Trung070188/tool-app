@@ -18,17 +18,18 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class CampaignsController extends AdminBaseController
 {
     private AppStoreService $appStoreService;
+
     public function __construct(AppStoreService $appStoreService)
     {
         $this->appStoreService = $appStoreService;
     }
 
     /**
-    * Index page
-    * @uri  /xadmin/campaigns/index
-    * @throw  NotFoundHttpException
-    * @return  View
-    */
+     * Index page
+     * @uri  /xadmin/campaigns/index
+     * @throw  NotFoundHttpException
+     * @return  View
+     */
     public function index()
     {
         $title = 'Campaign';
@@ -37,26 +38,32 @@ class CampaignsController extends AdminBaseController
     }
 
     /**
-    * Create new entry
-    * @uri  /xadmin/campaigns/create
-    * @throw  NotFoundHttpException
-    * @return  View
-    */
-    public function create (Request $req)
+     * Create new entry
+     * @uri  /xadmin/campaigns/create
+     * @throw  NotFoundHttpException
+     * @return  View
+     */
+    public function create(Request $req)
     {
         $component = 'CampaignForm';
         $title = 'Create campaigns';
-        $customer=Customer::query()->orderBy('id','desc')->get();
-        $jsonData=compact('customer');
-        return vue(compact('title', 'component'),$jsonData);
+        $entry = new Campaign();
+        $entry->total_install = 0;
+        $entry->daily_fake_install = 0;
+        $entry->type = 'cpi';
+        $entry->customer_id = '';
+
+        $customer = Customer::query()->orderBy('id', 'desc')->get();
+        $jsonData = compact('customer', 'entry');
+        return vue(compact('title', 'component'), $jsonData);
     }
 
     /**
-    * @uri  /xadmin/campaigns/edit?id=$id
-    * @throw  NotFoundHttpException
-    * @return  View
-    */
-    public function edit (Request $req)
+     * @uri  /xadmin/campaigns/edit?id=$id
+     * @throw  NotFoundHttpException
+     * @return  View
+     */
+    public function edit(Request $req)
     {
         $id = $req->id;
         $entry = Campaign::find($id);
@@ -66,11 +73,11 @@ class CampaignsController extends AdminBaseController
         }
 
         /**
-        * @var  Campaign $entry
-        */
+         * @var  Campaign $entry
+         */
 
-        $customer=Customer::query()->orderBy('id','desc')->get();
-        $jsonData = compact('entry','customer');
+        $customer = Customer::query()->orderBy('id', 'desc')->get();
+        $jsonData = compact('entry', 'customer');
         $title = 'Edit';
         $component = 'CampaignForm';
 
@@ -78,9 +85,9 @@ class CampaignsController extends AdminBaseController
     }
 
     /**
-    * @uri  /xadmin/campaigns/remove
-    * @return  array
-    */
+     * @uri  /xadmin/campaigns/remove
+     * @return  array
+     */
     public function remove(Request $req)
     {
         $id = $req->id;
@@ -97,19 +104,20 @@ class CampaignsController extends AdminBaseController
             'message' => 'Đã xóa'
         ];
     }
+
     public function removeCampaign(Request $req)
     {
-        Campaign::query()->whereIn('id',$req->campaignIds)->update(['deleted_at'=>Carbon::now()]);
+        Campaign::query()->whereIn('id', $req->campaignIds)->update(['deleted_at' => Carbon::now()]);
         return [
-          'code'=> 0,
-          'message'=>'Đã xóa'
+            'code' => 0,
+            'message' => 'Đã xóa'
         ];
     }
 
     /**
-    * @uri  /xadmin/campaigns/save
-    * @return  array
-    */
+     * @uri  /xadmin/campaigns/save
+     * @return  array
+     */
     public function save(Request $req)
     {
         if (!$req->isMethod('POST')) {
@@ -119,19 +127,17 @@ class CampaignsController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-    'name' => 'max:300|required',
-    'package_id' => 'max:200|required',
-    'icon' => 'max:300|required',
-    'customer_id' => 'numeric|required',
-    'status' => 'numeric',
-    'price'=>'required',
-    'os'=>'required',
-    'store_url'=>'required',
-    'type'=>'required',
-    'total_install'=>'required',
-    'auto_off_at'=>'required',
-    'auto_on_at'=>'required'
-];
+            'name' => 'max:300|required',
+            'package_id' => 'max:200|required',
+            'icon' => 'max:300|required',
+            'customer_id' => 'numeric|required',
+            'status' => 'numeric',
+            'price' => 'required',
+            'os' => 'required',
+            'store_url' => 'required',
+            'type' => 'required',
+            'total_install' => 'required',
+        ];
 
         $v = Validator::make($data, $rules);
 
@@ -143,8 +149,8 @@ class CampaignsController extends AdminBaseController
         }
 
         /**
-        * @var  Campaign $entry
-        */
+         * @var  Campaign $entry
+         */
         if (isset($data['id'])) {
             $entry = Campaign::find($data['id']);
 
@@ -167,7 +173,6 @@ class CampaignsController extends AdminBaseController
         } else {
             $entry = new Campaign();
             $entry->fill($data);
-            $entry->icon=($data['icon'][0]['url']);
             $entry->save();
 
             return [
@@ -179,8 +184,8 @@ class CampaignsController extends AdminBaseController
     }
 
     /**
-    * @param  Request $req
-    */
+     * @param Request $req
+     */
     public function toggleStatus(Request $req)
     {
         $id = $req->get('id');
@@ -201,66 +206,63 @@ class CampaignsController extends AdminBaseController
             'message' => 'Đã lưu'
         ];
     }
+
     public function openNextDay(Request $req)
     {
-        $id=$req->entry['id'];
-        Campaign::where('id',$id)->update(['open_next_day'=>$req->entry['open_next_day']]);
+        $id = $req->entry['id'];
+        Campaign::where('id', $id)->update(['open_next_day' => $req->entry['open_next_day']]);
         return [
-            'code'=>200,
-            'message'=>'Đã lưu'
+            'code' => 200,
+            'message' => 'Đã lưu'
         ];
 
     }
+
     public function switchStatus(Request $req)
     {
-        $id=$req->entry['id'];
-        Campaign::where('id',$id)->update(['status'=>$req->entry['status']]);
+        $id = $req->entry['id'];
+        Campaign::where('id', $id)->update(['status' => $req->entry['status']]);
         return [
-            'code'=>200,
-            'message'=>'Đã lưu'
+            'code' => 200,
+            'message' => 'Đã lưu'
         ];
 
     }
 
     /**
-    * Ajax data for index page
-    * @uri  /xadmin/campaigns/data
-    * @return  array
-    */
+     * Ajax data for index page
+     * @uri  /xadmin/campaigns/data
+     * @return  array
+     */
     public function data(Request $req)
     {
-        $query = Campaign::query()->with(['campaignPartner','customer'])->orderBy('id', 'desc');
-        $customers=Customer::query()->orderBy('id','desc')->get();
+        $query = Campaign::query()->with(['campaignPartner', 'customer'])->orderBy('id', 'desc');
+        $customers = Customer::query()->orderBy('id', 'desc')->get();
 
         if ($req->keyword) {
-            $query->where('name', 'LIKE', '%' . $req->keyword. '%')
-                ->orWhere('package_id','LIKE','%'. $req->keyword. '%')
-                ->orWhereHas('customer',function ($join) use ($req)
-            {
-                $join->where('name','LIKE','%'.$req->keyword .'%')->orwhere('id','LIKE','%'.$req->keyword .'%');
-            });
+            $query->where('name', 'LIKE', '%' . $req->keyword . '%')
+                ->orWhere('package_id', 'LIKE', '%' . $req->keyword . '%')
+                ->orWhereHas('customer', function ($join) use ($req) {
+                    $join->where('name', 'LIKE', '%' . $req->keyword . '%')->orwhere('id', 'LIKE', '%' . $req->keyword . '%');
+                });
         }
-        if($req->customer_id)
-        {
-            $query->where('customer_id',$req->customer_id);
+        if ($req->customer_id) {
+            $query->where('customer_id', $req->customer_id);
         }
-        if($req->os)
-        {
-            $query->where('os',$req->os);
+        if ($req->os) {
+            $query->where('os', $req->os);
         }
-        if($req->type)
-        {
-            $query->where('type',$req->type);
+        if ($req->type) {
+            $query->where('type', $req->type);
         }
-        if($req->created)
-        {
+        if ($req->created) {
             $dates = $req->created;
             $date_range = explode('_', $dates);
             $start_date = $date_range[0];
             $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
             $end_date = $date_range[1];
             $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
-            $query->whereBetween('created_at',[$start_date,$end_date]);
+            $query->whereBetween('created_at', [$start_date, $end_date]);
         }
 
 //        $query->createdIn($req->created);
@@ -268,7 +270,7 @@ class CampaignsController extends AdminBaseController
         $entries = $query->paginate();
         return [
             'code' => 0,
-            'customers'=>$customers,
+            'customers' => $customers,
             'data' => $entries->items(),
             'paginate' => [
                 'currentPage' => $entries->currentPage(),
@@ -290,7 +292,7 @@ class CampaignsController extends AdminBaseController
 
             return [
                 'code' => 200,
-                'data' => $this->appStoreService->getAppInfo($id)
+                'data' => $this->appStoreService->getAppInfo($id),
             ];
         } catch (\Throwable $ex) {
             return [
@@ -304,16 +306,16 @@ class CampaignsController extends AdminBaseController
 
     public function export()
     {
-                $keys = [
-                            'name' => ['A', 'name'],
-                            'package_id' => ['B', 'package_id'],
-                            'icon' => ['C', 'icon'],
-                            'price' => ['D', 'price'],
-                            'os' => ['E', 'os'],
-                            'customer_id' => ['F', 'customer_id'],
-                            'type' => ['G', 'type'],
-                            'status' => ['H', 'status'],
-                            ];
+        $keys = [
+            'name' => ['A', 'name'],
+            'package_id' => ['B', 'package_id'],
+            'icon' => ['C', 'icon'],
+            'price' => ['D', 'price'],
+            'os' => ['E', 'os'],
+            'customer_id' => ['F', 'customer_id'],
+            'type' => ['G', 'type'],
+            'status' => ['H', 'status'],
+        ];
 
         $query = Campaign::query()->orderBy('id', 'desc');
 
@@ -326,7 +328,7 @@ class CampaignsController extends AdminBaseController
                 $sheet->setCellValue($v . "1", $key);
             } elseif (is_array($v)) {
                 list($c, $n) = $v;
-                 $sheet->setCellValue($c . "1", $n);
+                $sheet->setCellValue($c . "1", $n);
             }
         }
 

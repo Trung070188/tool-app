@@ -19,7 +19,7 @@ class AppStoreService
     public function getAppInfo($appid) {
         $os = strpos($appid, '.') === false ? 'ios' : 'android';
 
-        $rKey = "asoapp.appid.$os.$appid";
+        $rKey = "asoappz.appid.$os.$appid";
         $appData = Cache::get($rKey);
         if (!$appData) {
             if ($os === 'ios') {
@@ -70,6 +70,7 @@ class AppStoreService
 
                     $appData = [
                         'id' => md5($icon),
+                        'package_id' => $appid,
                         'os' => 'android',
                         'name' => $title,
                         'icon' => $icon,

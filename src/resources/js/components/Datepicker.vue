@@ -86,7 +86,7 @@ export default {
             timePicker: this.timepicker || false,
             timePicker24Hour: true,
             minDate,
-            maxDate: moment()
+          //  maxDate: moment()
         }, (start, end) => {
             this.$emit('update:modelValue', start.format('YYYY-MM-DD'));
             this.$el.value = start.format(format);
