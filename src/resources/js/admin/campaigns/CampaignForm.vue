@@ -138,14 +138,14 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Auto on at</label>
-                                    <Datepicker  v-model="entry.auto_on_at" name="name"
+                                    <Datepicker :timepicker="true"  v-model="entry.auto_on_at" name="name"
                                                  class="form-control"
                                                  placeholder="Auto on at"></Datepicker>
                                     <error-label for="f_status" :errors="errors.auto_on_at"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Auto off at</label>
-                                    <Datepicker  v-model="entry.auto_off_at" name="name"
+                                    <Datepicker :timepicker="true"   v-model="entry.auto_off_at" name="name"
                                                  class="form-control"
                                                  placeholder="Auto off at"></Datepicker>
                                     <error-label for="f_status" :errors="errors.auto_off_at"></error-label>
