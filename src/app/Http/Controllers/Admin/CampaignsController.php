@@ -52,6 +52,8 @@ class CampaignsController extends AdminBaseController
         $entry->daily_fake_install = 0;
         $entry->type = 'cpi';
         $entry->customer_id = '';
+        $entry->auto_off_status = 0;
+        $entry->auto_on_status = 0;
 
         $customer = Customer::query()->orderBy('id', 'desc')->get();
         $jsonData = compact('customer', 'entry');

@@ -136,19 +136,37 @@
                                     </div>
                                     <error-label for="f_status" :errors="errors.is_fake_on"></error-label>
                                 </div>
+
                                 <div class="form-group col-lg-6">
-                                    <label>Auto on at</label>
-                                    <Datepicker :timepicker="true"  v-model="entry.auto_on_at" name="name"
-                                                 class="form-control"
-                                                 placeholder="Auto on at"></Datepicker>
-                                    <error-label for="f_status" :errors="errors.auto_on_at"></error-label>
+                                    <label>Tự động bật</label>
+                                    <div>
+                                        <switch-button  v-model="entry.auto_on_status"></switch-button>
+
+                                    </div>
+                                    <template v-if="entry.auto_on_status">
+                                        <label>Tự động bật lúc</label>
+                                        <Datepicker :timepicker="true"  v-model="entry.auto_on_at" name="name"
+                                                    class="form-control"
+                                                    placeholder="Auto on at"></Datepicker>
+                                        <error-label for="f_status" :errors="errors.auto_on_at"></error-label>
+                                    </template>
+
                                 </div>
+
                                 <div class="form-group col-lg-6">
-                                    <label>Auto off at</label>
-                                    <Datepicker :timepicker="true"   v-model="entry.auto_off_at" name="name"
-                                                 class="form-control"
-                                                 placeholder="Auto off at"></Datepicker>
-                                    <error-label for="f_status" :errors="errors.auto_off_at"></error-label>
+                                    <label>Tự động tắt</label>
+                                    <div>
+                                        <switch-button  v-model="entry.auto_off_status"></switch-button>
+
+                                    </div>
+                                    <template v-if="entry.auto_off_status">
+                                        <label>Tự động tắt lúc</label>
+                                        <Datepicker :timepicker="true"   v-model="entry.auto_off_at" name="name"
+                                                    class="form-control"
+                                                    placeholder="Auto off at"></Datepicker>
+                                        <error-label for="f_status" :errors="errors.auto_off_at"></error-label>
+                                    </template>
+
                                 </div>
                                 <div class="form-group col-lg-12">
                                     <label>Note</label>

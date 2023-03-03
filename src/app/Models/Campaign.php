@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \DateTime $auto_on_at
  * @property string $note
  * @property int $total_install
+ * @property int $auto_on_status
+ * @property int $auto_off_status
  * @property string $type
  * @property \DateTime $created_at
  * @property \DateTime $deleted_at
@@ -48,7 +50,9 @@ class Campaign extends BaseModel
         'note',
         'total_install',
         'auto_on_at',
-        'auto_off_at'
+        'auto_on_status',
+        'auto_off_at',
+        'auto_off_status',
     ];
 
     protected $casts = [

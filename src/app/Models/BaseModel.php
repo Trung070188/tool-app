@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static static first()
  * @method static \Illuminate\Support\Collection|static[] get()
  */
-class BaseModel extends ModelCore
+class BaseModel extends Model
 {
     /**
      * Scope a query to only include popular users.
