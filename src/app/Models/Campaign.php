@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $store_url
  * @property int $open_next_day
  * @property int $is_fake_on
- * @property int $total_daily_install
+ * @property int $daily_install
  * @property \DateTime $auto_off_at
  * @property \DateTime $auto_on_at
  * @property string $note
