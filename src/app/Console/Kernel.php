@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('CampaignAutoStatusProcess processAutoOff')->everyMinute();
         $schedule->command('CampaignAutoStatusProcess processAutoOn')->everyMinute();
         $schedule->command('CampaignAutoStatusProcess processAutoOffByTotalInstall')->everyMinute();
+        $schedule->command('CampaignAutoFakeProcess')->everyMinute();
     }
 
     /**
