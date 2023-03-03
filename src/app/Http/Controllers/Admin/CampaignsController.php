@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Customer;
+use App\Models\EventLog;
 use App\Services\AppStoreService;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -54,9 +55,11 @@ class CampaignsController extends AdminBaseController
         $entry->customer_id = '';
         $entry->auto_off_status = 0;
         $entry->auto_on_status = 0;
+        $entry->total_daily_install = 0;
 
+        $eventLogs = [];
         $customer = Customer::query()->orderBy('id', 'desc')->get();
-        $jsonData = compact('customer', 'entry');
+        $jsonData = compact('customer', 'entry', 'eventLogs');
         return vue(compact('title', 'component'), $jsonData);
     }
 
@@ -78,8 +81,13 @@ class CampaignsController extends AdminBaseController
          * @var  Campaign $entry
          */
 
+        $eventLogs = EventLog::query()->where('campaign_id', $entry->id)
+            ->orderBy('id', 'desc')
+            ->limit(100)->get();
+
+
         $customer = Customer::query()->orderBy('id', 'desc')->get();
-        $jsonData = compact('entry', 'customer');
+        $jsonData = compact('entry', 'customer', 'eventLogs');
         $title = 'Sửa campaign: ' . $entry->name;
         $component = 'CampaignForm';
 

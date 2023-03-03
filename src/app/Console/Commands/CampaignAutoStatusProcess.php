@@ -32,6 +32,7 @@ class CampaignAutoStatusProcess extends Command
     {
         $this->processAutoOn();
         $this->processAutoOff();
+        $this->processAutoOffByTotalInstall();
 
         return 0;
     }
@@ -45,7 +46,7 @@ class CampaignAutoStatusProcess extends Command
             ->get();
 
         if ($campaigns->count() === 0) {
-            $this->warn("No campaign to process");
+            $this->warn("No campaign to auto off");
         }
 
         /**
@@ -69,10 +70,11 @@ class CampaignAutoStatusProcess extends Command
                     $campaign->auto_off_status = 0;
                     $campaign->save();
                     $log = new EventLog();
-                    $log->title = "Tự động tắt campaign: " . $campaign->id . "::" . $campaign->name;
+                    $log->time = date('Y-m-d H:i:s');
+                    $log->title = "Tự động tắt campaign: " . $campaign->id . "::" . $campaign->name . ' lúc ' . $log->time;
                     $log->content = $log->title;
                     $log->campaign_id = $campaign->id;
-                    $log->time = date('Y-m-d H:i:s');
+
                     $this->warn( $tag . $log->title);
                     $log->save();
                     DB::commit();
@@ -96,7 +98,7 @@ class CampaignAutoStatusProcess extends Command
             ->get();
 
         if ($campaigns->count() === 0) {
-            $this->warn("No campaign to process");
+            $this->warn("No campaign to auto on");
         }
 
         /**
@@ -120,10 +122,12 @@ class CampaignAutoStatusProcess extends Command
                     $campaign->auto_on_status = 0;
                     $campaign->save();
                     $log = new EventLog();
-                    $log->title = "Tự động bật campaign: " . $campaign->id . "::" . $campaign->name;
-                    $log->content = $log->title;
+
+
                     $log->campaign_id = $campaign->id;
                     $log->time = date('Y-m-d H:i:s');
+                    $log->title = "Tự động bật campaign: " . $campaign->id . "::" . $campaign->name . ' lúc '. $log->time;
+                    $log->content = $log->title;
                     $this->warn( $tag . $log->title);
                     $log->save();
                     DB::commit();
