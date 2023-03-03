@@ -180,9 +180,9 @@
                                     <error-label for="f_status" :errors="errors.note"></error-label>
                                 </div>
 
-                                <div class="form-group col-lg-12">
+                                <div class="form-group col-lg-12" v-if="eventLogs.length">
                                     <label>Sự kiện gần đây</label>
-                                    <ul>
+                                    <ul style="height: 300px; overflow-y: auto">
                                         <li v-for="log in eventLogs" >
                                             <em v-text="log.title"></em>
                                         </li>
