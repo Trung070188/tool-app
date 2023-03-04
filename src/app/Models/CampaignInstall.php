@@ -27,5 +27,6 @@ class CampaignInstall extends BaseModel
     'device_id',
     'ip',
     'os',
+    'faked_at'
 ];
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\CampaignInstall;
 use App\Models\Customer;
 use App\Models\EventLog;
 use App\Services\AppStoreService;
@@ -254,7 +255,6 @@ class CampaignsController extends AdminBaseController
     {
         $query = Campaign::query()->with(['campaignPartner', 'customer'])->orderBy('id', 'desc');
         $customers = Customer::query()->orderBy('id', 'desc')->get();
-
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhere('package_id', 'LIKE', '%' . $req->keyword . '%')
@@ -284,6 +284,81 @@ class CampaignsController extends AdminBaseController
 //        $query->createdIn($req->created);
 
         $entries = $query->paginate();
+
+        return [
+            'code' => 0,
+            'customers' => $customers,
+            'data' => $entries->items(),
+            'paginate' => [
+                'currentPage' => $entries->currentPage(),
+                'lastPage' => $entries->lastPage(),
+            ]
+        ];
+    }
+    public function dataStatistical(Request $req)
+    {
+        $customers = Customer::query()->orderBy('id', 'desc')->get();
+
+        $fakes= DB::table('campaign_installs')
+            ->select('campaign_id', DB::raw('COUNT(faked_at) as total_fake'))
+            ->whereNotNull('faked_at')
+            ->groupBy('campaign_id');
+        $totalInstall=DB::table('campaign_installs')
+            ->select('campaign_id', DB::raw('COUNT(id) as total_install'))
+            ->groupBy('campaign_id');
+
+        $query = Campaign::query()->with(['customer','campaignPartner'])
+            ->leftJoinSub($fakes, 'fakes', function ($join) {
+                $join->on('campaigns.id', '=', 'fakes.campaign_id');
+            })
+            ->leftJoinSub($totalInstall, 'total_install', function ($join) {
+                $join->on('campaigns.id', '=', 'total_install.campaign_id');
+            })
+            ->select([
+                'campaigns.id',
+                'campaigns.name',
+                'campaigns.package_id',
+                'campaigns.icon',
+                'campaigns.price',
+                'campaigns.os',
+                'campaigns.customer_id',
+                'campaigns.type',
+                'campaigns.created_at',
+                DB::raw('COALESCE(fakes.total_fake, 0) as total_fake'),
+                DB::raw('COALESCE(total_install.total_install, 0) as total_install')
+            ])
+            ->groupBy('campaigns.id')
+            ->orderBy('campaigns.id', 'desc');
+        if ($req->keyword) {
+            $query->where('name', 'LIKE', '%' . $req->keyword . '%')
+                ->orWhere('package_id', 'LIKE', '%' . $req->keyword . '%')
+                ->orWhereHas('customer', function ($join) use ($req) {
+                    $join->where('name', 'LIKE', '%' . $req->keyword . '%')->orwhere('id', 'LIKE', '%' . $req->keyword . '%');
+                });
+        }
+        if ($req->customer_id) {
+            $query->where('customer_id', $req->customer_id);
+        }
+        if ($req->os) {
+            $query->where('os', $req->os);
+        }
+        if ($req->type) {
+            $query->where('type', $req->type);
+        }
+        if ($req->created) {
+            $dates = $req->created;
+            $date_range = explode('_', $dates);
+            $start_date = $date_range[0];
+            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+            $end_date = $date_range[1];
+            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+            $query->whereBetween('created_at', [$start_date, $end_date]);
+        }
+
+//        $query->createdIn($req->created);
+
+        $entries = $query->paginate();
+
         return [
             'code' => 0,
             'customers' => $customers,

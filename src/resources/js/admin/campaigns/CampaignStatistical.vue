@@ -174,12 +174,12 @@
                                         </td>
                                         <td v-text="entry.type"></td>
                                         <td v-text="entry.price"></td>
+                                        <td v-text="entry.total_install"></td>
+                                        <td>{{(entry.price) * (entry.total_install)}}</td>
+                                        <td>{{(entry.total_install)-(entry.total_fake)}}</td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td v-text="entry.daily_fake_install"></td>
+                                        <td v-text="entry.total_fake"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -318,7 +318,7 @@
             },
             async load() {
                 let query = $router.getQuery();
-                const res = await $get('/xadmin/campaigns/data', query);
+                const res = await $get('/xadmin/campaigns/dataStatistical', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
                 this.customers=res.customers;
