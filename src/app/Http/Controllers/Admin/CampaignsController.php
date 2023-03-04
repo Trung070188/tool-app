@@ -37,6 +37,12 @@ class CampaignsController extends AdminBaseController
         $component = 'CampaignIndex';
         return vue(compact('title', 'component'));
     }
+    public function statistical()
+    {
+        $title = 'Campaign';
+        $component = 'CampaignStatistical';
+        return vue(compact('title', 'component'));
+    }
 
     /**
      * Create new entry
