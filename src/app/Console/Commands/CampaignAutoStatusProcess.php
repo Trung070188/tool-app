@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Campaign;
+use App\Models\CampaignInstall;
 use App\Models\EventLog;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,7 @@ class CampaignAutoStatusProcess extends Command
      *
      * @var string
      */
-    protected $signature = 'CampaignAutoStatusProcess';
+    protected $signature = 'CampaignAutoStatusProcess {action}';
 
     /**
      * The console command description.
@@ -30,10 +31,80 @@ class CampaignAutoStatusProcess extends Command
      */
     public function handle()
     {
-        $this->processAutoOn();
-        $this->processAutoOff();
+        $action = $this->argument('action');
+        $this->$action();
 
         return 0;
+    }
+
+    /**
+     * @example php artisan CampaignAutoStatusProcess processAutoOffByTotalInstall
+     * @return void
+     */
+    public function processAutoOffByTotalInstall()
+    {
+        $this->info("Process campaign AutoOffByTotalInstall");
+        $campaigns = Campaign::query()
+            ->where('status', '=', 1)
+            ->get();
+
+        /**
+         * @var Campaign $campaign
+         */
+        $today = date('Y-m-d');
+        foreach ($campaigns as $campaign) {
+            DB::beginTransaction();
+            try {
+                $tag = '[AutoOffByTotalInstall] [' . $campaign->id . ']';
+                $todayInstallAll = CampaignInstall::query()
+                    ->where('campaign_id', $campaign->id)
+                    ->count();
+
+                if ($todayInstallAll >= intval($campaign->total_install)) {
+                    $campaign->status = 0;
+                    $campaign->save();
+                    $reason = 'Đã đủ số cài đặt tổng: ' . $campaign->total_install;
+                    $log = $this->addAutoOffEventLog($campaign, $reason);
+                    $this->warn( $tag . $log->title);
+                    DB::commit();
+                    continue;
+                }
+
+                $todayInstall = CampaignInstall::query()
+                    ->where('date_install', $today)
+                    ->where('campaign_id', $campaign->id)
+                    ->count();
+
+
+                if ($todayInstall >= intval($campaign->daily_install)) {
+                    $campaign->status = 0;
+                    $campaign->save();
+                    $reason = 'Đã đủ số cài đặt hàng ngày: ' . $campaign->daily_install;
+                    $log = $this->addAutoOffEventLog($campaign, $reason);
+                    $this->warn( $tag . $log->title);
+                    DB::commit();
+                    continue;
+                }
+            } catch (\Throwable $ex) {
+                $this->error($ex);
+                DB::rollBack();
+            }
+
+        }
+    }
+
+    private function addAutoOffEventLog(Campaign $campaign, string $reason): EventLog
+    {
+        $log = new EventLog();
+
+        $log->campaign_id = $campaign->id;
+        $log->time = date('Y-m-d H:i:s');
+        $log->title = "Tự động tắt campaign: " . $campaign->id . "::" .
+            $campaign->name . ' lúc '. $log->time . '. Lý do: ' . $reason;
+        $log->content = $log->title;
+        $log->save();
+
+        return $log;
     }
 
     public function processAutoOff()
@@ -45,7 +116,7 @@ class CampaignAutoStatusProcess extends Command
             ->get();
 
         if ($campaigns->count() === 0) {
-            $this->warn("No campaign to process");
+            $this->warn("No campaign to auto off");
         }
 
         /**
@@ -69,10 +140,11 @@ class CampaignAutoStatusProcess extends Command
                     $campaign->auto_off_status = 0;
                     $campaign->save();
                     $log = new EventLog();
-                    $log->title = "Tự động tắt campaign: " . $campaign->id . "::" . $campaign->name;
+                    $log->time = date('Y-m-d H:i:s');
+                    $log->title = "Tự động tắt campaign: " . $campaign->id . "::" . $campaign->name . ' lúc ' . $log->time;
                     $log->content = $log->title;
                     $log->campaign_id = $campaign->id;
-                    $log->time = date('Y-m-d H:i:s');
+
                     $this->warn( $tag . $log->title);
                     $log->save();
                     DB::commit();
@@ -96,7 +168,7 @@ class CampaignAutoStatusProcess extends Command
             ->get();
 
         if ($campaigns->count() === 0) {
-            $this->warn("No campaign to process");
+            $this->warn("No campaign to auto on");
         }
 
         /**
@@ -120,10 +192,12 @@ class CampaignAutoStatusProcess extends Command
                     $campaign->auto_on_status = 0;
                     $campaign->save();
                     $log = new EventLog();
-                    $log->title = "Tự động bật campaign: " . $campaign->id . "::" . $campaign->name;
-                    $log->content = $log->title;
+
+
                     $log->campaign_id = $campaign->id;
                     $log->time = date('Y-m-d H:i:s');
+                    $log->title = "Tự động bật campaign: " . $campaign->id . "::" . $campaign->name . ' lúc '. $log->time;
+                    $log->content = $log->title;
                     $this->warn( $tag . $log->title);
                     $log->save();
                     DB::commit();

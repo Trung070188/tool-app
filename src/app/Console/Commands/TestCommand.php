@@ -47,7 +47,6 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $info = $this->appStoreService->getAppInfo('com.omipharma.userapp');
-        dd($info);
+        dd(config('domain'));
     }
 }

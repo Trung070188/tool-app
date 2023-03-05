@@ -107,8 +107,14 @@
                                     <error-label for="f_status" :errors="errors.status"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <label>Bật fake số</label>
+                                    <div>
+                                        <switch-button  v-model="entry.is_fake_on"></switch-button>
+
+                                    </div>
+
                                     <label>Daily fake install</label>
-                                    <input  v-model="entry.daily_fake_install" name="name"
+                                    <input :disabled="!entry.is_fake_on"  v-model="entry.daily_fake_install" name="name"
                                             class="form-control"
                                             placeholder="Daily fake install">
                                     <error-label for="f_status" :errors="errors.daily_fake_install"></error-label>
@@ -127,15 +133,15 @@
                                             class="form-control"
                                             placeholder="Total install">
                                     <error-label for="f_status" :errors="errors.total_install"></error-label>
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <label>Is fake on</label>
-                                    <div>
-                                        <switch-button  v-model="entry.is_fake_on"></switch-button>
-
+                                    <div style="margin-top:10px">
+                                        <label>Total daily install</label>
+                                        <input  v-model="entry.daily_install" name="name"
+                                                class="form-control"
+                                                placeholder="Total install">
+                                        <error-label for="f_status" :errors="errors.daily_install"></error-label>
                                     </div>
-                                    <error-label for="f_status" :errors="errors.is_fake_on"></error-label>
                                 </div>
+
 
                                 <div class="form-group col-lg-6">
                                     <label>Tự động bật</label>
@@ -174,6 +180,15 @@
                                     <error-label for="f_status" :errors="errors.note"></error-label>
                                 </div>
 
+                                <div class="form-group col-lg-12" v-if="eventLogs.length">
+                                    <label>Sự kiện gần đây</label>
+                                    <ul style="height: 300px; overflow-y: auto">
+                                        <li v-for="log in eventLogs" >
+                                            <em v-text="log.title"></em>
+                                        </li>
+                                    </ul>
+                                </div>
+
                             </div>
 
                         </div>
@@ -206,7 +221,8 @@
                 customers:$json.customer || [],
                 entry: $json.entry || {},
                 isLoading: false,
-                errors: {}
+                errors: {},
+                eventLogs: $json.eventLogs,
             }
         },
         methods: {

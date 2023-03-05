@@ -25,7 +25,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('CleanUpProcess')->everyTwoHours();
-        $schedule->command('CampaignAutoStatusProcess')->everyMinute();
+        $schedule->command('CampaignAutoStatusProcess processAutoOff')->everyMinute();
+        $schedule->command('CampaignAutoStatusProcess processAutoOn')->everyMinute();
+        $schedule->command('CampaignAutoStatusProcess processAutoOffByTotalInstall')->everyMinute();
+        $schedule->command('CampaignAutoFakeProcess')->everyMinute();
     }
 
     /**

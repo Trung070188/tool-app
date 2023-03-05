@@ -102,15 +102,8 @@ class CustomersController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-            'email'=>'required',
-            'name' => 'max:200',
-            'company' => 'max:200',
             'password'=>'required'
 ];
-        if($data['phone'])
-        {
-            $rules['phone']=['numeric'];
-        }
         if (!isset($data['id'])) {
             if ($data['email']) {
                 $rules['email'] = ['email', Rule::unique('customers')];

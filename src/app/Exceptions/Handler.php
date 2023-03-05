@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -52,6 +53,10 @@ class Handler extends ExceptionHandler
             } catch (\Throwable $e) {
                 Log::error($e);
             }
+        });
+
+        $this->renderable(function (NotFoundHttpException  $e, $request) {
+            return response("Page not found", 404);
         });
     }
 }
