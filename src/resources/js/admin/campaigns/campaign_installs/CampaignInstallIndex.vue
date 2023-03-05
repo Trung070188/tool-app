@@ -89,7 +89,7 @@
                                         <th>Click</th>
                                         <th>Send Postback</th>
                                         <th>Rate</th>
-                                        <th></th>
+                                        <th>Chi phí share partner</th>
                                         <th>Chưa thanh toán</th>
                                         <th>Thanh toán</th>
                                         <!--                                    <th>Action</th>-->
@@ -104,8 +104,9 @@
                                         <td ></td>
                                         <td></td>
                                         <td></td>
+                                        <td >{{(entry.price) * (entry.total_install)}}</td>
                                         <td ></td>
-                                        <td ></td>
+                                        <td></td>
 
                                     </tr>
                                     </tbody>
@@ -150,7 +151,7 @@
                     partner_name:$q.partner_name || '',
                     created: $q.created || created,
                 },
-                limit: $q.limit || 50,
+                limit: $q.limit || 25,
                 from: 0,
                 to: 0,
                 paginate: {

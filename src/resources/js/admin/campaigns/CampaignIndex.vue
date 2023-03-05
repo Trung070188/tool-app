@@ -273,6 +273,8 @@
                 isShowFilter:isShowFilter,
                 entries: [],
                 filter: filter,
+                limit: $q.limit || 25,
+
                 paginate: {
                     currentPage: 1,
                     lastPage: 1
@@ -361,6 +363,9 @@
                 this.paginate = res.paginate;
                 this.entries = res.data;
                 this.customers=res.customers;
+                this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
+                this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
+
             },
             async remove(entry) {
                 if (!confirm('Xóa bản ghi: ' + entry.id)) {

@@ -246,50 +246,8 @@
             $router.on('/', this.load).init();
         },
         methods: {
-            async removeAllCampaign()
-            {
-                if (!confirm('Xóa bản ghi')) {
-                    return;
-                }
 
-                const res = await $post('/xadmin/campaigns/removeCampaign', {campaignIds: this.campaignIds});
 
-                if (res.code) {
-                    toastr.error(res.message);
-                } else {
-                    toastr.success(res.message);
-                    this.campaignIds=[];
-                    this.campaign='';
-                }
-
-                $router.updateQuery({page: this.paginate.currentPage, _: Date.now()});
-            },
-            selectAll() {
-                if (this.allSelected) {
-                    const selected = this.entries.map(u => u.id);
-                    this.campaignIds = selected;
-                    this.campaign = this.entries;
-                } else {
-                    this.campaignIds = [];
-                    this.campaign = [];
-                }
-            },
-            updateCheckAll() {
-                this.campaign = [];
-                if (this.campaignIds.length === this.entries.length) {
-                    this.allSelected = true;
-                } else {
-                    this.allSelected = false;
-                }
-                let self = this;
-                self.campaignIds.forEach(function(e) {
-                    self.entries.forEach(function(e1) {
-                        if (e1.id == e) {
-                            self.campaign.push(e1);
-                        }
-                    });
-                });
-            },
             advanceSearch()
             {
                 this.isShowFilter=!this.isShowFilter;
@@ -308,40 +266,15 @@
                 }
 
             },
-            async switchStatus(entry)
-            {
-                const res= await $post('/xadmin/campaigns/switchStatus',{entry:entry})
-                if (res.code) {
-                    toastr.success(res.message);
-                } else {
-                    toastr.error(res.message);
-                }
-
-            },
             async load() {
                 let query = $router.getQuery();
-                const res = await $get('/xadmin/campaigns/dataStatistical', query);
+                const res = await $get('/customer/campaigns/dataStatistical', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
                 this.customers=res.customers;
                 this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
                 this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
 
-            },
-            async remove(entry) {
-                if (!confirm('Xóa bản ghi: ' + entry.id)) {
-                    return;
-                }
-
-                const res = await $post('/xadmin/campaigns/remove', {id: entry.id});
-
-                if (res.code) {
-                    toastr.error(res.message);
-                } else {
-                    toastr.success(res.message);
-                }
-
-                $router.updateQuery({page: this.paginate.currentPage, _: Date.now()});
             },
             filterClear() {
                 for (var key in this.filter) {
@@ -351,18 +284,6 @@
             },
             doFilter() {
                 $router.setQuery(this.filter)
-            },
-            async toggleStatus(entry) {
-                const res = await $post('/xadmin/campaigns/toggleStatus', {
-                    id: entry.id,
-                    status: entry.status
-                });
-
-                if (res.code === 200) {
-                    toastr.success(res.message);
-                } else {
-                    toastr.error(res.message);
-                }
             },
             onPageChange(page) {
                 $router.updateQuery({page: page})

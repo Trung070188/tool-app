@@ -82,12 +82,12 @@
                                     <thead>
                                     <tr>
                                         <th>Campaign</th>
-                                        <th>Partner</th>
                                         <th>Total</th>
+                                        <th>Price</th>
                                         <th>Click</th>
                                         <th>Send Postback</th>
                                         <th>Rate</th>
-                                        <th></th>
+                                        <th>Chi phí share partner</th>
                                         <th>Chưa thanh toán</th>
                                         <th>Thanh toán</th>
                                         <!--                                    <th>Action</th>-->
@@ -96,14 +96,14 @@
                                     <tbody>
                                     <tr v-for="entry in entries">
                                         <td v-text="entry.campaign"></td>
-                                        <td v-text="entry.partner_name"></td>
                                         <td></td>
-                                        <td></td>
+                                        <td v-text="entry.price"></td>
                                         <td ></td>
                                         <td></td>
                                         <td></td>
+                                        <td >{{(entry.price) * (entry.total_install)}}</td>
                                         <td ></td>
-                                        <td ></td>
+                                        <td></td>
 
                                     </tr>
                                     </tbody>
@@ -156,7 +156,7 @@ export default {
                 // pageSize: $q.pageSize || 10,
                 // currentPage: $q.currentPage || 1
             },
-            limit: $q.limit || 50,
+            limit: $q.limit || 25,
 
             paginate: {
                 currentPage: 1,

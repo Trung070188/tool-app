@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Campaign</label>
-                                    <select class="form-select form-control" v-model="entry.campaign_id" @change="load()">
+                                    <select class="form-select form-control" v-model="entry.campaign_id">
                                         <option v-for="campaign in campaigns" :value="campaign.id">{{campaign.name}}</option>
                                     </select>
                                     <error-label :errors="errors.campaign_id" ></error-label>
@@ -121,25 +121,22 @@
         components: {RichtextEditor, SwitchButton, ActionBar},
         data() {
             return {
-                partners:[],
+                campaigns:$json.campaigns,
+                partners:$json.partners,
                 dataFilterCampaign:{
                 },
                 campaignId:'',
-                campaigns:[],
                 entry: $json.entry || {},
                 isLoading: false,
                 errors: {}
             }
         },
         mounted() {
-            $router.on('/', this.load).init();
         },
         methods: {
             async save() {
-                console.log(this.dataFilterCampaign);
                 this.isLoading = true;
-               var seft=this;
-                const res = await $post('/xadmin/campaign_partners/save', {entry:seft.entry});
+                const res = await $post('/xadmin/campaign_partners/save', {entry:this.entry});
                 this.isLoading = false;
                 if (res.errors) {
                     this.errors = res.errors;
@@ -156,19 +153,6 @@
                     }
                 }
             },
-            async load() {
-                let query = $router.getQuery();
-                const res = await $get('/xadmin/campaign_partners/dataEdit?campaign_id='+this.campaignId, query);
-                this.paginate = res.paginate;
-                this.campaigns=res.campaigns;
-                this.partners=res.partners;
-                if(res.data_filter_campaign!=null)
-                {
-                    this.dataFilterCampaign=res.data_filter_campaign;
-
-                }
-            },
-
         }
     }
 </script>

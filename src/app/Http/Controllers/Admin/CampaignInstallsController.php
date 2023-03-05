@@ -194,7 +194,7 @@ class CampaignInstallsController extends AdminBaseController
             ->leftJoin('partners',function ($join)
             {
                 $join->on('partners.id','=','partner_campaigns.partner_id');
-            });
+            })->whereNull('campaign_installs.faked_at')->groupBy('campaign_installs.campaign_id');
         $campaignInstall = $campaignInstall->select([
             'campaigns.name as campaign',
             'campaigns.created_at as created_at',
@@ -208,7 +208,7 @@ class CampaignInstallsController extends AdminBaseController
             'partner_campaigns.price as price',
             'campaign_installs.partner_id as partner_id',
             'partners.name as partner_name',
-
+            DB::raw('COUNT(campaign_installs.id) as total_install')
         ]);
 
         if ($req->keyword) {
@@ -233,7 +233,7 @@ class CampaignInstallsController extends AdminBaseController
            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
            $campaignInstall->whereBetween('campaigns.created_at',[$start_date,$end_date]);
        }
-        $limit = 50;
+        $limit = 25;
         if ($req->limit) {
             $limit = $req->limit;
         }
