@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::get('/', 'HomeController@index');
+            Route::get('/', $this->namespace . '\\HomeController@index');
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->domain(config('domain.manager'))
