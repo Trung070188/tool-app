@@ -40,7 +40,11 @@ class CampaignPartnersController extends AdminBaseController
     {
         $component = 'PartnerCampaignForm';
         $title = 'Create campaignPartners';
-        return vue(compact('title', 'component'));
+        $campaigns=Campaign::query()->orderBy('id','desc')->get();
+        $partners=Partner::query()->orderBy('id','desc')->get();
+        $jsonData = compact('campaigns','partners');
+
+        return vue(compact('title', 'component'),$jsonData);
     }
 
     /**
@@ -60,7 +64,9 @@ class CampaignPartnersController extends AdminBaseController
         /**
         * @var  CampaignPartner $entry
         */
-        $jsonData = compact('entry');
+        $campaigns=Campaign::query()->orderBy('id','desc')->get();
+        $partners=Partner::query()->orderBy('id','desc')->get();
+        $jsonData = compact('entry','campaigns','partners');
         $title = 'Edit';
         $component = 'PartnerCampaignForm';
 
@@ -101,7 +107,6 @@ class CampaignPartnersController extends AdminBaseController
         $rules = [
             'name'=>'required',
             'os'=>'required',
-            ' partner_campaign_id' => 'required|numeric',
             'campaign_id' => 'required|numeric',
              'partner_id' => 'required|numeric',
 ];
@@ -200,16 +205,24 @@ class CampaignPartnersController extends AdminBaseController
         $data=[];
         foreach ($entries as $entry)
         {
-            $campaign=Campaign::query()->where('id',$entry->campaign_id)->first();
+            if($entry->campaign_id)
+            {
+                $campaign=Campaign::query()->where('id',$entry->campaign_id)->first();
 
-            $partner=Partner::query()->where('id',$entry->partner_id)->first();
+            }
+            if($entry->partner_id)
+            {
+                $partner=Partner::query()->where('id',$entry->partner_id)->first();
+
+            }
+
             $data[]=[
               'id'=>$entry->id,
               'name'=>$entry->name,
-              'campaign_name'=>$campaign->name,
-              'partner_name'=>$partner->name,
-                'created_at'=>$partner->created_at,
-                'updated_at'=>$partner->updated_at
+              'campaign_name'=>@$campaign->name,
+              'partner_name'=>@$partner->name,
+                'created_at'=>@$partner->created_at,
+                'updated_at'=>@$partner->updated_at
             ];
         }
         return [
@@ -219,17 +232,6 @@ class CampaignPartnersController extends AdminBaseController
                 'currentPage' => $entries->currentPage(),
                 'lastPage' => $entries->lastPage(),
             ]
-        ];
-    }
-
-    public function dataEdit(Request $req)
-    {
-        $campaigns=Campaign::query()->orderBy('id','desc')->get();
-
-        $partners=Partner::query()->orderBy('id','desc')->get();
-        return [
-            'campaigns'=>$campaigns,
-            'partners'=>$partners
         ];
     }
 
