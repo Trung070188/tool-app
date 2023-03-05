@@ -6,7 +6,7 @@ class HomeController
 {
     public function index()
     {
-        $SERVER_NAME = $_SERVER['SERVER_NAME'];
+        $SERVER_NAME = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['SERVER_NAME'];
         $domainCustomer = config('domain.customer');
         $domainManager = config('domain.manager');
 
