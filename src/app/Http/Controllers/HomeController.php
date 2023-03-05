@@ -10,6 +10,10 @@ class HomeController
         $domainCustomer = config('domain.customer');
         $domainManager = config('domain.manager');
 
+        if ($domainManager === 'localhost' ) {
+            return redirect()->to('/xadmin/login');
+        }
+
         if ($domainCustomer === $domainManager) {
             abort(404);
         }
