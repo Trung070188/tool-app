@@ -39,15 +39,18 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::get('/', $this->namespace . '\\HomeController@index');
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->domain(config('domain.manager'))
-                ->group(base_path('routes/web.php'));
+            $SERVER_NAME = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['SERVER_NAME'];
 
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->domain(config('domain.customer'))
-                ->group(base_path('routes/customer.php'));
+            if ($SERVER_NAME === config('domain.manager')) {
+                Route::middleware('web')
+                    ->namespace($this->namespace)
+                    ->group(base_path('routes/web.php'));
+            } else if ($SERVER_NAME === config('domain.customer')) {
+
+                Route::middleware('web')
+                    ->namespace($this->namespace)
+                    ->group(base_path('routes/customer.php'));
+            }
         });
     }
 
