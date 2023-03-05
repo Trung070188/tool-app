@@ -39,8 +39,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::get('/', $this->namespace . '\\HomeController@index');
-            $SERVER_NAME = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['SERVER_NAME'];
-
+            $SERVER_NAME = getRealServerName();
             if ($SERVER_NAME === config('domain.manager')) {
                 Route::middleware('web')
                     ->namespace($this->namespace)

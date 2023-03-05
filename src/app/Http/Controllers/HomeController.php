@@ -6,16 +6,12 @@ class HomeController
 {
     public function index()
     {
-        $SERVER_NAME = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['SERVER_NAME'];
+        $SERVER_NAME = getRealServerName();
         $domainCustomer = config('domain.customer');
         $domainManager = config('domain.manager');
 
-        if ($domainManager === 'localhost' ) {
-            return redirect()->to('/xadmin/login');
-        }
-
         if ($domainCustomer === $domainManager) {
-            abort(404);
+            return redirect()->to('/xadmin/login');
         }
 
         if ($SERVER_NAME === $domainCustomer) {

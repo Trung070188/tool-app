@@ -882,3 +882,14 @@ function file_get_contents_curl($url) {
     return $data;
 }
 
+function getRealServerName(): string
+{
+    $SERVER_NAME = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['SERVER_NAME'];
+    $SERVER_PORT = (int) $_SERVER['SERVER_PORT'];
+
+    if ($SERVER_NAME === 'localhost' && $SERVER_PORT !== 80) {
+        $SERVER_NAME = 'localhost:' . $SERVER_PORT;
+    }
+
+    return $SERVER_NAME;
+}
