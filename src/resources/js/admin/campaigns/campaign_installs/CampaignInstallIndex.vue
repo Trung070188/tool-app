@@ -151,7 +151,7 @@
                     partner_name:$q.partner_name || '',
                     created: $q.created || created,
                 },
-                limit: $q.limit || 50,
+                limit: $q.limit || 25,
                 from: 0,
                 to: 0,
                 paginate: {

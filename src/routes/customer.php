@@ -8,6 +8,7 @@ Route::get('/', 'HomeController@index');
  */
 Route::middleware(['auth:customer'])->namespace('Customer')->prefix('customer')->group(function () {
     Route::any('/dashboard/{action}', 'CustomerDashboardController');
+    Route::any('/campaigns/{action}', 'CustomerCampaignsController');
 });
 
 Route::group(['prefix' => 'customer'], function(){

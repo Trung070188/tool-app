@@ -38,6 +38,7 @@ class CampaignsController extends AdminBaseController
         $component = 'CampaignIndex';
         return vue(compact('title', 'component'));
     }
+
     public function statistical()
     {
         $title = 'Campaign';
@@ -295,19 +296,20 @@ class CampaignsController extends AdminBaseController
             ]
         ];
     }
+
     public function dataStatistical(Request $req)
     {
         $customers = Customer::query()->orderBy('id', 'desc')->get();
 
-        $fakes= DB::table('campaign_installs')
+        $fakes = DB::table('campaign_installs')
             ->select('campaign_id', DB::raw('COUNT(faked_at) as total_fake'))
             ->whereNotNull('faked_at')
             ->groupBy('campaign_id');
-        $totalInstall=DB::table('campaign_installs')
+        $totalInstall = DB::table('campaign_installs')
             ->select('campaign_id', DB::raw('COUNT(id) as total_install'))
             ->groupBy('campaign_id');
 
-        $query = Campaign::query()->with(['customer','campaignPartner'])
+        $query = Campaign::query()->with(['customer', 'campaignPartner'])
             ->leftJoinSub($fakes, 'fakes', function ($join) {
                 $join->on('campaigns.id', '=', 'fakes.campaign_id');
             })
@@ -356,9 +358,11 @@ class CampaignsController extends AdminBaseController
         }
 
 //        $query->createdIn($req->created);
-
-        $entries = $query->paginate();
-
+        $limit = 25;
+        if ($req->limit) {
+            $limit = $req->limit;
+        }
+        $entries = $query->paginate($limit);
         return [
             'code' => 0,
             'customers' => $customers,

@@ -19,11 +19,11 @@ class CustomersController extends AdminBaseController
 {
 
     /**
-    * Index page
-    * @uri  /xadmin/customers/index
-    * @throw  NotFoundHttpException
-    * @return  View
-    */
+     * Index page
+     * @uri  /xadmin/customers/index
+     * @throw  NotFoundHttpException
+     * @return  View
+     */
     public function index()
     {
         $title = 'customer';
@@ -32,12 +32,12 @@ class CustomersController extends AdminBaseController
     }
 
     /**
-    * Create new entry
-    * @uri  /xadmin/customers/create
-    * @throw  NotFoundHttpException
-    * @return  View
-    */
-    public function create (Request $req)
+     * Create new entry
+     * @uri  /xadmin/customers/create
+     * @throw  NotFoundHttpException
+     * @return  View
+     */
+    public function create(Request $req)
     {
         $component = 'CustomerForm';
         $title = 'Create customers';
@@ -45,11 +45,11 @@ class CustomersController extends AdminBaseController
     }
 
     /**
-    * @uri  /xadmin/customers/edit?id=$id
-    * @throw  NotFoundHttpException
-    * @return  View
-    */
-    public function edit (Request $req)
+     * @uri  /xadmin/customers/edit?id=$id
+     * @throw  NotFoundHttpException
+     * @return  View
+     */
+    public function edit(Request $req)
     {
         $id = $req->id;
         $entry = Customer::find($id);
@@ -59,8 +59,8 @@ class CustomersController extends AdminBaseController
         }
 
         /**
-        * @var  Customer $entry
-        */
+         * @var  Customer $entry
+         */
         $jsonData = compact('entry');
         $title = 'Edit';
         $component = 'CustomerForm';
@@ -69,9 +69,9 @@ class CustomersController extends AdminBaseController
     }
 
     /**
-    * @uri  /xadmin/customers/remove
-    * @return  array
-    */
+     * @uri  /xadmin/customers/remove
+     * @return  array
+     */
     public function remove(Request $req)
     {
         $id = $req->id;
@@ -90,9 +90,9 @@ class CustomersController extends AdminBaseController
     }
 
     /**
-    * @uri  /xadmin/customers/save
-    * @return  array
-    */
+     * @uri  /xadmin/customers/save
+     * @return  array
+     */
     public function save(Request $req)
     {
         if (!$req->isMethod('POST')) {
@@ -102,8 +102,8 @@ class CustomersController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-            'password'=>'required'
-];
+            'password' => 'required'
+        ];
         if (!isset($data['id'])) {
             if ($data['email']) {
                 $rules['email'] = ['email', Rule::unique('customers')];
@@ -117,16 +117,13 @@ class CustomersController extends AdminBaseController
             }
         }
         $v = Validator::make($data, $rules);
-        $v->after(function ($valiadte) use ($data,$req)
-        {
-           if(!isset($data['id']) && $data['password_conf']!=$data['password'])
-           {
-              $valiadte->errors()->add('password_conf','The password and confirmation password do not match.');
-           }
-           if(isset($data['id']) && $req->password_conf!=$req->password)
-           {
-              $valiadte->errors()->add('password_conf','The password and confirmation password do not match.');
-           }
+        $v->after(function ($valiadte) use ($data, $req) {
+            if (!isset($data['id']) && $data['password_conf'] != $data['password']) {
+                $valiadte->errors()->add('password_conf', 'The password and confirmation password do not match.');
+            }
+            if (isset($data['id']) && $req->password_conf != $req->password) {
+                $valiadte->errors()->add('password_conf', 'The password and confirmation password do not match.');
+            }
         });
 
         if ($v->fails()) {
@@ -137,8 +134,8 @@ class CustomersController extends AdminBaseController
         }
 
         /**
-        * @var  Customer $entry
-        */
+         * @var  Customer $entry
+         */
         if (isset($data['id'])) {
             $entry = Customer::find($data['id']);
             if (!$entry) {
@@ -150,8 +147,8 @@ class CustomersController extends AdminBaseController
 
             $entry->fill($data);
             $entry->save();
-            $password=Hash::make($req->password);
-            Customer::query()->where('id',$entry->id)->update(['password'=>$password]);
+            $password = Hash::make($req->password);
+            Customer::query()->where('id', $entry->id)->update(['password' => $password]);
 
             return [
                 'code' => 0,
@@ -161,8 +158,8 @@ class CustomersController extends AdminBaseController
         } else {
             $entry = new Customer();
             $entry->fill($data);
-            $password=(Hash::make($data['password']));
-            $entry->password=$password;
+            $password = (Hash::make($data['password']));
+            $entry->password = $password;
             $entry->save();
             return [
                 'code' => 0,
@@ -173,8 +170,8 @@ class CustomersController extends AdminBaseController
     }
 
     /**
-    * @param  Request $req
-    */
+     * @param Request $req
+     */
     public function toggleStatus(Request $req)
     {
         $id = $req->get('id');
@@ -197,32 +194,33 @@ class CustomersController extends AdminBaseController
     }
 
     /**
-    * Ajax data for index page
-    * @uri  /xadmin/customers/data
-    * @return  array
-    */
+     * Ajax data for index page
+     * @uri  /xadmin/customers/data
+     * @return  array
+     */
     public function data(Request $req)
     {
         $query = Customer::query()->orderBy('id', 'desc');
 
         if ($req->keyword) {
-            $query->where('name', 'LIKE', '%' . $req->keyword. '%')
-            ->orWhere('email','LIKE', '%' . $req->keyword. '%')->orWhere('id',$req->keyword);
+            $query->where('name', 'LIKE', '%' . $req->keyword . '%')
+                ->orWhere('email', 'LIKE', '%' . $req->keyword . '%')->orWhere('id', $req->keyword);
         }
-        if($req->created)
-        {
+        if ($req->created) {
             $dates = $req->created;
             $date_range = explode('_', $dates);
             $start_date = $date_range[0];
             $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
             $end_date = $date_range[1];
             $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
-            $query->whereBetween('created_at',[$start_date,$end_date]);
+            $query->whereBetween('created_at', [$start_date, $end_date]);
         }
 
-//        $query->createdIn($req->created);
-
-        $entries = $query->paginate();
+        $limit = 25;
+        if ($req->limit) {
+            $limit = $req->limit;
+        }
+        $entries = $query->paginate($limit);
 
         return [
             'code' => 0,
@@ -236,13 +234,13 @@ class CustomersController extends AdminBaseController
 
     public function export()
     {
-                $keys = [
-                            'name' => ['A', 'name'],
-                            'email' => ['B', 'email'],
-                            'phone' => ['C', 'phone'],
-                            'company' => ['D', 'company'],
-                            'description' => ['E', 'description'],
-                            ];
+        $keys = [
+            'name' => ['A', 'name'],
+            'email' => ['B', 'email'],
+            'phone' => ['C', 'phone'],
+            'company' => ['D', 'company'],
+            'description' => ['E', 'description'],
+        ];
 
         $query = Customer::query()->orderBy('id', 'desc');
 
@@ -255,7 +253,7 @@ class CustomersController extends AdminBaseController
                 $sheet->setCellValue($v . "1", $key);
             } elseif (is_array($v)) {
                 list($c, $n) = $v;
-                 $sheet->setCellValue($c . "1", $n);
+                $sheet->setCellValue($c . "1", $n);
             }
         }
 

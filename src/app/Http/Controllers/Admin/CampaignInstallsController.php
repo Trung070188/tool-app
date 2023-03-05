@@ -233,7 +233,7 @@ class CampaignInstallsController extends AdminBaseController
            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
            $campaignInstall->whereBetween('campaigns.created_at',[$start_date,$end_date]);
        }
-        $limit = 50;
+        $limit = 25;
         if ($req->limit) {
             $limit = $req->limit;
         }
