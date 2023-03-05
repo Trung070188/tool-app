@@ -40,23 +40,16 @@ class CustomerCampaignsController extends CustomerBaseController
         $component = 'CampaignStatistical';
         return customerVue(compact('title', 'component'));
     }
+
     public function dataStatistical(Request $req)
     {
-        $user=Auth::user();
-        $customers = Customer::query()->orderBy('id', 'desc')->get();
+        $user = Auth::user();
 
-        $fakes= DB::table('campaign_installs')
-            ->select('campaign_id', DB::raw('COUNT(faked_at) as total_fake'))
-            ->whereNotNull('faked_at')
-            ->groupBy('campaign_id');
-        $totalInstall=DB::table('campaign_installs')
+        $totalInstall = DB::table('campaign_installs')
             ->select('campaign_id', DB::raw('COUNT(id) as total_install'))
             ->groupBy('campaign_id');
 
-        $query = Campaign::query()->with(['customer','campaignPartner'])
-            ->leftJoinSub($fakes, 'fakes', function ($join) {
-                $join->on('campaigns.id', '=', 'fakes.campaign_id');
-            })
+        $query = Campaign::query()
             ->leftJoinSub($totalInstall, 'total_install', function ($join) {
                 $join->on('campaigns.id', '=', 'total_install.campaign_id');
             })
@@ -70,10 +63,9 @@ class CustomerCampaignsController extends CustomerBaseController
                 'campaigns.customer_id',
                 'campaigns.type',
                 'campaigns.created_at',
-                DB::raw('COALESCE(fakes.total_fake, 0) as total_fake'),
                 DB::raw('COALESCE(total_install.total_install, 0) as total_install')
             ])
-            ->where('campaigns.customer_id',$user->id)
+            ->where('campaigns.customer_id', $user->id)
             ->groupBy('campaigns.id')
             ->orderBy('campaigns.id', 'desc');
         if ($req->keyword) {
@@ -112,7 +104,6 @@ class CustomerCampaignsController extends CustomerBaseController
 
         return [
             'code' => 0,
-            'customers' => $customers,
             'data' => $entries->items(),
             'paginate' => [
                 'currentPage' => $entries->currentPage(),

@@ -38,12 +38,6 @@
                                         </button>
                                         <a href="/xadmin/campaigns/create" class="btn btn-primary" style="margin-left: 10px"><i class="fa fa-plus"/> Thêm</a>
                                     </div>
-                                    <div class="d-flex justify-content-end align-items-center d-none"
-                                         data-kt-customer-table-toolbar="selected" v-if="campaignIds!='' " style="position: absolute;top: 25px;right: 0px">
-                                        <button   type="button" class="btn btn-danger"
-                                                  data-kt-customer-table-select="delete_selected" @click="removeAllCampaign">Xóa campaign đã chọn
-                                        </button>
-                                    </div>
                                 </div>
                                 <form class="col-lg-12" v-if="!isShowFilter">
                                     <div class="row" style="position:relative;margin-top: 20px">
@@ -74,13 +68,6 @@
                                                 <option value="top_keyword"></option>
                                             </select>
                                         </div>
-                                        <div class="form-group col-lg-2">
-                                            <label>Customer </label>
-                                            <select required class="form-control form-select" v-model="filter.customer_id">
-                                                <option value="" disabled selected>Choose customer</option>
-                                                <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
-                                            </select>
-                                        </div>
                                         <div class="form-group col-lg-4">
                                             <label>Creation date </label>
                                             <Daterangepicker v-model="filter.created" class="active"
@@ -99,43 +86,6 @@
                                 </form>
 
                             </div>
-
-                            <!--                            <div class="row">-->
-<!--                                <div class="col-xl-8">-->
-<!--                                    <form class="form-inline">-->
-<!--                                        <div class="form-group mx-sm-3 mb-2">-->
-<!--                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword"-->
-<!--                                                   type="text"-->
-<!--                                                   class="form-control" placeholder="tìm kiếm" >-->
-<!--                                        </div>-->
-<!--                                        <div class="form-group mx-sm-3 mb-2">-->
-<!--                                            <Daterangepicker-->
-<!--                                                @update:modelValue="(value) => doFilter('created', value, $event)"-->
-<!--                                                v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>-->
-<!--                                        </div>-->
-
-<!--&lt;!&ndash;                                        <div class="form-group mx-sm-3 mb-2">&ndash;&gt;-->
-<!--&lt;!&ndash;                                            <button @click="filterClear()" type="button"&ndash;&gt;-->
-<!--&lt;!&ndash;                                                    class="btn btn-light">Xóa&ndash;&gt;-->
-<!--&lt;!&ndash;                                            </button>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        </div>&ndash;&gt;-->
-<!--                                        <div class="form-group mx-sm-3 mb-2">-->
-<!--                                            <input class="form-control">-->
-<!--                                        </div>-->
-
-<!--                                    </form>-->
-<!--                                </div>-->
-<!--                                <div class="col-xl-4 d-flex">-->
-<!--                                    <div class="margin-left-auto mb-1">-->
-<!--                                        <a href="/xadmin/campaigns/create" class="btn btn-primary">-->
-<!--                                            <i class="fa fa-plus"/>-->
-<!--                                            Thêm-->
-<!--                                        </a>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-
-
                             <div class="table-responsive">
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
@@ -143,43 +93,33 @@
                                         <th>ID</th>
                                         <th>Icon</th>
                                         <th>Campaign</th>
-                                        <th>Os</th>
-                                        <th>Customer</th>
-                                        <th>Mã KH</th>
-                                        <th>HT</th>
-                                        <th>Giá bán</th>
-                                        <th>Tổng lượt cài đặt</th>
-                                        <th>Thành tiền</th>
-                                        <th>Số lượng cài partner</th>
-                                        <th>Giá share partner</th>
-                                        <th>Chi phí share partner</th>
-                                        <th>Số lượng fake</th>
+                                        <th>Hệ điều hành</th>
+                                        <th>Type</th>
+                                        <th>Tổng cài</th>
+                                        <th>Giá</th>
+                                        <th>Tổng tiền</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="entry in entries">
-                                        <td v-text="entry.id"></td>
+                                       <td v-text="entry.id"></td>
                                         <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
-                                        <td v-text="entry.name"></td>
-                                        <td v-text="entry.os"></td>
-                                        <td>
-                                            <template v-if="entry.customer">
-                                                {{entry.customer.name}}
-                                            </template>
-                                        </td>
-                                        <td>
-                                            <template v-if="entry.customer">
-                                                {{entry.customer.id}}
-                                            </template>
-                                        </td>
-                                        <td v-text="entry.type"></td>
-                                        <td v-text="entry.price"></td>
-                                        <td v-text="entry.total_install"></td>
-                                        <td>{{(entry.price) * (entry.total_install)}}</td>
-                                        <td>{{(entry.total_install)-(entry.total_fake)}}</td>
+                                       <td v-text="entry.name"></td>
+                                       <td v-text="entry.os"></td>
+                                       <td v-text="entry.type"></td>
+                                       <td v-text="entry.total_install"></td>
+                                       <td v-text="entry.price"></td>
+                                       <td>{{entry.total}}</td>
+                                    </tr>
+                                    <tr>
                                         <td></td>
                                         <td></td>
-                                        <td v-text="entry.total_fake"></td>
+                                        <td></td>
+                                        <td>Tổng</td>
+                                        <td></td>
+                                        <td>{{totalInstall}}</td>
+                                        <td></td>
+                                        <td>{{totalPrice}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -227,10 +167,11 @@
                 }
             }
             return {
+                totalInstall:'',
+                totalPrice:'',
                 campaign:'',
                 allSelected:false,
                 campaignIds:[],
-                customers:[],
                 isShowFilter:isShowFilter,
                 entries: [],
                 filter: filter,
@@ -256,22 +197,37 @@
                 }
                 $router.setQuery({});
             },
-            async OpenNextDay(entry)
-            {
-                const res= await $post('/xadmin/campaigns/openNextDay',{entry:entry})
-                if (res.code) {
-                    toastr.success(res.message);
-                } else {
-                    toastr.error(res.message);
-                }
-
-            },
             async load() {
                 let query = $router.getQuery();
                 const res = await $get('/customer/campaigns/dataStatistical', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
-                this.customers=res.customers;
+                this.totalInstall=this.entries.reduce((accumulator, currentValue)=>{
+                    return accumulator + parseInt(currentValue['total_install']);
+                },0);
+                this.totalPrice=this.entries.reduce((accumulator, currentValue)=>{
+                    return accumulator + parseInt(currentValue['price']);
+                },0);
+                this.totalPrice=(this.totalInstall)*(this.totalPrice);
+                this.totalPrice=parseFloat(this.totalPrice).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+                for (let item of this.entries) {
+                    let owe=(item.total_install)*(item.price)
+                    if (item.price) {
+                        item.price = parseFloat(item.price).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                    }
+                    if (owe) {
+                        item.total = parseFloat(owe).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                    }
+                }
                 this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
                 this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
 

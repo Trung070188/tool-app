@@ -1,15 +1,24 @@
 <?php
 return [
     [
-        "name" => "Thống kê Campaign Partner",
-        "icon" => "fa fa-home",
-        "url" => "/customer/dashboard/index",
-        "group" => 1
-    ],
-    [
-        "name" => "Thống kê campaign",
-        "icon" => "fa fa-home",
-        "url" => "/customer/campaigns/statistical",
-        "group" => 1
+    "name" => "Campaign",
+    "icon" => "fa fa-user",
+    "group" => 3,
+    'base' => '',
+    'subs' => [
+        [
+            "name" => "Campaign",
+            "icon" => "fas fa-list ",
+            "group" => 3,
+            'url' => '/customer/dashboard/index',
+        ],
+        [
+            "name" => "Thống kê",
+            "icon" => "fas fa-list ",
+            "group" => 3,
+            'url' => '/customer/campaigns/statistical',
+        ]
     ]
+
+],
 ];

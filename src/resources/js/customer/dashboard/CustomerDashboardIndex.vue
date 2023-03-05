@@ -28,29 +28,19 @@
                                 <!--                                                   class="form-control" placeholder="tìm kiếm" >-->
                                 <!--                                        </div>-->
                                 <div class="form-group col-lg-3">
-                                    <label>Campaign</label>
-                                    <select class="form-control form-select" v-model="filter.campaign" required>
-                                        <option value="" disabled selected>Chọn campaign</option>
-                                        <option v-for="campaign in campaigns" :value="campaign.name">{{campaign.name}}</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label>Partner</label>
-                                    <select class="form-select form-control" v-model="filter.partner_name" required>
-                                        <option value="" disabled selected>Chọn partner</option>
-                                        <option v-for="partner in partners" :value="partner.name">{{partner.name}}</option>
-                                    </select>
-                                    <!--                                            <input @keydown.enter="doFilter('partner_name', filter.partner_name, $event)" v-model="filter.partner_name"-->
-                                    <!--                                                   type="text"-->
-                                    <!--                                                   class="form-control" placeholder="Partner" >-->
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label>Chọn thời gian thống kê</label>
-                                    <Daterangepicker
-                                        @update:modelValue="(value) => doFilter('created', value, $event)"
-                                        v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>
-                                </div>
+                                    <label>Tìm kiếm</label>
+                                    <input type="text" @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword" placeholder="Tìm kiếm..." class="form-control"/>
 
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    <label>OS</label>
+                                    <select class="form-select form-control" v-model="filter.os" required>
+                                        <option value="" disabled selected>Chọn os</option>
+                                        <option value="0">ALL</option>
+                                        <option value="android">Android</option>
+                                        <option value="ios">iOS</option>
+                                    </select>
+                                </div>
                                 <div class="form-group col-lg-3">
                                     <label></label>
                                     <button @click="filterClear()" type="button" style="margin-top: 30px"
@@ -61,50 +51,26 @@
                             <button class="btn btn-primary ml-1" @click="doFilter">Submit</button>
                             <hr>
                             <h3>Bảng dữ liệu</h3>
-                            <div style="margin-bottom:50px">
-                                <div style="float: left;display: inline-block">
-                                    <select class="form-select form-select-sm form-select-solid" v-model="limit" @change="changeLimit">
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                        <option value="200">200</option>
-                                    </select>
-
-                                </div>
-                                <div style="display: inline-block;float: left;margin: 4px 4px">Record per page</div>
-                                <div style="float: right;display: inline-block">
-                                    <div style="float: left;margin: 2px 4px">Search</div>
-                                    <input type="text" @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword">
-                                </div>
-                            </div>
-
                             <div class="table-responsive">
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>
-                                        <th>Campaign</th>
-                                        <th>Total</th>
-                                        <th>Price</th>
-                                        <th>Click</th>
-                                        <th>Send Postback</th>
-                                        <th>Rate</th>
-                                        <th>Chi phí share partner</th>
-                                        <th>Chưa thanh toán</th>
-                                        <th>Thanh toán</th>
-                                        <!--                                    <th>Action</th>-->
+                                        <th>ID</th>
+                                        <th>Icon</th>
+                                        <th>Tên ứng dụng</th>
+                                        <th>Hệ điều hành</th>
+                                        <th>Type</th>
+                                        <th>Trạng thái</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="entry in entries">
-                                        <td v-text="entry.campaign"></td>
-                                        <td></td>
-                                        <td v-text="entry.price"></td>
-                                        <td ></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td >{{(entry.price) * (entry.total_install)}}</td>
-                                        <td ></td>
-                                        <td></td>
-
+                                        <td v-text="entry.id"></td>
+                                        <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
+                                        <td v-text="entry.name"></td>
+                                        <td v-text="entry.os"></td>
+                                        <td v-text="entry.type"></td>
+                                        <td><switch-button></switch-button></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -140,21 +106,12 @@ export default {
   components: {RichtextEditor, SwitchButton},
     data() {
         return {
-            campaigns:[],
-            partners:[],
             entries: [],
             dataList: [],
             testButton: false,
             filter: {
                 keyword: $q.keyword || '',
-                campaign:$q.campaign || '',
-                partner_name:$q.partner_name || '',
-                created: $q.created || created,
-                // type: $q.type || 1,
-                // quarter: $q.quarter || parseInt(moment().subtract(1, 'Q').format('Q')),
-                // year: $q.year || moment().year(),
-                // pageSize: $q.pageSize || 10,
-                // currentPage: $q.currentPage || 1
+                os:$q.os || '',
             },
             limit: $q.limit || 25,
 
@@ -183,8 +140,6 @@ export default {
             const res = await $get('/customer/dashboard/data', query);
             this.paginate = res.paginate;
             this.entries = res.data;
-            this.campaigns=res.campaigns;
-            this.partners=res.partners;
             this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
             this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
         },
@@ -202,14 +157,17 @@ export default {
             }
             $router.setQuery({});
         },
-        doFilter(field, value, event) {
-            if (event) {
-                event.preventDefault();
-            }
-
-            const params = {page: 1};
-            params[field] = value;
-            $router.updateQuery(params)
+        // doFilter(field, value, event) {
+        //     if (event) {
+        //         event.preventDefault();
+        //     }
+        //
+        //     const params = {page: 1};
+        //     params[field] = value;
+        //     $router.updateQuery(params)
+        // },
+        doFilter() {
+            $router.setQuery(this.filter)
         },
         clickChose(year) {
             this.doFilter('year', year)
