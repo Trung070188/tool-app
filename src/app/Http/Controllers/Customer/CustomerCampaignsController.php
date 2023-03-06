@@ -165,22 +165,24 @@ class CustomerCampaignsController extends CustomerBaseController
             }
         }
 
-        if ($start_date == $end_date) {
+        if ($start_date == $end_date && $req->timeLine==0) {
 
             $startHour = '00:00:00';
             $endHour = '23:59:59';
-            $results = DB::table('campaign_installs')->where('campaign_id',$req->id)
+            $results = DB::table('campaign_installs')->where('campaign_id', $req->id)
                 ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
                 ->whereBetween('installed_at', [$start_date . '_' . $startHour, $end_date . '_' . $endHour])
                 ->groupBy('hour')
                 ->orderBy('hour')
                 ->get();
+
             $hours = range(0, 23);
 
             $resultArray = array_fill_keys($hours, 0);
             foreach ($results as $result) {
-                $resultArray[$result->hour] = $result->campaign_count;
+                $resultArray[(int) $result->hour] = $result->campaign_count;
             }
+
             $data = [];
             foreach ($resultArray as $hour => $campaignCount) {
                 $data[] = [
@@ -191,21 +193,19 @@ class CustomerCampaignsController extends CustomerBaseController
 
 
         }
-        if($start_date==$end_date && $req->timeline!=00)
-        {
+        if ($start_date == $end_date && $req->timeline != 00) {
             $end_date = date('Y-m-d', strtotime("+1 day", strtotime($start_date)));
-            $hourRangeStart = $req->timeline . ':00:00-' . str_pad(($req->timeline + 1) % 24, 2, '0', STR_PAD_LEFT) . ':00:00';
-            $hourRangeEnd = str_pad($req->timeline + 1, 2, '0', STR_PAD_LEFT) . ':59:59';
-            $results = DB::table('campaign_installs')->where('campaign_id',$req->id)
+            $startTimeLine = $req->timeline . ':00:00';
+            $endTimeLine = ($req->timeline - 1) . ':59:59';
+            $resultMap = DB::table('campaign_installs')->where('campaign_id', $req->id)
                 ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
-                ->whereBetween('installed_at', [$start_date . '_' . $hourRangeStart, $end_date . '_' . $hourRangeEnd])
+                ->whereBetween('installed_at', [$start_date . ' ' . $startTimeLine, $end_date . ' ' . $endTimeLine])
                 ->groupBy('hour')
                 ->orderBy('hour')
-                ->get();
-            $startTimeLine=$req->timeline . ':00:00';
-            $endTimeLine=($req->timeline-1) . ':59:59';
-            $startTime = strtotime($start_date . ' '.$startTimeLine);
-            $endTime = strtotime($end_date . ' '.$endTimeLine);
+                ->pluck('campaign_count', 'hour');
+
+            $startTime = strtotime($start_date . ' ' . $startTimeLine);
+            $endTime = strtotime($end_date . ' ' . $endTimeLine);
             $formattedTime = [];
             for ($i = $startTime; $i <= $endTime; $i += 3600) {
                 $date = date('Y-m-d H', $i);
@@ -214,25 +214,11 @@ class CustomerCampaignsController extends CustomerBaseController
             $data = [];
 
             foreach ($formattedTime as $time) {
-                $found = false;
-
-                foreach ($results as $result) {
-                    if ($result->hour === substr($time, -2)) {
-                        $data[] = [
-                            'date' => $time,
-                            'count' => $result->campaign_count
-                        ];
-                        $found = true;
-                        break;
-                    }
-                }
-
-                if (!$found) {
-                    $data[] = [
-                        'date' => $time,
-                        'count' => 0
-                    ];
-                }
+                $hour = substr($time, -2);
+                $data[] = [
+                    'date' => $time,
+                    'count' => $resultMap[$hour] ?? 0
+                ];
             }
 
 
