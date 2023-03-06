@@ -194,6 +194,10 @@
                                         <td>{{totalPrice}}</td>
                                         <td>{{totalInstall}}</td>
                                         <td>{{total}}</td>
+                                        <td>{{totalInstall-totalFake}}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{totalFake}}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -241,7 +245,9 @@
                 }
             }
             return {
-                total:'',
+                totalFake:'',
+                totalInstallPartner:'',
+                total:0,
                 totalInstall:'',
                 totalPrice:'',
                 campaign:'',
@@ -340,18 +346,15 @@
                 const res = await $get('/xadmin/campaigns/dataStatistical', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
+                this.totalFake=this.entries.reduce((accumulator, currentValue)=>{
+                    return accumulator + parseInt(currentValue['total_fake']);
+                },0);
                 this.totalPrice=this.entries.reduce((accumulator, currentValue)=>{
                     return accumulator + parseInt(currentValue['price']);
                 },0);
                 this.totalInstall=this.entries.reduce((accumulator, currentValue)=>{
                     return accumulator + parseInt(currentValue['total_install']);
                 },0);
-                this.total=(this.totalPrice*this.totalInstall);
-                this.total=parseFloat(this.total).toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'VND'
-                });
-
                 this.totalPrice=parseFloat(this.totalPrice).toLocaleString('en-US', {
                     style: 'currency',
                     currency: 'VND'
@@ -359,6 +362,10 @@
 
                 for (let item of this.entries) {
                     let owe=(item.total_install)*(item.price)
+                    if(owe)
+                    {
+                        this.total+=owe;
+                    }
                     if (item.price) {
                         item.price = parseFloat(item.price).toLocaleString('en-US', {
                             style: 'currency',
@@ -372,6 +379,10 @@
                         });
                     }
                 }
+                this.total=parseFloat(this.total).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
                 this.customers=res.customers;
                 this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
                 this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;

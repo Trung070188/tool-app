@@ -118,7 +118,7 @@
                                         <td>Tổng</td>
                                         <td></td>
                                         <td>{{totalInstall}}</td>
-                                        <td></td>
+                                        <td>{{price}}</td>
                                         <td>{{totalPrice}}</td>
                                     </tr>
                                     </tbody>
@@ -167,8 +167,9 @@
                 }
             }
             return {
-                totalInstall:'',
-                totalPrice:'',
+                price:0,
+                totalInstall:0,
+                totalPrice:0,
                 campaign:'',
                 allSelected:false,
                 campaignIds:[],
@@ -205,16 +206,19 @@
                 this.totalInstall=this.entries.reduce((accumulator, currentValue)=>{
                     return accumulator + parseInt(currentValue['total_install']);
                 },0);
-                this.totalPrice=this.entries.reduce((accumulator, currentValue)=>{
+                this.price=this.entries.reduce((accumulator, currentValue)=>{
                     return accumulator + parseInt(currentValue['price']);
                 },0);
-                this.totalPrice=(this.totalInstall)*(this.totalPrice);
-                this.totalPrice=parseFloat(this.totalPrice).toLocaleString('en-US', {
+                this.price=parseFloat(this.price).toLocaleString('en-US', {
                     style: 'currency',
                     currency: 'VND'
                 });
                 for (let item of this.entries) {
                     let owe=(item.total_install)*(item.price)
+                    if(owe)
+                    {
+                        this.totalPrice+=owe;
+                    }
                     if (item.price) {
                         item.price = parseFloat(item.price).toLocaleString('en-US', {
                             style: 'currency',
@@ -228,6 +232,10 @@
                         });
                     }
                 }
+                this.totalPrice=parseFloat(this.totalPrice).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
                 this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
                 this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
 

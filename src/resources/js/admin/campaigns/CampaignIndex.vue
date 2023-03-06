@@ -137,6 +137,91 @@
 
 
                             <div class="table-responsive">
+<!--                                <table class="table mg-b-0 text-md-nowrap">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <td width = "25">-->
+<!--                                            <div class="form-check form-check-sm form-check-custom form-check-solid">-->
+<!--                                                <input class="form-check-input" type="checkbox" v-model="allSelected" @change="selectAll()">-->
+<!--                                            </div>-->
+<!--                                        </td>-->
+<!--                                        <th>ID</th>-->
+<!--                                        <th>Icon</th>-->
+<!--                                        <th>Name</th>-->
+<!--                                        <th>Price</th>-->
+<!--                                        <th>Đối tác</th>-->
+
+<!--                                        <th>Số lượng fake</th>-->
+<!--                                        <th>Tên khách hàng</th>-->
+<!--                                        <th>Auto On/OFF</th>-->
+<!--                                        <th>Open next day</th>-->
+<!--                                        <th>Status</th>-->
+<!--                                        <th>Action</th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                    <tbody>-->
+<!--                                    <tr v-for="entry in entries">-->
+<!--                                        <td class="">-->
+<!--                                            <div-->
+<!--                                                class="form-check form-check-sm form-check-custom form-check-solid"-->
+<!--                                            >-->
+<!--                                                <input-->
+<!--                                                    class="form-check-input"-->
+<!--                                                    type="checkbox"-->
+<!--                                                    v-model="campaignIds"-->
+<!--                                                    :value="entry.id"-->
+<!--                                                    @change="updateCheckAll"-->
+<!--                                                />-->
+<!--                                            </div>-->
+<!--                                        </td>-->
+<!--                                        <td>-->
+<!--                                            <a class="edit-link" :href="'/xadmin/campaigns/edit?id='+entry.id"-->
+<!--                                               v-text="entry.id"></a>-->
+<!--                                        </td>-->
+<!--                                        <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>-->
+<!--                                            <td >-->
+<!--                                                <ul class="list-style-none">-->
+<!--                                                    <li v-text="entry.name"></li>-->
+<!--                                                    <li v-text="'Package: ' + entry.package_id"></li>-->
+<!--                                                    <li v-text="'OS: ' + entry.os"></li>-->
+<!--                                                    <li v-text="'Type: ' + entry.type"></li>-->
+<!--                                                </ul>-->
+<!--                                            </td>-->
+<!--                                            <td v-text="entry.price"></td>-->
+
+
+<!--                                            <td>-->
+<!--                                                <ul class="list-style-none">-->
+<!--                                                    <li>Số lượng: 0</li>-->
+<!--                                                    <li>Giá: 0</li>-->
+<!--                                                    <li>Chi phí: 0</li>-->
+<!--                                                </ul>-->
+
+<!--                                            </td>-->
+
+<!--                                            <td v-text="entry.daily_fake_install"></td>-->
+<!--                                            <td>-->
+<!--                                                <template v-if="entry.customer">-->
+<!--                                                    {{entry.customer.id}} - {{entry.customer.name}}-->
+<!--                                                </template>-->
+<!--                                            </td>-->
+<!--                                            <td>-->
+<!--                                                <ul class="list-style-none">-->
+<!--                                                    <li>ON: {{d(entry.auto_on_at)}}</li>-->
+<!--                                                    <li>OFF: {{d(entry.auto_off_at)}}</li>-->
+<!--                                                </ul>-->
+<!--                                            </td>-->
+<!--                                            <td><switch-button v-model="entry.open_next_day" @change="OpenNextDay(entry)"></switch-button></td>-->
+<!--                                            <td><switch-button v-model="entry.status" @change="switchStatus(entry)"></switch-button></td>-->
+<!--                                        <td class="">-->
+<!--                                            <a :href="'/xadmin/campaigns/edit?id='+entry.id" class="btn "><i-->
+<!--                                                    class="fa fa-edit"></i></a>-->
+<!--                                            <a @click="remove(entry)" href="javascript:;" class="btn "><i-->
+<!--                                                    class="fa fa-trash"></i></a>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+<!--                                    </tbody>-->
+<!--                                </table>-->
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>
@@ -148,14 +233,16 @@
                                         <th>ID</th>
                                         <th>Icon</th>
                                         <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Đối tác</th>
+                                        <th>KH</th>
+                                        <th>Giá</th>
 
-                                        <th>Số lượng fake</th>
-                                        <th>Tên khách hàng</th>
-                                        <th>Auto On/OFF</th>
-                                        <th>Open next day</th>
+                                        <th>Fake</th>
+                                        <th>Đối tác</th>
+                                        <th>Auto on</th>
+                                        <th>Auto off</th>
                                         <th>Status</th>
+                                        <th>Open next day</th>
+                                        <th>Package</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -182,37 +269,27 @@
                                             <td >
                                                 <ul class="list-style-none">
                                                     <li v-text="entry.name"></li>
-                                                    <li v-text="'Package: ' + entry.package_id"></li>
                                                     <li v-text="'OS: ' + entry.os"></li>
                                                     <li v-text="'Type: ' + entry.type"></li>
                                                 </ul>
                                             </td>
-                                            <td v-text="entry.price"></td>
-
-
-                                            <td>
-                                                <ul class="list-style-none">
-                                                    <li>Số lượng: 0</li>
-                                                    <li>Giá: 0</li>
-                                                    <li>Chi phí: 0</li>
-                                                </ul>
-
-                                            </td>
-
-                                            <td v-text="entry.daily_fake_install"></td>
-                                            <td>
-                                                <template v-if="entry.customer">
-                                                    {{entry.customer.id}} - {{entry.customer.name}}
-                                                </template>
-                                            </td>
-                                            <td>
-                                                <ul class="list-style-none">
-                                                    <li>ON: {{d(entry.auto_on_at)}}</li>
-                                                    <li>OFF: {{d(entry.auto_off_at)}}</li>
-                                                </ul>
-                                            </td>
-                                            <td><switch-button v-model="entry.open_next_day" @change="OpenNextDay(entry)"></switch-button></td>
-                                            <td><switch-button v-model="entry.status" @change="switchStatus(entry)"></switch-button></td>
+                                        <td>
+                                            <template v-if="entry.customer">
+                                                {{entry.customer.id}} - {{entry.customer.name}}
+                                            </template>
+                                        </td>
+                                        <td v-text="entry.price"></td>
+                                        <td v-text="entry.daily_fake_install"></td>
+                                        <td>
+                                            <template v-if="entry.campaign_partner">
+                                                {{entry.campaign_partner.length}}
+                                            </template>
+                                        </td>
+                                        <td>{{d(entry.auto_on_at)}}</td>
+                                        <td>{{d(entry.auto_off_at)}}</td>
+                                        <td><switch-button v-model="entry.status" @change="switchStatus(entry)"></switch-button></td>
+                                        <td><switch-button v-model="entry.open_next_day" @change="OpenNextDay(entry)"></switch-button></td>
+                                        <td v-text="entry.package_id"></td>
                                         <td class="">
                                             <a :href="'/xadmin/campaigns/edit?id='+entry.id" class="btn "><i
                                                     class="fa fa-edit"></i></a>

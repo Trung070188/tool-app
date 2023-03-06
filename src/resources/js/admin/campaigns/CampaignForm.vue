@@ -82,13 +82,10 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Tên khách hàng</label>
-                                    <!--                                    <input id="f_customer_id" v-model="entry.customer_id" name="name"-->
-                                    <!--                                           class="form-control"-->
-                                    <!--                                           placeholder="Tên khách hàng">-->
-                                    <select class="form-control form-select" v-model="entry.customer_id">
-                                        <option value="">Chọn khách hàng</option>
-                                        <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
-                                    </select>
+<!--                                    <select class="form-control form-select" v-model="entry.customer_id">-->
+<!--                                        <option value="">Chọn khách hàng</option>-->
+<!--                                        <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>-->
+<!--                                    </select>-->
                                     <error-label for="f_customer_id" :errors="errors.customer_id"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -212,10 +209,10 @@
     import Datepicker from "../../components/Datepicker";
     import RichtextEditor from "../../components/RichtextEditor";
     import QFileManagerInput from "../../components/QFileManagerInput";
-
     export default {
         name: "CampaignsForm.vue",
-        components: {QFileManagerInput, RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
+        components: {
+            QFileManagerInput, RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
             return {
                 customers:$json.customer || [],
