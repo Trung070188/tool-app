@@ -21,6 +21,9 @@ class CampaignPartner extends BaseModel
     'url_partner',
     'open_next_day',
     'status',
+    'share_data',
+    'total_install',
+    'daily_install',
     'note'
 ];
 }

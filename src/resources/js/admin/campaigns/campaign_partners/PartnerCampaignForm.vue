@@ -91,6 +91,28 @@
                                     </div>
                                     <error-label for="f_partner_id"></error-label>
                                 </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Share data</label>
+                                    <div>
+                                        <switch-button v-model="entry.share_data"></switch-button>
+
+                                    </div>
+                                    <error-label for="f_partner_id"></error-label>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Total install</label>
+                                    <input  v-model="entry.total_install" name="name"
+                                            class="form-control"
+                                            placeholder="Total install">
+                                    <error-label for="f_status" :errors="errors.total_install"></error-label>
+                                    <div style="margin-top:10px">
+                                        <label>Total daily install</label>
+                                        <input  v-model="entry.daily_install" name="name"
+                                                class="form-control"
+                                                placeholder="Total install">
+                                        <error-label for="f_status" :errors="errors.daily_install"></error-label>
+                                    </div>
+                                </div>
                                 <div class="form-group col-lg-12">
                                     <label>Note</label>
                                     <richtext-editor v-model="entry.note"></richtext-editor>
