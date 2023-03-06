@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 /**
  * DB logger for dev
  * Class XLogger
@@ -20,7 +23,7 @@ class XLogger {
 
     private function getRedisKey(): string
     {
-        return 'omipos.xlogger';
+        return 'asoapp.xlogger';
     }
 
     public function _redis()
@@ -45,7 +48,7 @@ class XLogger {
                 $this->redis->select($redisDb);
             }
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error($e);
+            Log::error($e);
         }
 
         return $this->redis;
@@ -218,27 +221,21 @@ class XLogger {
                 $this->requestData['response'] = '<html/> Len='. mb_strlen($this->requestData['response']);
             }
 
-            if ($env !== 'production') {
+            try {
+                DB::table('xlogger')->insert( $this->requestData);
+            } catch (\Exception $e) {
+                $message = $e->getMessage();
+                if (strpos($message,'Base table or view not found')) {
+                    try {
+                        $this->createTable();
+                    } catch (\Exception $e) {
 
-                try {
-                    \DB::table('xlogger')->insert( $this->requestData);
-                } catch (\Exception $e) {
-                    $message = $e->getMessage();
-                    if (strpos($message,'Base table or view not found')) {
-                        try {
-                            $this->createTable();
-                        } catch (\Exception $e) {
-
-                        }
                     }
-                    \Illuminate\Support\Facades\Log::error($e);
                 }
-
-            } else {
-                $this->_redis()->lpush($this->getRedisKey(), serialize( $this->requestData));
+                Log::error($e);
             }
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error($e);
+            Log::error($e);
         }
     }
 
