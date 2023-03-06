@@ -22,11 +22,6 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <!--                                        <div class="form-group mx-sm-3 mb-2">-->
-                                <!--                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword"-->
-                                <!--                                                   type="text"-->
-                                <!--                                                   class="form-control" placeholder="tìm kiếm" >-->
-                                <!--                                        </div>-->
                                 <div class="form-group col-lg-3">
                                     <label>Tìm kiếm</label>
                                     <input type="text" @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword" placeholder="Tìm kiếm..." class="form-control"/>
@@ -70,7 +65,7 @@
                                         <td v-text="entry.name"></td>
                                         <td v-text="entry.os"></td>
                                         <td v-text="entry.type"></td>
-                                        <td><switch-button></switch-button></td>
+                                        <td><switch-button v-model="entry.status"></switch-button></td>
                                     </tr>
                                     </tbody>
                                 </table>

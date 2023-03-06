@@ -4,7 +4,7 @@ return [
     "name" => "Campaign",
     "icon" => "fa fa-user",
     "group" => 3,
-    'base' => '',
+    'base' => '/customer',
     'subs' => [
         [
             "name" => "Campaign",
