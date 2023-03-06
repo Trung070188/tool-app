@@ -101,6 +101,24 @@ class CampaignsController extends AdminBaseController
 
         return vue(compact('title', 'component'), $jsonData);
     }
+    public function detail(Request $req)
+    {
+        $id = $req->id;
+        $entry = Campaign::find($id);
+
+        if (!$entry) {
+            throw new NotFoundHttpException();
+        }
+
+        /**
+         * @var  Customer $entry
+         */
+        $jsonData = compact('entry');
+        $title = 'Thống kê';
+        $component = 'CampaignStatisticalDetail';
+
+        return Vue(compact('title', 'component'), $jsonData);
+    }
 
     /**
      * @uri  /xadmin/campaigns/remove
@@ -372,6 +390,121 @@ class CampaignsController extends AdminBaseController
             ]
         ];
     }
+    public function dataDetail(Request $req)
+    {
+        $dates = $req->created;
+        $date_range = explode('_', $dates);
+        $start_date = $date_range[0];
+        $start_date = date('Y-m-d', strtotime($start_date));
+        $end_date = $date_range[1];
+        $end_date = date('Y-m-d', strtotime($end_date));
+        if ($end_date != $start_date) {
+            $results = DB::table('campaign_installs')->where('campaign_id', $req->id)
+                ->selectRaw('DATE(installed_at) AS date, COUNT(campaign_id) AS campaign_count')
+                ->whereBetween('installed_at', [$start_date, $end_date])
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+            $install_counts = [];
+            foreach ($results as $result) {
+                $install_counts[$result->date] = $result->campaign_count;
+            }
+            $start_datetime = new \DateTime($start_date);
+            $end_datetime = new \DateTime($end_date);
+            $diff = $start_datetime->diff($end_datetime);
+            $num_days = $diff->days + 1;
+            // Thêm 1 vì kể cả ngày cuối cùng
+            $data = [];
+            for ($i = 0; $i < $num_days; $i++) {
+                $date = date('Y-m-d', strtotime($start_date . ' +' . $i . ' day'));
+                $count = isset($install_counts[$date]) ? $install_counts[$date] : 0;
+                $data[] = [
+                    'count' => $count,
+                    'date' => $date
+                ];
+            }
+        }
+
+        if ($start_date == $end_date) {
+
+            $startHour = '00:00:00';
+            $endHour = '23:59:59';
+            $results = DB::table('campaign_installs')->where('campaign_id',$req->id)
+                ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
+                ->whereBetween('installed_at', [$start_date . '_' . $startHour, $end_date . '_' . $endHour])
+                ->groupBy('hour')
+                ->orderBy('hour')
+                ->get();
+            $hours = range(0, 23);
+
+            $resultArray = array_fill_keys($hours, 0);
+            foreach ($results as $result) {
+                $resultArray[$result->hour] = $result->campaign_count;
+            }
+            $data = [];
+            foreach ($resultArray as $hour => $campaignCount) {
+                $data[] = [
+                    'date' => $hour,
+                    'count' => $campaignCount
+                ];
+            }
+
+
+        }
+        if($start_date==$end_date && $req->timeline!=00)
+        {
+            $end_date = date('Y-m-d', strtotime("+1 day", strtotime($start_date)));
+            $hourRangeStart = $req->timeline . ':00:00-' . str_pad(($req->timeline + 1) % 24, 2, '0', STR_PAD_LEFT) . ':00:00';
+            $hourRangeEnd = str_pad($req->timeline + 1, 2, '0', STR_PAD_LEFT) . ':59:59';
+            $results = DB::table('campaign_installs')->where('campaign_id',$req->id)
+                ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
+                ->whereBetween('installed_at', [$start_date . '_' . $hourRangeStart, $end_date . '_' . $hourRangeEnd])
+                ->groupBy('hour')
+                ->orderBy('hour')
+                ->get();
+            $startTimeLine=$req->timeline . ':00:00';
+            $endTimeLine=($req->timeline-1) . ':59:59';
+            $startTime = strtotime($start_date . ' '.$startTimeLine);
+            $endTime = strtotime($end_date . ' '.$endTimeLine);
+            $formattedTime = [];
+            for ($i = $startTime; $i <= $endTime; $i += 3600) {
+                $date = date('Y-m-d H', $i);
+                $formattedTime[] = $date;
+            }
+            $data = [];
+
+            foreach ($formattedTime as $time) {
+                $found = false;
+
+                foreach ($results as $result) {
+                    if ($result->hour === substr($time, -2)) {
+                        $data[] = [
+                            'date' => $time,
+                            'count' => $result->campaign_count
+                        ];
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if (!$found) {
+                    $data[] = [
+                        'date' => $time,
+                        'count' => 0
+                    ];
+                }
+            }
+
+
+        }
+
+        return [
+            'code' => 200,
+            'data' => $data
+        ];
+
+    }
+
 
     public function getAppIcon(Request $request)
     {

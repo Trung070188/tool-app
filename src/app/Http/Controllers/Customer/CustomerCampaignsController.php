@@ -169,7 +169,7 @@ class CustomerCampaignsController extends CustomerBaseController
 
             $startHour = '00:00:00';
             $endHour = '23:59:59';
-            $results = DB::table('campaign_installs')
+            $results = DB::table('campaign_installs')->where('campaign_id',$req->id)
                 ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
                 ->whereBetween('installed_at', [$start_date . '_' . $startHour, $end_date . '_' . $endHour])
                 ->groupBy('hour')
@@ -191,25 +191,52 @@ class CustomerCampaignsController extends CustomerBaseController
 
 
         }
-//        if($start_date==$end_date && $req->timeline!=00)
-//        {
-//            $end_date = date('Y-m-d', strtotime("+1 day", strtotime($start_date)));
-//            $hourRangeStart = $req->timeline . ':00:00-' . str_pad(($req->timeline + 1) % 24, 2, '0', STR_PAD_LEFT) . ':00:00';
-//            $hourRangeEnd = str_pad($req->timeline + 1, 2, '0', STR_PAD_LEFT) . ':59:59';
-//            $results = DB::table('campaign_installs')
-//                ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
-//                ->whereBetween('installed_at', [$start_date . '_' . $hourRangeStart, $end_date . '_' . $hourRangeEnd])
-//                ->groupBy('hour')
-//                ->orderBy('hour')
-//                ->get();
-//            $startTime = strtotime('2023-03-06_02:00:00');
-//            $endTime = strtotime('2023-03-01_59:59');
-//
-//            for ($i = $startTime; $i <= $endTime; $i += 60) {
-//                dd(date('H:i', $i));
-//            }
-//
-//        }
+        if($start_date==$end_date && $req->timeline!=00)
+        {
+            $end_date = date('Y-m-d', strtotime("+1 day", strtotime($start_date)));
+            $hourRangeStart = $req->timeline . ':00:00-' . str_pad(($req->timeline + 1) % 24, 2, '0', STR_PAD_LEFT) . ':00:00';
+            $hourRangeEnd = str_pad($req->timeline + 1, 2, '0', STR_PAD_LEFT) . ':59:59';
+            $results = DB::table('campaign_installs')->where('campaign_id',$req->id)
+                ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
+                ->whereBetween('installed_at', [$start_date . '_' . $hourRangeStart, $end_date . '_' . $hourRangeEnd])
+                ->groupBy('hour')
+                ->orderBy('hour')
+                ->get();
+            $startTimeLine=$req->timeline . ':00:00';
+            $endTimeLine=($req->timeline-1) . ':59:59';
+            $startTime = strtotime($start_date . ' '.$startTimeLine);
+            $endTime = strtotime($end_date . ' '.$endTimeLine);
+            $formattedTime = [];
+            for ($i = $startTime; $i <= $endTime; $i += 3600) {
+                $date = date('Y-m-d H', $i);
+                $formattedTime[] = $date;
+            }
+            $data = [];
+
+            foreach ($formattedTime as $time) {
+                $found = false;
+
+                foreach ($results as $result) {
+                    if ($result->hour === substr($time, -2)) {
+                        $data[] = [
+                            'date' => $time,
+                            'count' => $result->campaign_count
+                        ];
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if (!$found) {
+                    $data[] = [
+                        'date' => $time,
+                        'count' => 0
+                    ];
+                }
+            }
+
+
+        }
 
         return [
             'code' => 200,

@@ -160,7 +160,9 @@
                                     <tr v-for="entry in entries">
                                         <td v-text="entry.id"></td>
                                         <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
-                                        <td v-text="entry.name"></td>
+                                        <a :href="'/xadmin/campaigns/detail?id='+entry.id">
+                                            <td v-text="entry.name"></td>
+                                        </a>
                                         <td v-text="entry.os"></td>
                                         <td>
                                             <template v-if="entry.customer">
