@@ -884,6 +884,10 @@ function file_get_contents_curl($url) {
 
 function getRealServerName(): string
 {
+    if (!isset($_SERVER['SERVER_NAME'])) {
+        return '';
+    }
+
     $SERVER_NAME = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['SERVER_NAME'];
     $SERVER_PORT = (int) $_SERVER['SERVER_PORT'];
 
