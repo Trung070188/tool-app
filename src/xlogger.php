@@ -206,10 +206,10 @@ class XLogger {
 
             $this->requestData['response'] = $resData;
             $this->requestData['response_headers'] = (string)$response->headers;
-            $queryLogs = \DB::getQueryLog();
+            $queryLogs = DB::getQueryLog();
             $this->requestData['query'] =
                 json_encode(['count' => count($queryLogs), 'queries' => $queryLogs], JSON_PRETTY_PRINT);
-            $env = config('app.env');
+            #$env = config('app.env');
             $f = @$this->requestData['response'][0];
             if ($f === '{' || $f === '[') {
                 $isApi = true;
