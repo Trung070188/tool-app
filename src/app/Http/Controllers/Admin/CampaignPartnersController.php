@@ -40,7 +40,11 @@ class CampaignPartnersController extends AdminBaseController
     {
         $component = 'PartnerCampaignForm';
         $title = 'Create campaignPartners';
-        return vue(compact('title', 'component'));
+        $campaigns=Campaign::query()->orderBy('id','desc')->get();
+        $partners=Partner::query()->orderBy('id','desc')->get();
+        $jsonData = compact('campaigns','partners');
+
+        return vue(compact('title', 'component'),$jsonData);
     }
 
     /**
@@ -60,9 +64,11 @@ class CampaignPartnersController extends AdminBaseController
         /**
         * @var  CampaignPartner $entry
         */
-        $jsonData = compact('entry');
+        $campaigns=Campaign::query()->orderBy('id','desc')->get();
+        $partners=Partner::query()->orderBy('id','desc')->get();
+        $jsonData = compact('entry','campaigns','partners');
         $title = 'Edit';
-        $component = 'PartnerCampaignDetail';
+        $component = 'PartnerCampaignForm';
 
         return vue(compact('title', 'component'), $jsonData);
     }
@@ -99,9 +105,10 @@ class CampaignPartnersController extends AdminBaseController
         }
         $data = $req->get('entry');
         $rules = [
-//    ' partner_campaign_id' => 'required|numeric',
-//    'campaign_id' => 'numeric',
-//    'partner_id' => 'numeric',
+            'name'=>'required',
+            'os'=>'required',
+            'campaign_id' => 'required|numeric',
+             'partner_id' => 'required|numeric',
 ];
 
         $v = Validator::make($data, $rules);
@@ -179,27 +186,45 @@ class CampaignPartnersController extends AdminBaseController
         $query = CampaignPartner::query()->orderBy('id', 'desc');
 
         if ($req->keyword) {
-            //$query->where('title', 'LIKE', '%' . $req->keyword. '%');
+            $query->where('name', 'LIKE', '%' . $req->keyword. '%');
+        }
+        if($req->created)
+        {
+            $dates = $req->created;
+            $date_range = explode('_', $dates);
+            $start_date = $date_range[0];
+            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+            $end_date = $date_range[1];
+            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+            $query->whereBetween('created_at',[$start_date,$end_date]);
         }
 
-        $query->createdIn($req->created);
+//        $query->createdIn($req->created);
 
         $entries = $query->paginate();
         $data=[];
         foreach ($entries as $entry)
         {
-            $campaign=Campaign::query()->where('id',$entry->campaign_id)->first();
+            if($entry->campaign_id)
+            {
+                $campaign=Campaign::query()->where('id',$entry->campaign_id)->first();
 
-            $partner=Partner::query()->where('id',$entry->partner_id)->first();
+            }
+            if($entry->partner_id)
+            {
+                $partner=Partner::query()->where('id',$entry->partner_id)->first();
+
+            }
+
             $data[]=[
               'id'=>$entry->id,
               'name'=>$entry->name,
-              'campaign_name'=>$campaign->name,
-              'partner_name'=>$partner->name,
+              'campaign_name'=>@$campaign->name,
+              'partner_name'=>@$partner->name,
+                'created_at'=>@$partner->created_at,
+                'updated_at'=>@$partner->updated_at
             ];
-
         }
-
         return [
             'code' => 0,
             'data' => $data,
@@ -207,17 +232,6 @@ class CampaignPartnersController extends AdminBaseController
                 'currentPage' => $entries->currentPage(),
                 'lastPage' => $entries->lastPage(),
             ]
-        ];
-    }
-
-    public function dataEdit(Request $req)
-    {
-        $campaigns=Campaign::query()->orderBy('id','desc')->get();
-
-        $partners=Partner::query()->orderBy('id','desc')->get();
-        return [
-            'campaigns'=>$campaigns,
-            'partners'=>$partners
         ];
     }
 

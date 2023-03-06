@@ -73,7 +73,7 @@
                                             <a class="edit-link" :href="'/xadmin/customers/edit?id='+entry.id"
                                                v-text="entry.id"></a>
                                         </td>
-                                                                                    <td v-text="entry.name"></td>
+                                                                                    <td>{{entry.id}} - {{entry.name}}</td>
                                                                                     <td v-text="entry.email"></td>
                                                                                     <td v-text="entry.phone"></td>
                                                                                     <td v-text="entry.company"></td>
@@ -123,6 +123,8 @@
                     keyword: $q.keyword || '',
                     created: $q.created || created,
                 },
+                limit: $q.limit || 25,
+
                 paginate: {
                     currentPage: 1,
                     lastPage: 1
@@ -138,6 +140,9 @@
                 const res = await $get('/xadmin/customers/data', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
+                this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
+                this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
+
             },
             async remove(entry) {
                 if (!confirm('Xóa bản ghi: ' + entry.id)) {

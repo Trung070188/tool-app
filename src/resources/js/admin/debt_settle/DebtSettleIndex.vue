@@ -1,13 +1,13 @@
 <template>
+    <div>trung</div>
     <div class="main-content app-content"> <!-- container -->
         <div class="main-container container-fluid"> <!-- breadcrumb -->
             <div class="breadcrumb-header justify-content-between">
-<!--                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">CampaignPartner</span></div>-->
+                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">DebtSettle</span></div>
                 <div class="justify-content-center mt-2">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Campaign Partner</li>
-                        <li class="breadcrumb-item active" aria-current="page">Danh sách campaign partner</li>
+                        <li class="breadcrumb-item active" aria-current="page">DebtSettle</li>
                     </ol>
                 </div>
             </div> <!-- /breadcrumb --> <!-- row -->
@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Danh sách campaign partner</h4></div>
+                                <h4 class="card-title mg-b-0">DebtSettle Index</h4></div>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="col-xl-4 d-flex">
                                     <div class="margin-left-auto mb-1">
-                                        <a href="/xadmin/campaign_partners/create" class="btn btn-primary">
+                                        <a href="/xadmin/debt_settle/create" class="btn btn-primary">
                                             <i class="fa fa-plus"/>
                                             Thêm
                                         </a>
@@ -58,28 +58,41 @@
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th> Name</th>
-                                        <th>Campaign</th>
-                                        <th>Partner</th>
+                                        <th>Khách hàng</th>
+                                        <th>Ngày</th>
+                                        <th>Cần thu</th>
+                                        <th>Đã thu</th>
+                                        <th>Nợ</th>
+                                        <th>Note</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="entry in entries">
-                                        <td>
-                                            <a class="edit-link" :href="'/xadmin/campaign_partners/edit?id='+entry.id"
-                                               v-text="entry.id"></a>
-                                        </td>
-                                        <td v-text="entry.name"></td>
-                                        <td v-text="entry.campaign_name"></td>
-                                        <td v-text="entry.partner_name"></td>
+                                    <tr v-for="(entry,index) in entries">
+                                        <td >{{entry.customer_id}} - {{entry.customer_name}}</td>
+                                        <td>{{d(entry.created_at)}}</td>
+                                        <td v-text="entry.pay_booking"></td>
+                                        <td v-text="entry.pay_debt"></td>
+                                        <td>{{entry.owe}}</td>
+                                        <td v-text="entry.note"></td>
+
+
                                         <td class="">
-                                            <a :href="'/xadmin/campaign_partners/edit?id='+entry.id" class="btn "><i
+                                            <a :href="'/xadmin/debt_settle/edit?id='+entry.id" class="btn "><i
                                                     class="fa fa-edit"></i></a>
                                             <a @click="remove(entry)" href="javascript:;" class="btn "><i
                                                     class="fa fa-trash"></i></a>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tổng</td>
+                                        <td></td>
+                                        <td>{{totalPayBooking}}</td>
+                                        <td>{{totalPayDebt}}</td>
+                                        <td>{{totalOwe}}</td>
+                                        <td>
+                                        </td>
+                                        <td></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -100,26 +113,27 @@
 </template>
 
 <script>
-    import {$get, $post, getTimeRangeAll} from "../../../utils";
-    import $router from '../../../lib/SimpleRouter';
-    import ActionBar from '../../../components/ActionBar';
+    import {$get, $post, getTimeRangeAll} from "../../utils";
+    import $router from '../../lib/SimpleRouter';
+    import ActionBar from '../../components/ActionBar';
 
 
     let created = getTimeRangeAll();
     const $q = $router.getQuery();
 
     export default {
-        name: "PartnerCampaignIndex.vue",
+        name: "DebtSettleIndex.vue",
         components: {ActionBar},
         data() {
             return {
+                totalOwe:'',
+                totalPayBooking:'',
+                totalPayDebt:'',
                 entries: [],
                 filter: {
                     keyword: $q.keyword || '',
                     created: $q.created || created,
                 },
-                limit: $q.limit || 25,
-
                 paginate: {
                     currentPage: 1,
                     lastPage: 1
@@ -132,11 +146,51 @@
         methods: {
             async load() {
                 let query = $router.getQuery();
-                const res = await $get('/xadmin/campaign_partners/data', query);
+                const res = await $get('/xadmin/debt_settle/data', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
-                this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
-                this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
+                this.totalPayBooking=this.entries.reduce((accumulator, currentValue)=>{
+                    return accumulator + parseInt(currentValue['pay_booking']);
+                },0);
+                this.totalPayDebt=this.entries.reduce((accumulator, currentValue)=>{
+                    return accumulator + parseInt(currentValue['pay_debt']);
+                },0);
+
+                this.totalOwe=(this.totalPayBooking)-(this.totalPayDebt);
+                this.totalOwe=parseFloat(this.totalOwe).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+                this.totalPayBooking=parseFloat(this.totalPayBooking).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+
+                this.totalPayDebt=parseFloat(this.totalPayDebt).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+                for (let item of this.entries) {
+                    let owe=(item.pay_booking)-(item.pay_debt)
+                    if (item.pay_booking) {
+                        item.pay_booking = parseFloat(item.pay_booking).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                    }
+                    if (item.pay_debt) {
+                        item.pay_debt = parseFloat(item.pay_debt).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                    }
+                    if (owe) {
+                        item.owe = parseFloat(owe).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                    }
+                }
 
             },
             async remove(entry) {
@@ -144,7 +198,7 @@
                     return;
                 }
 
-                const res = await $post('/xadmin/campaign_partners/remove', {id: entry.id});
+                const res = await $post('/xadmin/debt_settle/remove', {id: entry.id});
 
                 if (res.code) {
                     toastr.error(res.message);
@@ -171,7 +225,7 @@
                 $router.setQuery(params)
             },
             async toggleStatus(entry) {
-                const res = await $post('/xadmin/campaign_partners/toggleStatus', {
+                const res = await $post('/xadmin/debt_settle/toggleStatus', {
                     id: entry.id,
                     status: entry.status
                 });

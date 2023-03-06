@@ -8,7 +8,8 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">HOME</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Partner Campaign</li>
-                        <li class="breadcrumb-item active" aria-current="page">Thêm mới campaign partner</li>
+                        <li v-if="entry.id" class="breadcrumb-item active" aria-current="page">Sửa campaign partner</li>
+                        <li v-else class="breadcrumb-item active" aria-current="page">Thêm mới campaign partner</li>
                     </ol>
                 </div>
             </div> <!-- /breadcrumb --> <!-- row -->
@@ -18,7 +19,9 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Thêm mới campaign partner</h4></div>
+                                <h4 v-if="entry.id" class="card-title mg-b-0">Sửa campaign partner</h4>
+                                <h4 v-else class="card-title mg-b-0">Thêm mới campaign partner</h4>
+                            </div>
 
                         </div>
                         <div class="card-body">
@@ -42,35 +45,35 @@
                                         <option value="android">Android</option>
                                         <option value="ios">Ios</option>
                                     </select>
-                                    <error-label for="f_ partner_campaign_id" ></error-label>
+                                    <error-label :errors="errors.os" ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Campaign</label>
-                                    <select class="form-select form-control" v-model="entry.campaign_id" @change="load()">
+                                    <select class="form-select form-control" v-model="entry.campaign_id">
                                         <option v-for="campaign in campaigns" :value="campaign.id">{{campaign.name}}</option>
                                     </select>
-                                    <error-label for="f_ partner_campaign_id" ></error-label>
+                                    <error-label :errors="errors.campaign_id" ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Partner</label>
                                     <select class="form-select form-control" v-model="entry.partner_id">
                                         <option v-for="partner in partners" :value="partner.id">{{partner.name}}</option>
                                     </select>
-                                    <error-label for="f_campaign_id" ></error-label>
+                                    <error-label :errors="errors.partner_id" ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Price</label>
                                     <input v-model="entry.price"  name="name"
                                            class="form-control"
                                            placeholder="price">
-                                    <error-label for="f_partner_id"></error-label>
+                                    <error-label :errors="errors.price"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Url Partner</label>
                                     <input  name="name"
                                             class="form-control"
                                             placeholder="url partner">
-                                    <error-label for="f_partner_id"></error-label>
+                                    <error-label ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Status</label>
@@ -118,25 +121,22 @@
         components: {RichtextEditor, SwitchButton, ActionBar},
         data() {
             return {
-                partners:[],
+                campaigns:$json.campaigns,
+                partners:$json.partners,
                 dataFilterCampaign:{
                 },
                 campaignId:'',
-                campaigns:[],
                 entry: $json.entry || {},
                 isLoading: false,
                 errors: {}
             }
         },
         mounted() {
-            $router.on('/', this.load).init();
         },
         methods: {
             async save() {
-                console.log(this.dataFilterCampaign);
                 this.isLoading = true;
-               var seft=this;
-                const res = await $post('/xadmin/campaign_partners/save', {entry:seft.entry});
+                const res = await $post('/xadmin/campaign_partners/save', {entry:this.entry});
                 this.isLoading = false;
                 if (res.errors) {
                     this.errors = res.errors;
@@ -153,19 +153,6 @@
                     }
                 }
             },
-            async load() {
-                let query = $router.getQuery();
-                const res = await $get('/xadmin/campaign_partners/dataEdit?campaign_id='+this.campaignId, query);
-                this.paginate = res.paginate;
-                this.campaigns=res.campaigns;
-                this.partners=res.partners;
-                if(res.data_filter_campaign!=null)
-                {
-                    this.dataFilterCampaign=res.data_filter_campaign;
-
-                }
-            },
-
         }
     }
 </script>

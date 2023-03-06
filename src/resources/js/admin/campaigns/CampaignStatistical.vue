@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Danh sách campaign</h4></div>
+                                <h4 class="card-title mg-b-0">Thống kê campaign</h4></div>
                         </div>
                         <div class="card-body">
                             <div class="card-header border-0 pt-6">
@@ -140,85 +140,48 @@
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>
-                                        <td width = "25">
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" v-model="allSelected" @change="selectAll()">
-                                            </div>
-                                        </td>
                                         <th>ID</th>
                                         <th>Icon</th>
-                                        <th>Name</th>
-                                        <th>Price</th>
-                                        <th>Đối tác</th>
-
+                                        <th>Campaign</th>
+                                        <th>Os</th>
+                                        <th>Customer</th>
+                                        <th>Mã KH</th>
+                                        <th>HT</th>
+                                        <th>Giá bán</th>
+                                        <th>Tổng lượt cài đặt</th>
+                                        <th>Thành tiền</th>
+                                        <th>Số lượng cài partner</th>
+                                        <th>Giá share partner</th>
+                                        <th>Chi phí share partner</th>
                                         <th>Số lượng fake</th>
-                                        <th>Tên khách hàng</th>
-                                        <th>Auto On/OFF</th>
-                                        <th>Open next day</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="entry in entries">
-                                        <td class="">
-                                            <div
-                                                class="form-check form-check-sm form-check-custom form-check-solid"
-                                            >
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    v-model="campaignIds"
-                                                    :value="entry.id"
-                                                    @change="updateCheckAll"
-                                                />
-                                            </div>
+                                        <td v-text="entry.id"></td>
+                                        <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
+                                        <a :href="'/xadmin/campaigns/detail?id='+entry.id">
+                                            <td v-text="entry.name"></td>
+                                        </a>
+                                        <td v-text="entry.os"></td>
+                                        <td>
+                                            <template v-if="entry.customer">
+                                                {{entry.customer.name}}
+                                            </template>
                                         </td>
                                         <td>
-                                            <a class="edit-link" :href="'/xadmin/campaigns/edit?id='+entry.id"
-                                               v-text="entry.id"></a>
+                                            <template v-if="entry.customer">
+                                                {{entry.customer.id}}
+                                            </template>
                                         </td>
-                                        <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
-                                            <td >
-                                                <ul class="list-style-none">
-                                                    <li v-text="entry.name"></li>
-                                                    <li v-text="'Package: ' + entry.package_id"></li>
-                                                    <li v-text="'OS: ' + entry.os"></li>
-                                                    <li v-text="'Type: ' + entry.type"></li>
-                                                </ul>
-                                            </td>
-                                            <td v-text="entry.price"></td>
-
-
-                                            <td>
-                                                <ul class="list-style-none">
-                                                    <li>Số lượng: 0</li>
-                                                    <li>Giá: 0</li>
-                                                    <li>Chi phí: 0</li>
-                                                </ul>
-
-                                            </td>
-
-                                            <td v-text="entry.daily_fake_install"></td>
-                                            <td>
-                                                <template v-if="entry.customer">
-                                                    {{entry.customer.id}} - {{entry.customer.name}}
-                                                </template>
-                                            </td>
-                                            <td>
-                                                <ul class="list-style-none">
-                                                    <li>ON: {{d(entry.auto_on_at)}}</li>
-                                                    <li>OFF: {{d(entry.auto_off_at)}}</li>
-                                                </ul>
-                                            </td>
-                                            <td><switch-button v-model="entry.open_next_day" @change="OpenNextDay(entry)"></switch-button></td>
-                                            <td><switch-button v-model="entry.status" @change="switchStatus(entry)"></switch-button></td>
-                                        <td class="">
-                                            <a :href="'/xadmin/campaigns/edit?id='+entry.id" class="btn "><i
-                                                    class="fa fa-edit"></i></a>
-                                            <a @click="remove(entry)" href="javascript:;" class="btn "><i
-                                                    class="fa fa-trash"></i></a>
-                                        </td>
+                                        <td v-text="entry.type"></td>
+                                        <td v-text="entry.price"></td>
+                                        <td v-text="entry.total_install"></td>
+                                        <td>{{(entry.price) * (entry.total_install)}}</td>
+                                        <td>{{(entry.total_install)-(entry.total_fake)}}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td v-text="entry.total_fake"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -249,7 +212,7 @@
     const $q = $router.getQuery();
 
     export default {
-        name: "CampaignsIndex.vue",
+        name: "CampaignStatistical.vue",
         components: {SwitchButton, ActionBar},
         data() {
             let filter={
@@ -359,7 +322,7 @@
             },
             async load() {
                 let query = $router.getQuery();
-                const res = await $get('/xadmin/campaigns/data', query);
+                const res = await $get('/xadmin/campaigns/dataStatistical', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
                 this.customers=res.customers;

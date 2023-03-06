@@ -25,6 +25,12 @@ return [
                 "group" => 3,
                 'url' => '/xadmin/campaigns/create',
             ] ,
+            [
+                "name" => "Thống kê",
+                "icon" => "fas fa-list ",
+                "group" => 3,
+                'url' => '/xadmin/campaigns/statistical',
+            ] ,
 
         ]
 
@@ -32,7 +38,7 @@ return [
     [
         "name" => "Campaign Partner",
         "icon" => "fa fa-home",
-        "url" => "/xadmin/dashboard/index",
+        "url" => "/xadmin/campaign_partners/index",
         "group" => 3,
         "subs" => [
             [
@@ -48,7 +54,7 @@ return [
                 'url' => '/xadmin/campaign_partners/create',
             ] ,
             [
-                "name" => " Thông kê",
+                "name" => " Thống kê",
                 "icon" => "fas fa-list ",
                 "group" => 3,
                 'url' => '/xadmin/campaign_installs/index',
@@ -99,6 +105,7 @@ return [
 
     ],
 
+
 //    [
 //        "name" => "Permission",
 //        "icon" => "fa fa-lock",
@@ -108,8 +115,7 @@ return [
 
     [
         "name" => "Đối tác",
-        "icon" => "fas fa-user-friends
-",
+        "icon" => "fas fa-user-friends",
         "group" => 3,
         'base' => '/xadmin/partners/index',
         'subs' => [
@@ -147,6 +153,13 @@ return [
 //            ]
 //        ]
 //    ]
+    [
+        "name"=> "Thống kê công nợ",
+        "icon" => "fas fa-user-friends",
+        "url"=> '/xadmin/debt_settle/index',
+        "group"=> 1,
+    ],
+
 
 
 ];

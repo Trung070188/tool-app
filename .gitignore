@@ -1,3 +1,4 @@
 .idea
 /src/storage/cache.production.7z
 /.phpunit.result.cache
+/src/public/mix-manifest.json

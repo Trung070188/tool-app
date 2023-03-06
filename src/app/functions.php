@@ -6,6 +6,7 @@ use App\Models\CrossDb\RelationHasMany;
 use App\Models\WalletType;
 use \App\Models\ReportProcessState;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Cache;
 use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\Log;
 
@@ -850,6 +851,10 @@ function numberFormatArray($array): array
 
 function getCurrentModuleName(): string
 {
+    if (!isset($_SERVER['REQUEST_URI'])) {
+        return 'CLI';
+    }
+
     $parts = explode('/', $_SERVER['REQUEST_URI']);
     if (isset($parts[1])) {
         return $parts[1];
@@ -859,3 +864,32 @@ function getCurrentModuleName(): string
 }
 
 getCurrentModuleName();
+
+function file_get_contents_curl($url) {
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
+}
+
+function getRealServerName(): string
+{
+    $SERVER_NAME = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['SERVER_NAME'];
+    $SERVER_PORT = (int) $_SERVER['SERVER_PORT'];
+
+    if ($SERVER_NAME === 'localhost' && $SERVER_PORT !== 80) {
+        $SERVER_NAME = 'localhost:' . $SERVER_PORT;
+    }
+
+    return $SERVER_NAME;
+}

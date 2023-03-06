@@ -25,5 +25,7 @@ class Customer extends Authenticatable
         'company',
         'password',
         'description',
+        'created_at',
+        'updated_at'
     ];
 }

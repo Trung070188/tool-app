@@ -68,8 +68,14 @@ export default {
     },
     mounted: function () {
 
-        const format = this.format ? this.format : 'DD/MM/YYYY HH:mm';
-        const value = this.modelValue ? moment(this.modelValue, 'YYYY-MM-DD') : moment();
+        let format = this.format ? this.format : 'DD/MM/YYYY HH:mm';
+        let inputFormat;
+        if (this.timepicker) {
+            inputFormat = 'YYYY-MM-DD HH:mm' ;
+        } else {
+            inputFormat = 'YYYY-MM-DD';
+        }
+        const value = this.modelValue ? moment(this.modelValue, inputFormat) : moment();
         let minDate = undefined;
         if (this.minDate === 'now') {
             minDate = moment();
@@ -86,12 +92,17 @@ export default {
             timePicker: this.timepicker || false,
             timePicker24Hour: true,
             minDate,
-            maxDate: moment()
-        }, (start, end) => {
-            this.$emit('update:modelValue', start.format('YYYY-MM-DD'));
-            this.$el.value = start.format(format);
+          //  maxDate: moment()
         });
 
+        $(this.$el).on('apply.daterangepicker', (ev, picker) => {
+            let format = 'YYYY-MM-DD'
+            if (this.timepicker) {
+                format = 'YYYY-MM-DD HH:mm';
+            }
+            this.$emit('update:modelValue',  picker.startDate.format(format));
+            this.$el.value = picker.startDate.format(format);
+        })
         if (this.modelValue) {
             this.$el.value = value.format(format);
         }

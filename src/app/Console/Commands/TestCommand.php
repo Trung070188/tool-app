@@ -8,6 +8,7 @@ use App\Components\ReportExcel\ExcelReportBuilder;
 use App\Helpers\ExcelBuilder;
 use App\Helpers\PhpDoc;
 use App\Models\TransactionTypeCode;
+use App\Services\AppStoreService;
 use App\Services\XlsxService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -27,14 +28,16 @@ class TestCommand extends Command
      */
     protected $description = 'Command description';
 
+    private AppStoreService $appStoreService;
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AppStoreService $appStoreService)
     {
         parent::__construct();
+        $this->appStoreService = $appStoreService;
     }
 
     /**
@@ -44,23 +47,6 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $file = 'D:\Projects\GroupVNPD\sbvreportcms\src\storage\cache.production\active-wallets\2022-09-30.json';
-        dd(count(json_decode(file_get_contents($file))));
-
-        $endTime = '2022-10-20 23:59:59';
-        $walletDb = dbConnection(DB_CONNECTION_EWALLET);
-
-        $total = 0;
-        $countAll =     $walletDb->table('wallet_account')
-            ->where('create_on', '<=', $endTime)->count();
-
-        $walletDb->table('wallet_account')
-            ->where('create_on', '<=', $endTime)
-            ->orderBy('create_on')
-            ->chunk(2000, function ($wallets) use(&$total) {
-                $total += count($wallets);
-            });
-
-        dd($total, $countAll);
+        dd(config('domain'));
     }
 }

@@ -19,12 +19,22 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Thêm mới campaign</h4></div>
-
+                                <h4 v-if="entry.id" class="card-title mg-b-0">Sửa campaign</h4>
+                                <h4 v-else class="card-title mg-b-0">Thêm mới campaign</h4>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <input v-model="entry.id" type="hidden" name="id">
+
+                                <div class="form-group col-lg-6">
+                                    <label>Store url</label>
+                                    <input  v-model="entry.store_url" name="name"
+                                            @update:modelValue="value => onUrlStoreChange(value)"
+                                            class="form-control"
+                                            placeholder="Store url">
+                                    <error-label for="f_status" :errors="errors.store_url"></error-label>
+                                </div>
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
                                     <input id="f_name" v-model="entry.name" name="name"
@@ -33,16 +43,23 @@
                                     <error-label for="f_name" :errors="errors.name"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <label>Package Id</label>
-                                    <input id="f_package_id" v-model="entry.package_id" name="name"
-                                           class="form-control"
-                                           placeholder="package_id">
-                                    <error-label for="f_package_id" :errors="errors.package_id"></error-label>
+                                    <label>Type</label>
+                                    <br>
+                                    <input  v-model="entry.type" type="radio" value="cpi"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">CPI</label>
+                                    <input  v-model="entry.type" type="radio" value="rate"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">Rate</label>
+                                    <input  v-model="entry.type" type="radio" value="map"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">Map</label>
+                                    <input  v-model="entry.type" type="radio" value="top_keyword"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">Top keyword</label>
+                                    <error-label for="f_type" :errors="errors.type"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Icon</label>
-                                    <q-file-manager-input v-model="entry.icon"
-                                                        placeholder="icon"></q-file-manager-input>
+                                    <QFileManagerInput v-model="entry.icon"
+                                                          input-id="campaign_icon"
+                                                        placeholder="icon"/>
                                     <error-label for="f_icon" :errors="errors.icon"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -54,9 +71,13 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Os</label>
-                                    <input id="f_os" v-model="entry.os" name="name"
-                                           class="form-control"
-                                           placeholder="os">
+                                    <br>
+                                    <input  id="f_os" v-model="entry.os" type="radio" value="ios"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">ios</label>
+                                    <input  id="f_os1" v-model="entry.os" type="radio" value="android"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">android</label>
+                                    <input  id="f_os2" v-model="entry.os" type="radio" value="all"/>
+                                    <label style="margin-right: 20px;margin-left: 5px">all</label>
                                     <error-label for="f_os" :errors="errors.os"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -65,17 +86,17 @@
                                     <!--                                           class="form-control"-->
                                     <!--                                           placeholder="Tên khách hàng">-->
                                     <select class="form-control form-select" v-model="entry.customer_id">
+                                        <option value="">Chọn khách hàng</option>
                                         <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
                                     </select>
                                     <error-label for="f_customer_id" :errors="errors.customer_id"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <label>Type</label>
-                                    <select class="form-control form-select" v-model="entry.type">
-                                        <option value="cpi">Cpi</option>
-                                        <option value="rate">Rate</option>
-                                    </select>
-                                    <error-label for="f_type" :errors="errors.type"></error-label>
+                                    <label>Package Id</label>
+                                    <input id="f_package_id" v-model="entry.package_id" name="name"
+                                           class="form-control"
+                                           placeholder="package_id">
+                                    <error-label for="f_package_id" :errors="errors.package_id"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Status</label>
@@ -86,8 +107,14 @@
                                     <error-label for="f_status" :errors="errors.status"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
+                                    <label>Bật fake số</label>
+                                    <div>
+                                        <switch-button  v-model="entry.is_fake_on"></switch-button>
+
+                                    </div>
+
                                     <label>Daily fake install</label>
-                                    <input  v-model="entry.daily_fake_install" name="name"
+                                    <input :disabled="!entry.is_fake_on"  v-model="entry.daily_fake_install" name="name"
                                             class="form-control"
                                             placeholder="Daily fake install">
                                     <error-label for="f_status" :errors="errors.daily_fake_install"></error-label>
@@ -100,48 +127,66 @@
                                     </div>
                                     <error-label for="f_status" :errors="errors.open_next_day"></error-label>
                                 </div>
-
-
-                                <div class="form-group col-lg-6">
-                                    <label>Store url</label>
-                                    <input  v-model="entry.store_url" name="name"
-                                            class="form-control"
-                                            placeholder="Store url">
-                                    <error-label for="f_status" :errors="errors.store_url"></error-label>
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <label>Is fake on</label>
-                                    <div>
-                                        <switch-button  v-model="entry.is_fake_on"></switch-button>
-
-                                    </div>
-                                    <error-label for="f_status" :errors="errors.is_fake_on"></error-label>
-                                </div>
                                 <div class="form-group col-lg-6">
                                     <label>Total install</label>
                                     <input  v-model="entry.total_install" name="name"
                                             class="form-control"
                                             placeholder="Total install">
                                     <error-label for="f_status" :errors="errors.total_install"></error-label>
+                                    <div style="margin-top:10px">
+                                        <label>Total daily install</label>
+                                        <input  v-model="entry.daily_install" name="name"
+                                                class="form-control"
+                                                placeholder="Total install">
+                                        <error-label for="f_status" :errors="errors.daily_install"></error-label>
+                                    </div>
                                 </div>
+
+
                                 <div class="form-group col-lg-6">
-                                    <label>Auto on at</label>
-                                    <Datepicker  v-model="entry.auto_on_at" name="name"
-                                                 class="form-control"
-                                                 placeholder="Auto on at"></Datepicker>
-                                    <error-label for="f_status" :errors="errors.auto_on_at"></error-label>
+                                    <label>Tự động bật</label>
+                                    <div>
+                                        <switch-button  v-model="entry.auto_on_status"></switch-button>
+
+                                    </div>
+                                    <template v-if="entry.auto_on_status">
+                                        <label>Tự động bật lúc</label>
+                                        <Datepicker :timepicker="true"  v-model="entry.auto_on_at" name="name"
+                                                    class="form-control"
+                                                    placeholder="Auto on at"></Datepicker>
+                                        <error-label for="f_status" :errors="errors.auto_on_at"></error-label>
+                                    </template>
+
                                 </div>
+
                                 <div class="form-group col-lg-6">
-                                    <label>Auto off at</label>
-                                    <Datepicker  v-model="entry.auto_off_at" name="name"
-                                                 class="form-control"
-                                                 placeholder="Auto off at"></Datepicker>
-                                    <error-label for="f_status" :errors="errors.auto_off_at"></error-label>
+                                    <label>Tự động tắt</label>
+                                    <div>
+                                        <switch-button  v-model="entry.auto_off_status"></switch-button>
+
+                                    </div>
+                                    <template v-if="entry.auto_off_status">
+                                        <label>Tự động tắt lúc</label>
+                                        <Datepicker :timepicker="true"   v-model="entry.auto_off_at" name="name"
+                                                    class="form-control"
+                                                    placeholder="Auto off at"></Datepicker>
+                                        <error-label for="f_status" :errors="errors.auto_off_at"></error-label>
+                                    </template>
+
                                 </div>
                                 <div class="form-group col-lg-12">
                                     <label>Note</label>
                                     <RichtextEditor  v-model="entry.note"></RichtextEditor>
                                     <error-label for="f_status" :errors="errors.note"></error-label>
+                                </div>
+
+                                <div class="form-group col-lg-12" v-if="eventLogs.length">
+                                    <label>Sự kiện gần đây</label>
+                                    <ul style="height: 300px; overflow-y: auto">
+                                        <li v-for="log in eventLogs" >
+                                            <em v-text="log.title"></em>
+                                        </li>
+                                    </ul>
                                 </div>
 
                             </div>
@@ -172,15 +217,33 @@
         name: "CampaignsForm.vue",
         components: {QFileManagerInput, RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
-            console.log($json.customer);
             return {
                 customers:$json.customer || [],
                 entry: $json.entry || {},
                 isLoading: false,
-                errors: {}
+                errors: {},
+                eventLogs: $json.eventLogs,
             }
         },
         methods: {
+            async onUrlStoreChange(value) {
+                const res = await $post('/xadmin/campaigns/getAppIcon', {
+                    url: value
+                });
+
+                if (res.code === 200) {
+                    this.entry.icon = [{
+                        is_image:true,
+                        id: res.data.id,
+                        url: res.data.icon
+                    }];
+                    this.entry.package_id = res.data.package_id;
+                    this.entry.name = res.data.name;
+                    this.entry.os = res.data.os;
+                } else {
+                    toastr.error('Không lấy được icon');
+                }
+            },
             async save() {
                 this.isLoading = true;
                 const res = await $post('/xadmin/campaigns/save', {entry: this.entry});
@@ -205,5 +268,8 @@
 </script>
 
 <style scoped>
-
+    input[type="radio"] {
+        width: 15px;
+        height: 15px;
+    }
 </style>

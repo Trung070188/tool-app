@@ -7,7 +7,8 @@
                 <div class="justify-content-center mt-2">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item tx-15"><a href="/xadmin/dashboard/index">Trang chủ</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Thêm mới khách hàng</li>
+                        <li v-if="entry.id" class="breadcrumb-item active" aria-current="page">Sửa khách hàng</li>
+                        <li v-else class="breadcrumb-item active" aria-current="page">Thêm mới khách hàng</li>
                     </ol>
                 </div>
             </div> <!-- /breadcrumb --> <!-- row -->
@@ -18,7 +19,9 @@
                     <div class="card">
                         <div class="card-header pb-0">
                             <div class="d-flex justify-content-between">
-                                <h4 class="card-title mg-b-0">Thêm mới khách hàng</h4></div>
+                                <h4 v-if="entry.id" class="card-title mg-b-0">Sửa khách hàng</h4>
+                                <h4 v-else class="card-title mg-b-0">Thêm mới khách hàng</h4>
+                            </div>
 
                         </div>
                         <div class="card-body">
@@ -53,9 +56,9 @@
                                     <error-label for="f_company" :errors="errors.company"></error-label>
                                 </div>
 
-                                <div class="form-group col-lg-6">
+                                <div class="form-group col-lg-6" v-if="!entry.id">
                                     <label>Mật khẩu</label>
-                                    <input  v-model="entry.password" name="name" type="password"
+                                    <input  v-model="entry.password" name="name" type="text"
                                            class="form-control"
                                            placeholder="Mật khẩu">
                                     <error-label for="f_description" :errors="errors.password"></error-label>
@@ -67,7 +70,7 @@
                                            placeholder="Địa chỉ">
                                     <error-label for="f_description" :errors="errors.description"></error-label>
                                 </div>
-                                <div class="form-group col-lg-6">
+                                <div class="form-group col-lg-6" v-if="!entry.id">
                                     <label>Nhập lại mật khẩu</label>
                                     <input  v-model="entry.password_conf" name="name" type="password"
                                            class="form-control"
@@ -98,7 +101,7 @@
         components: {ActionBar},
         data() {
             return {
-                entry:{
+                entry:$json.entry ||{
                     'name':'',
                     'email':'',
                     'phone':'',

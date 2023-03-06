@@ -373,6 +373,11 @@ export function getTimeRangeAll() {
     const end = moment().format('YYYY-MM-DD');
     return start + '_' + end;
 }
+export function getTimeNow() {
+    const start = moment().format('YYYY-MM-DD');
+    const end = moment().format('YYYY-MM-DD');
+    return start + '_' + end;
+}
 
 export function cloneObject(obj) {
     return JSON.parse(JSON.stringify(obj));

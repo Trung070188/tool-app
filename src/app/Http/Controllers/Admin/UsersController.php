@@ -66,7 +66,7 @@ class UsersController extends AdminBaseController
         */
         $jsonData = compact('entry','roles',@'role');
         $title = 'Edit';
-        $component = 'UserDetail';
+        $component = 'UserForm';
 
         return vue(compact('title', 'component'), $jsonData);
     }
