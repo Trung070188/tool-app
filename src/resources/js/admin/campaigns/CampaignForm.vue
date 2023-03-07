@@ -83,7 +83,7 @@
                                 <div class="form-group col-lg-6">
                                     <label>Tên khách hàng</label>
                                     <select class="js-example-responsive" style="width: 100%" v-model="entry.customer_id">
-                                        <option v-for="customer in customers" :value="customer.id">{{entry.id}}-{{customer.name}}</option>
+                                        <option v-for="customer in customers" :value="customer.id">{{customer.id}}-{{customer.name}}</option>
                                     </select>
 <!--                                    <select class="form-control form-select" v-model="entry.customer_id">-->
 <!--                                        <option value="">Chọn khách hàng</option>-->
