@@ -138,10 +138,13 @@ class CustomerCampaignsController extends CustomerBaseController
         $start_date = date('Y-m-d', strtotime($start_date));
         $end_date = $date_range[1];
         $end_date = date('Y-m-d', strtotime($end_date));
+        $startHour = '00:00:00';
+        $endHour = '23:59:59';
+
         if ($end_date != $start_date) {
             $results = DB::table('campaign_installs')->where('campaign_id', $req->id)
                 ->selectRaw('DATE(installed_at) AS date, COUNT(campaign_id) AS campaign_count')
-                ->whereBetween('installed_at', [$start_date, $end_date])
+                ->whereBetween('installed_at', [$start_date.'_'.$startHour, $end_date.'_'.$endHour])
                 ->groupBy('date')
                 ->orderBy('date')
                 ->get();
@@ -166,9 +169,6 @@ class CustomerCampaignsController extends CustomerBaseController
         }
 
         if ($start_date == $end_date && $req->timeLine==0) {
-
-            $startHour = '00:00:00';
-            $endHour = '23:59:59';
             $results = DB::table('campaign_installs')->where('campaign_id', $req->id)
                 ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
                 ->whereBetween('installed_at', [$start_date . '_' . $startHour, $end_date . '_' . $endHour])
