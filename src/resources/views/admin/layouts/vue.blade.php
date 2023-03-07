@@ -29,6 +29,7 @@
     <link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/assets/css/viewer.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <?php
        echo asset_css('assets/css/app.css')
     ?>
@@ -67,6 +68,8 @@
 <script src="{{asset('/vendor/ckeditor/ckeditor.js')}}"></script>
 <script src="/vendor/daterangepicker/moment.min.js"></script>
 <script src="/vendor/daterangepicker/daterangepicker.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <?php
     echo asset_js([
         'assets/js/app.js'

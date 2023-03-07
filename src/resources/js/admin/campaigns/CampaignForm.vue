@@ -82,6 +82,9 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Tên khách hàng</label>
+                                    <select class="js-example-responsive" style="width: 100%" v-model="entry.customer_id">
+                                        <option v-for="customer in customers" :value="customer.id">{{entry.id}}-{{customer.name}}</option>
+                                    </select>
 <!--                                    <select class="form-control form-select" v-model="entry.customer_id">-->
 <!--                                        <option value="">Chọn khách hàng</option>-->
 <!--                                        <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>-->
@@ -214,13 +217,23 @@
         components: {
             QFileManagerInput, RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
+
             return {
                 customers:$json.customer || [],
-                entry: $json.entry || {},
+                entry: $json.entry || {
+                    customer_id:'',
+                },
                 isLoading: false,
                 errors: {},
                 eventLogs: $json.eventLogs,
             }
+        },
+        mounted() {
+            const vm = this;
+            $(".js-example-responsive").select2({
+            }).on("change", function(e) {
+                vm.entry.customer_id = $(this).val();
+            });
         },
         methods: {
             async onUrlStoreChange(value) {

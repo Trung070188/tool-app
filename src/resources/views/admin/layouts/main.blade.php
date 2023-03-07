@@ -28,6 +28,7 @@ $serverTime = date('Y-m-d H:i:s');
     <link href="/vendor/daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="/vendor/nprogress/nprogress.css" rel="stylesheet">
     <link href="/vendor/toastr/toastr.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <?php
         echo asset_css('assets/css/app.css')
@@ -76,6 +77,8 @@ $serverTime = date('Y-m-d H:i:s');
 <script src="/vendor/daterangepicker/moment.min.js"></script>
 <script src="{{asset('/vendor/ckeditor/ckeditor.js')}}"></script>
 <script src="/vendor/daterangepicker/daterangepicker.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <?php
 echo asset_js('assets/js/app.js')
 ?>

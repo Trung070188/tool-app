@@ -173,7 +173,8 @@ class CampaignsController extends AdminBaseController
             'os' => 'required',
             'store_url' => 'required',
             'type' => 'required',
-            'total_install' => 'required',
+            'total_install' => 'required|numeric|min:0',
+            'daily_install' => 'numeric|min:0'
         ];
 
         $v = Validator::make($data, $rules);
