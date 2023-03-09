@@ -222,6 +222,11 @@
 <!--                                    </tr>-->
 <!--                                    </tbody>-->
 <!--                                </table>-->
+                                <div class="row mb-2" >
+                                    <button class="btn btn-primary " style="margin: 0px 20px;background-color:#238776">Xóa data campaign đã chọn</button>
+                                    <button class="btn btn-primary" style="background-color:#238776">Xóa campaign đã chọn</button>
+                                </div>
+
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>

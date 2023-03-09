@@ -49,16 +49,20 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Campaign</label>
-                                    <select class="form-select form-control" v-model="entry.campaign_id">
-                                        <option v-for="campaign in campaigns" :value="campaign.id">{{campaign.name}}</option>
+                                    <select class="js-example-responsive" style="width: 100%" v-model="entry.campaign_id">
+                                        <option v-for="campaign in campaigns" :value="campaign.id">{{campaign.id}}-{{campaign.name}}</option>
                                     </select>
+<!--                                    <select class="form-select form-control" v-model="entry.campaign_id">-->
+<!--                                        <option v-for="campaign in campaigns" :value="campaign.id">{{campaign.name}}</option>-->
+<!--                                    </select>-->
                                     <error-label :errors="errors.campaign_id" ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Partner</label>
-                                    <select class="form-select form-control" v-model="entry.partner_id">
-                                        <option v-for="partner in partners" :value="partner.id">{{partner.name}}</option>
+                                    <select class="js-example-responsive" style="width: 100%" v-model="entry.partner_id">
+                                        <option v-for="partner in partners" :value="partner.id">{{partner.id}}-{{partner.name}}</option>
                                     </select>
+
                                     <error-label :errors="errors.partner_id" ></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -154,6 +158,12 @@
             }
         },
         mounted() {
+            const vm = this;
+            $(".js-example-responsive").select2({
+            }).on("change", function(e) {
+                vm.entry.campaign_id = $(this).val();
+                vm.entry.partner_id = $(this).val();
+            });
         },
         methods: {
             async save() {
