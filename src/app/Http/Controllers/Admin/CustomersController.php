@@ -102,30 +102,16 @@ class CustomersController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-            'password' => 'required'
+            'show_pass' => 'required',
         ];
-        if (!isset($data['id'])) {
-            if ($data['email']) {
-                $rules['email'] = ['email', Rule::unique('customers')];
-            }
+        if(!isset($data['id']))
+        {
+            $rules['name'] = Rule::unique('customers');
         }
-        if (isset($data['id'])) {
-            $user = Customer::find($data['id']);
-            if ($data['email']) {
-                $rules['email'] = ['email', Rule::unique('customers')->ignore($user->id),];
-
-            }
+        else{
+            $rules['name'] = Rule::unique('customers')->ignore($data['id']);
         }
         $v = Validator::make($data, $rules);
-        $v->after(function ($valiadte) use ($data, $req) {
-            if (!isset($data['id']) && $data['password_conf'] != $data['password']) {
-                $valiadte->errors()->add('password_conf', 'The password and confirmation password do not match.');
-            }
-            if (isset($data['id']) && $req->password_conf != $req->password) {
-                $valiadte->errors()->add('password_conf', 'The password and confirmation password do not match.');
-            }
-        });
-
         if ($v->fails()) {
             return [
                 'code' => 2,
@@ -146,9 +132,8 @@ class CustomersController extends AdminBaseController
             }
 
             $entry->fill($data);
+            $entry->password=Hash::make($data['show_pass']);
             $entry->save();
-            $password = Hash::make($req->password);
-            Customer::query()->where('id', $entry->id)->update(['password' => $password]);
 
             return [
                 'code' => 0,
@@ -158,7 +143,7 @@ class CustomersController extends AdminBaseController
         } else {
             $entry = new Customer();
             $entry->fill($data);
-            $password = (Hash::make($data['password']));
+            $password = (Hash::make($data['show_pass']));
             $entry->password = $password;
             $entry->save();
             return [

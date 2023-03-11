@@ -26,6 +26,12 @@ return [
                 'url' => '/xadmin/campaigns/create',
             ] ,
             [
+                "name" => "Xóa data",
+                "icon" => "fas fa-list ",
+                "group" => 3,
+                'url' => '/xadmin/campaigns/deleteData',
+            ] ,
+            [
                 "name" => "Thống kê",
                 "icon" => "fas fa-list ",
                 "group" => 3,

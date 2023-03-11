@@ -3,6 +3,7 @@ import CampaignForm from "./admin/campaigns/CampaignForm";
 import CampaignIndex from "./admin/campaigns/CampaignIndex";
 import CampaignStatistical from "./admin/campaigns/CampaignStatistical.vue";
 import CampaignStatisticalDetail from "./admin/campaigns/CampaignStatisticalDetail.vue";
+import DeleteCampaign from "./admin/campaigns/DeleteCampaign.vue";
 import CustomerForm from "./admin/customers/CustomerForm";
 import CustomerIndex from "./admin/customers/CustomerIndex";
 import RoleIndex from "./admin/roles/RoleIndex";
@@ -28,6 +29,7 @@ export default {
     CampaignIndex,
     CampaignStatistical,
     CampaignStatisticalDetail,
+    DeleteCampaign,
     CustomerIndex,
     CustomerForm,
     RoleIndex,

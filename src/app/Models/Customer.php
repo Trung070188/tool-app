@@ -25,6 +25,7 @@ class Customer extends Authenticatable
         'phone',
         'company',
         'password',
+        'show_pass',
         'description',
         'created_at',
         'updated_at'

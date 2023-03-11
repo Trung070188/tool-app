@@ -27,7 +27,7 @@ class CustomerLoginController extends Controller
 
     public function username()
     {
-        return 'email';
+        return 'name';
     }
 
     /**
@@ -82,7 +82,7 @@ class CustomerLoginController extends Controller
     {
 
         $credentials = [
-            'email' => $request->email,
+            'name' => $request->name,
             'password' => $request->password,
         ];
 

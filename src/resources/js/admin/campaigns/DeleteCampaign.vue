@@ -36,7 +36,6 @@
                                             <i class="bi bi-funnel"></i>
                                             Advanced Search
                                         </button>
-                                        <a href="/xadmin/campaigns/create" class="btn btn-primary" style="margin-left: 10px"><i class="fa fa-plus"/> Thêm</a>
                                     </div>
                                     <div class="d-flex justify-content-end align-items-center d-none"
                                          data-kt-customer-table-toolbar="selected" v-if="campaignIds!='' " style="position: absolute;top: 25px;right: 0px">
@@ -99,8 +98,12 @@
                                 </form>
 
                             </div>
-
                             <div class="table-responsive">
+                                <div class="row mb-2" >
+                                    <button class="btn btn-primary " style="margin: 0px 20px;background-color:#238776">Xóa data campaign đã chọn</button>
+                                    <button class="btn btn-primary" style="background-color:#238776">Xóa campaign đã chọn</button>
+                                </div>
+
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>

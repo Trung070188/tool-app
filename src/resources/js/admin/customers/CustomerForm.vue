@@ -34,13 +34,13 @@
                                            placeholder="Tên khách hàng">
                                     <error-label for="f_name" :errors="errors.name"></error-label>
                                 </div>
-                                <div class="form-group col-lg-6">
-                                    <label>Email</label>
-                                    <input id="f_email" v-model="entry.email" name="name"
-                                           class="form-control"
-                                           placeholder="email">
-                                    <error-label for="f_email" :errors="errors.email"></error-label>
-                                </div>
+<!--                                <div class="form-group col-lg-6">-->
+<!--                                    <label>Email</label>-->
+<!--                                    <input id="f_email" v-model="entry.email" name="name"-->
+<!--                                           class="form-control"-->
+<!--                                           placeholder="email">-->
+<!--                                    <error-label for="f_email" :errors="errors.email"></error-label>-->
+<!--                                </div>-->
                                 <div class="form-group col-lg-6">
                                     <label>Số điện thoại</label>
                                     <input id="f_phone" v-model="entry.phone" name="name"
@@ -56,12 +56,12 @@
                                     <error-label for="f_company" :errors="errors.company"></error-label>
                                 </div>
 
-                                <div class="form-group col-lg-6" v-if="!entry.id">
+                                <div class="form-group col-lg-6" >
                                     <label>Mật khẩu</label>
-                                    <input  v-model="entry.password" name="name" type="text"
+                                    <input  v-model="entry.show_pass" name="name" type="text"
                                            class="form-control"
                                            placeholder="Mật khẩu">
-                                    <error-label for="f_description" :errors="errors.password"></error-label>
+                                    <error-label for="f_description" :errors="errors.show_pass"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Địa chỉ</label>
@@ -70,13 +70,7 @@
                                            placeholder="Địa chỉ">
                                     <error-label for="f_description" :errors="errors.description"></error-label>
                                 </div>
-                                <div class="form-group col-lg-6" v-if="!entry.id">
-                                    <label>Nhập lại mật khẩu</label>
-                                    <input  v-model="entry.password_conf" name="name" type="password"
-                                           class="form-control"
-                                           placeholder="Nhập lại mật khẩu">
-                                    <error-label for="f_description" :errors="errors.password_conf"></error-label>
-                                </div>
+
 
                             </div>
                             </div>
@@ -106,8 +100,7 @@
                     'email':'',
                     'phone':'',
                     'company':'',
-                    'password':'',
-                    'password_conf':'',
+                    'show_pass':'',
                     'description':''
                 },
                 isLoading: false,

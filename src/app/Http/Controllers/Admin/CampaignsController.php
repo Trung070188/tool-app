@@ -39,6 +39,13 @@ class CampaignsController extends AdminBaseController
         return vue(compact('title', 'component'));
     }
 
+    public function deleteData()
+    {
+        $title = 'Campaign';
+        $component = 'DeleteCampaign';
+        return vue(compact('title', 'component'));
+    }
+
     public function statistical()
     {
         $title = 'Campaign';

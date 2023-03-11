@@ -69,14 +69,14 @@ $googleSignEnabled = config('services.google.enabled');
                                         <form method="post" id="loginForm" method="post" action="{{route('customer.login')}}">
                                             {{csrf_field()}}
                                             <div class="form-group"><label>Tài khoản truy cập</label>
-                                                <input class="form-control" placeholder="Tài khoản truy cập" name="email"
-                                                    type="text" value="{{ old('email') }}" required autofocus></div>
+                                                <input class="form-control" placeholder="Tài khoản truy cập" name="name"
+                                                    type="text" value="{{ old('name') }}" required autofocus></div>
                                             <div class="form-group"><label>Mật khẩu</label>
                                                 <input class="form-control" placeholder="Mật khẩu" type="password"
                                                        required name="password">
                                             </div>
 
-                                            @error('email')
+                                            @error('name')
                                             <div class="alert alert-danger" role="alert">
                                                 <strong>Tên đăng nhập hoặc mật khẩu không hợp lệ</strong>
                                             </div>
