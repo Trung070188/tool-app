@@ -21,7 +21,10 @@ class CustomerDashboardController extends CustomerBaseController
     public function data(Request $req)
     {
         $user = Auth::user();
-        $query=Campaign::query()->where('customer_id',$user->id)->orderBy('id','desc');
+        $query = Campaign::query()->where('customer_id', $user->id)
+            ->orderBy('status','desc')
+            ->orderBy('open_next_day','desc')
+            ->orderBy('id', 'desc');
 
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%');

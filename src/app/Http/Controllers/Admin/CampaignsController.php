@@ -281,7 +281,7 @@ class CampaignsController extends AdminBaseController
      */
     public function data(Request $req)
     {
-        $query = Campaign::query()->with(['campaignPartner', 'customer'])->orderBy('id', 'desc');
+        $query = Campaign::query()->with(['campaignPartner', 'customer'])->orderBy('status','desc')->orderBy('open_next_day','desc')->orderBy('id', 'desc');
         $customers = Customer::query()->orderBy('id', 'desc')->get();
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%')
@@ -356,6 +356,8 @@ class CampaignsController extends AdminBaseController
                 DB::raw('COALESCE(fakes.total_fake, 0) as total_fake'),
                 DB::raw('COALESCE(total_install.total_install, 0) as total_install')
             ])
+            ->orderBy('campaigns.status', 'desc')
+            ->orderBy('campaigns.open_next_day', 'desc')
             ->orderBy('campaigns.id', 'desc');
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%')
