@@ -166,7 +166,7 @@
                                         </td>
                                         <td>{{d(entry.auto_on_at)}}</td>
                                         <td>{{d(entry.auto_off_at)}}</td>
-                                        <td><switch-button v-model="entry.status" @change="switchStatus(entry)"></switch-button></td>
+                                        <td><switch-button v-model="entry.status" @change="switchStatus(entry)" :disabled="false"></switch-button></td>
                                         <td><switch-button v-model="entry.open_next_day" @change="OpenNextDay(entry)"></switch-button></td>
                                         <td v-text="entry.package_id"></td>
                                         <td class="">

@@ -65,7 +65,7 @@
                                         <td v-text="entry.name"></td>
                                         <td v-text="entry.os"></td>
                                         <td v-text="entry.type"></td>
-                                        <td><switch-button v-model="entry.status"></switch-button></td>
+                                        <td><switch-button v-model="entry.status" :disabled="true"></switch-button></td>
                                     </tr>
                                     </tbody>
                                 </table>

@@ -1,5 +1,5 @@
 <template>
-    <label class="switch"><input ref="input" v-model="isChecked" @change="toggle()" type="checkbox"> <span
+    <label class="switch"><input ref="input" v-model="isChecked" @change="toggle()" type="checkbox" :disabled="disabled"> <span
         class="slider round"></span></label>
 </template>
 
@@ -16,7 +16,7 @@ export default {
     },
     mounted: function () {
     },
-    props: ['modelValue', 'input_id'],
+    props: ['modelValue', 'input_id','disabled'],
     watch: {
         modelValue: function (v) {
             if ( this.watchIgnored) {
