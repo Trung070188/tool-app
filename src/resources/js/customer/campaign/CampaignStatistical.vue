@@ -36,7 +36,6 @@
                                             <i class="bi bi-funnel"></i>
                                             Advanced Search
                                         </button>
-                                        <a href="/xadmin/campaigns/create" class="btn btn-primary" style="margin-left: 10px"><i class="fa fa-plus"/> Thêm</a>
                                     </div>
                                 </div>
                                 <form class="col-lg-12" v-if="!isShowFilter">
