@@ -104,7 +104,7 @@
                                         <td ></td>
                                         <td></td>
                                         <td></td>
-                                        <td >{{(entry.price) * (entry.total_install)}}</td>
+                                        <td >{{entry.sharePrice}}</td>
                                         <td ></td>
                                         <td></td>
 
@@ -169,6 +169,19 @@
                 const res = await $get('/xadmin/campaign_installs/data', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
+                for (let item of this.entries) {
+                    if (item.price) {
+                        let sharePrice=(item.price) * (item.total_install)
+                        item.sharePrice=parseFloat(sharePrice).toLocaleString('en-US',{
+                            style: 'currency',
+                            currency: 'VND'
+                        })
+                        item.price = parseFloat(item.price).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                    }
+                }
                 this.campaigns=res.campaigns;
                 this.partners=res.partners;
                 this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;

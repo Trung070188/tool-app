@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Partner</label>
-                                    <select class="js-example-responsive" style="width: 100%" v-model="entry.partner_id">
+                                    <select class="js-example-responsive-abc" style="width: 100%" v-model="entry.partner_id">
                                         <option v-for="partner in partners" :value="partner.id">{{partner.id}}-{{partner.name}}</option>
                                     </select>
 
@@ -162,6 +162,9 @@
             $(".js-example-responsive").select2({
             }).on("change", function(e) {
                 vm.entry.campaign_id = $(this).val();
+            });
+            $(".js-example-responsive-abc").select2({
+            }).on("change", function(e) {
                 vm.entry.partner_id = $(this).val();
             });
         },

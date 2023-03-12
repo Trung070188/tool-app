@@ -72,8 +72,16 @@
                                                v-text="entry.id"></a>
                                         </td>
                                         <td v-text="entry.name"></td>
-                                        <td v-text="entry.campaign_name"></td>
-                                        <td v-text="entry.partner_name"></td>
+                                        <td>
+                                            <template v-if="entry.campaign">
+                                                {{entry.campaign.name}}
+                                            </template>
+                                        </td>
+                                        <td>
+                                            <template v-if="entry.partner">
+                                                {{entry.partner.name}}
+                                            </template>
+                                        </td>
                                         <td class="">
                                             <a :href="'/xadmin/campaign_partners/edit?id='+entry.id" class="btn "><i
                                                     class="fa fa-edit"></i></a>
