@@ -79,8 +79,8 @@ export default {
         if($json.entry)
         {
            entry =$json.entry
-            formatBooking=entry.pay_booking
-            formatDebt=entry.pay_debt
+            formatBooking=entry.pay_booking || 0
+            formatDebt=entry.pay_debt || 0
         }
         else {
             entry={
@@ -114,7 +114,7 @@ export default {
             {
 
 
-                this.entry.pay_booking = this.formatBooking.replace(/[^0-9.-]+/g, '');
+                this.entry.pay_booking = this.formatBooking.replace(/[^0-9.-]+/g, '') || 0;
                 if (this.entry.pay_booking === '') {
                     this.formatBooking = '0';
                 }
@@ -123,14 +123,13 @@ export default {
                         style: 'currency',
                         currency: 'VND'
                     });
-                    console.log(this.formatBooking);
                 }
             }
 
         },
         formatValueDebt() {
             {
-                this.entry.pay_debt = this.formatDebt.replace(/[^0-9.-]+/g, '');
+                this.entry.pay_debt = this.formatDebt.replace(/[^0-9.-]+/g, '') || 0;
                 if (this.entry.pay_debt === '') {
                     this.formatDebt = '0';
                 }

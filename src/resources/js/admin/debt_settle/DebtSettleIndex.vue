@@ -184,7 +184,7 @@
                             currency: 'VND'
                         });
                     }
-                    if (owe) {
+                    if (owe || owe==0) {
                         item.owe = parseFloat(owe).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'VND'
