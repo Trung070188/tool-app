@@ -55,13 +55,12 @@
                                            placeholder="Công ty">
                                     <error-label for="f_company" :errors="errors.company"></error-label>
                                 </div>
-
                                 <div class="form-group col-lg-6" >
-                                    <label>Mật khẩu</label>
-                                    <input  v-model="entry.show_pass" name="name" type="text"
-                                           class="form-control"
-                                           placeholder="Mật khẩu">
-                                    <error-label for="f_description" :errors="errors.show_pass"></error-label>
+                                    <label>Tên đăng nhập</label>
+                                    <input  v-model="entry.username" name="name" type="text"
+                                            class="form-control"
+                                            placeholder="Tên đăng nhập">
+                                    <error-label for="f_description" :errors="errors.username"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Địa chỉ</label>
@@ -70,7 +69,13 @@
                                            placeholder="Địa chỉ">
                                     <error-label for="f_description" :errors="errors.description"></error-label>
                                 </div>
-
+                                <div class="form-group col-lg-6" >
+                                    <label>Mật khẩu</label>
+                                    <input  v-model="entry.show_pass" name="name" type="text"
+                                            class="form-control"
+                                            placeholder="Mật khẩu">
+                                    <error-label for="f_description" :errors="errors.show_pass"></error-label>
+                                </div>
 
                             </div>
                             </div>

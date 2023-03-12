@@ -24,8 +24,8 @@
                             <input v-model="entry.id" type="hidden" name="id">
                             <div class="form-group">
                                 <label>Customer</label>
-                                <select class="form-control form-select" v-model="entry.customer_id">
-                                    <option v-for="customer in entries" :value="customer.id">{{customer.name}}</option>
+                                <select class="js-example-responsive" style="width: 100%" v-model="entry.customer_id">
+                                    <option v-for="customer in entries" :value="customer.id">{{customer.id}}-{{customer.name}}</option>
                                 </select>
                                 <error-label for="f_customer_id" :errors="errors.customer_id"></error-label>
                             </div>
@@ -84,11 +84,11 @@ export default {
         }
         else {
             entry={
-                pay_booking:'',
-                pay_debt:''
+                pay_booking:0,
+                pay_debt:0
             }
-            formatBooking=''
-            formatDebt=''
+            formatBooking=0
+            formatDebt=0
 
 
         }
@@ -102,6 +102,11 @@ export default {
         }
     },
     mounted() {
+        const vm = this;
+        $(".js-example-responsive").select2({
+        }).on("change", function(e) {
+            vm.entry.customer_id = $(this).val();
+        });
         $router.on('/', this.load).init();
     },
     methods: {

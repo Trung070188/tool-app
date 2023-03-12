@@ -187,7 +187,7 @@ class DebtSettlesController extends AdminBaseController
            'debt_settle.pay_booking as pay_booking',
            'debt_settle.pay_debt as pay_debt',
             'debt_settle.note as note'
-        ]);
+        ])->orderBy('id','desc');
 
         if ($req->keyword) {
             $query->where('customers.name', 'LIKE', '%' . $req->keyword. '%')
