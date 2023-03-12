@@ -172,13 +172,13 @@
                 });
                 for (let item of this.entries) {
                     let owe=(item.pay_booking)-(item.pay_debt)
-                    if (item.pay_booking) {
+                    if (item.pay_booking || item.pay_booking==0) {
                         item.pay_booking = parseFloat(item.pay_booking).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'VND'
                         });
                     }
-                    if (item.pay_debt) {
+                    if (item.pay_debt || item.pay_debt==0) {
                         item.pay_debt = parseFloat(item.pay_debt).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'VND'
