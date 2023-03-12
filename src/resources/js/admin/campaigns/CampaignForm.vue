@@ -64,9 +64,9 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Price</label>
-                                    <input id="f_price" v-model="entry.price" name="name"
+                                    <input id="f_price" v-model="format" name="name"
                                            class="form-control"
-                                           placeholder="price">
+                                           placeholder="price" @input="formatPrice(format)">
                                     <error-label for="f_price" :errors="errors.price"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -212,16 +212,28 @@
     import Datepicker from "../../components/Datepicker";
     import RichtextEditor from "../../components/RichtextEditor";
     import QFileManagerInput from "../../components/QFileManagerInput";
+    import {format} from "../../../../public/assets/plugins/echart/echart";
     export default {
         name: "CampaignsForm.vue",
         components: {
             QFileManagerInput, RichtextEditor, Datepicker, SwitchButton, FileManagerInput, Uploader, ActionBar},
         data() {
+            let format;
+            if($json.entry.id)
+            {
+                format=$json.entry.price
+
+            }
+            else {
+                format=''
+            }
 
             return {
+                format:format,
                 customers:$json.customer || [],
                 entry: $json.entry || {
                     customer_id:'',
+                    price:''
                 },
                 isLoading: false,
                 errors: {},
@@ -236,6 +248,19 @@
             });
         },
         methods: {
+            formatPrice(price)
+            {
+                this.entry.price = this.format.replace(/[^0-9.-]+/g, '');
+                if (this.entry.price === '') {
+                    this.formatBooking = '0';
+                }
+                else {
+                    this.format = parseFloat(this.entry.price).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'VND'
+                    });
+                }
+            },
             async onUrlStoreChange(value) {
                 const res = await $post('/xadmin/campaigns/getAppIcon', {
                     url: value

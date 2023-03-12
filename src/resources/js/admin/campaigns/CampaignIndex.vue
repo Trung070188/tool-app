@@ -104,11 +104,11 @@
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>
-                                        <td width = "25">
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" v-model="allSelected" @change="selectAll()">
-                                            </div>
-                                        </td>
+<!--                                        <td width = "25">-->
+<!--                                            <div class="form-check form-check-sm form-check-custom form-check-solid">-->
+<!--                                                <input class="form-check-input" type="checkbox" v-model="allSelected" @change="selectAll()">-->
+<!--                                            </div>-->
+<!--                                        </td>-->
                                         <th>ID</th>
                                         <th>Icon</th>
                                         <th>Name</th>
@@ -127,19 +127,19 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="entry in entries">
-                                        <td class="">
-                                            <div
-                                                class="form-check form-check-sm form-check-custom form-check-solid"
-                                            >
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    v-model="campaignIds"
-                                                    :value="entry.id"
-                                                    @change="updateCheckAll"
-                                                />
-                                            </div>
-                                        </td>
+<!--                                        <td class="">-->
+<!--                                            <div-->
+<!--                                                class="form-check form-check-sm form-check-custom form-check-solid"-->
+<!--                                            >-->
+<!--                                                <input-->
+<!--                                                    class="form-check-input"-->
+<!--                                                    type="checkbox"-->
+<!--                                                    v-model="campaignIds"-->
+<!--                                                    :value="entry.id"-->
+<!--                                                    @change="updateCheckAll"-->
+<!--                                                />-->
+<!--                                            </div>-->
+<!--                                        </td>-->
                                         <td>
                                             <a class="edit-link" :href="'/xadmin/campaigns/edit?id='+entry.id"
                                                v-text="entry.id"></a>
@@ -316,6 +316,14 @@
                 const res = await $get('/xadmin/campaigns/data', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
+                for (let item of this.entries) {
+                    if (item.price) {
+                        item.price = parseFloat(item.price).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'VND'
+                        });
+                    }
+                }
                 this.customers=res.customers;
                 this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
                 this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
