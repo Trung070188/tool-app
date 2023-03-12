@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Campaign;
 use App\Models\CampaignInstall;
 use App\Models\EventLog;
+use App\Services\FakeInstallService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -58,7 +59,18 @@ class CampaignAutoFakeProcess extends Command
                 $tag = '[AUTO FAKE][' . $campaign->id . ']';
                 $this->info("$tag Processing auto fake campaign {$campaign->id} {$campaign->name}");
                 $dailyFakeInstall  = $campaign->daily_fake_install;
-                $installCount = (int) ceil($dailyFakeInstall/1440);
+                $today = date('Y-m-d');
+                $currentHour = (int)date('H');
+                $todayFakedCount = CampaignInstall::query()
+                    ->whereNotNull('faked_at')
+                    ->where('campaign_id', $campaign->id)
+                    ->where('date_install', $today)
+                    ->count();
+                $remainFakedInstall = $dailyFakeInstall - $todayFakedCount;
+                $service = new FakeInstallService($remainFakedInstall);
+                $currentHourInstall = $service->getCount($currentHour);
+
+                $installCount = (int) ceil($currentHourInstall/60);
 
                 for ($i = 1; $i <= $installCount; $i++) {
                     $install = new CampaignInstall();

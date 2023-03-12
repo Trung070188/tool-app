@@ -2,16 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Components\ReportExcel\ExcelModel\BlockIntegratedBank;
-use App\Components\ReportExcel\ExcelModel\BlockTransactionDetail;
-use App\Components\ReportExcel\ExcelReportBuilder;
-use App\Helpers\ExcelBuilder;
-use App\Helpers\PhpDoc;
-use App\Models\TransactionTypeCode;
-use App\Services\AppStoreService;
-use App\Services\XlsxService;
+use App\Services\FakeInstallService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
+
 class TestCommand extends Command
 {
     /**
@@ -28,16 +21,16 @@ class TestCommand extends Command
      */
     protected $description = 'Command description';
 
-    private AppStoreService $appStoreService;
+    private FakeInstallService $fakeInstallService;
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(AppStoreService $appStoreService)
+    public function __construct()
     {
         parent::__construct();
-        $this->appStoreService = $appStoreService;
+
     }
 
     /**
@@ -47,6 +40,23 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        dd(config('domain'));
+        $total = 1200;
+        $installed = 0;
+        for ($hour = 0; $hour <= 23; $hour++) {
+            $remain = $total - $installed;
+            $service = new FakeInstallService($remain);
+            $currentHourInstall = $service->getCount($hour);
+            $installPerMinute = $currentHourInstall/60;
+
+            for ($i = 0; $i < 60; $i++) {
+
+            }
+            $installed += $currentHourInstall;
+            echo "Hour $hour, Install = " . $currentHourInstall . ". Remain=$remain, TotalInstalled=$installed\n";
+        }
+
+
     }
+
+
 }
