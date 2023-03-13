@@ -58,7 +58,9 @@ class CampaignAutoFakeProcess extends Command
             try {
                 $tag = '[AUTO FAKE][' . $campaign->id . ']';
                 $this->info("$tag Processing auto fake campaign {$campaign->id} {$campaign->name}");
+
                 $dailyFakeInstall  = $campaign->daily_fake_install;
+
                 $today = date('Y-m-d');
                 $currentHour = (int)date('H');
                 $todayFakedCount = CampaignInstall::query()
@@ -66,8 +68,13 @@ class CampaignAutoFakeProcess extends Command
                     ->where('campaign_id', $campaign->id)
                     ->where('date_install', $today)
                     ->count();
+
                 $remainFakedInstall = $dailyFakeInstall - $todayFakedCount;
                 $service = new FakeInstallService($remainFakedInstall);
+                $this->info("$tag DailyFakeInstall=$dailyFakeInstall
+                RemainFakedInstall=$remainFakedInstall
+                TodayFakedCount=$todayFakedCount
+                ");
                 $currentHourInstall = $service->getCount($currentHour);
 
                 $installCount = (int) ceil($currentHourInstall/60);
