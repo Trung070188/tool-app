@@ -56,7 +56,8 @@ class CampaignAutoFakeProcess extends Command
 
 
             try {
-                $tag = '[AUTO FAKE][' . $campaign->id . ']';
+                $timestamp = date('Y-m-d H:i:s');
+                $tag = "[$timestamp][AUTO FAKE][" . $campaign->id . ']';
                 $this->info("$tag Processing auto fake campaign {$campaign->id} {$campaign->name}");
 
                 $dailyFakeInstall  = $campaign->daily_fake_install;
