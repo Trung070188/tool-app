@@ -13,6 +13,7 @@ namespace App\Models;
  * @property string    $device_id
  * @property string    $ip
  * @property string    $os
+ * @property string    $price
  * @property \DateTime $faked_at
  */
 class CampaignInstall extends BaseModel
