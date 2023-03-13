@@ -86,6 +86,7 @@ class CampaignAutoFakeProcess extends Command
                     $install->faked_at = date('Y-m-d H:i:s');
                     $install->installed_at = date('Y-m-d H:i:s');
                     $install->os = $campaign->os;
+                    $install->price = $campaign->price;
                     $install->ip = long2ip(rand(0, 4294967295));
                     $install->campaign_id = $campaign->id;
                     $install->date_install = date('Y-m-d');
