@@ -897,3 +897,10 @@ function getRealServerName(): string
 
     return $SERVER_NAME;
 }
+
+function randomVNIp()
+{
+    $ip = DB::selectOne("SELECT * FROM ipinfo WHERE country=? ORDER BY RAND() LIMIT 1", ["VN"]);
+
+    return long2ip(rand($ip->from_int, $ip->to_int));
+}

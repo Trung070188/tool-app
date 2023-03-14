@@ -113,11 +113,11 @@
 
                                     </div>
 
-                                    <label>Daily fake install</label>
-                                    <input :disabled="!entry.is_fake_on"  v-model="entry.daily_fake_install" name="name"
+                                    <label>Hourly fake install</label>
+                                    <input :disabled="!entry.is_fake_on"  v-model="entry.hourly_fake_install" name="name"
                                             class="form-control"
-                                            placeholder="Daily fake install">
-                                    <error-label for="f_status" :errors="errors.daily_fake_install"></error-label>
+                                            placeholder="Hourly fake install">
+                                    <error-label for="f_status" :errors="errors.hourly_fake_install"></error-label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Open next day</label>

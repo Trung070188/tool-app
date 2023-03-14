@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $price
  * @property string $os
  * @property int $customer_id
- * @property int $daily_fake_install
+ * @property int $hourly_fake_install
  * @property string $store_url
  * @property int $open_next_day
  * @property int $is_fake_on
@@ -45,7 +45,7 @@ class Campaign extends BaseModel
         'type',
         'status',
         'open_next_day',
-        'daily_fake_install',
+        'hourly_fake_install',
         'store_url',
         'is_fake_on',
         'note',
