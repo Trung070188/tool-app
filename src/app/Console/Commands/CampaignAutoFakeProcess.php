@@ -40,7 +40,7 @@ class CampaignAutoFakeProcess extends Command
     {
         $campaigns = Campaign::query()
             ->where('status', '=', 1)
-            ->where('daily_fake_install', '>', 0)
+            ->where('hourly_fake_install', '>', 0)
             ->where('is_fake_on', '=', 1)
             ->get();
 
@@ -60,25 +60,27 @@ class CampaignAutoFakeProcess extends Command
                 $tag = "[$timestamp][AUTO FAKE][" . $campaign->id . ']';
                 $this->info("$tag Processing auto fake campaign {$campaign->id} {$campaign->name}");
 
-                $dailyFakeInstall  = $campaign->daily_fake_install;
+                $hourlyFakeInstall  = $campaign->hourly_fake_install;
 
                 $today = date('Y-m-d');
-                $currentHour = (int)date('H');
-                $todayFakedCount = CampaignInstall::query()
+                $fullCurrentHour = date('Y-m-d H:00:00');
+                $currentHourFakedCount = CampaignInstall::query()
                     ->whereNotNull('faked_at')
+                    ->where('installed_at', '>=', $fullCurrentHour)
                     ->where('campaign_id', $campaign->id)
                     ->where('date_install', $today)
                     ->count();
 
-                $remainFakedInstall = $dailyFakeInstall - $todayFakedCount;
-                $service = new FakeInstallService($remainFakedInstall);
-                $this->info("$tag DailyFakeInstall=$dailyFakeInstall
-                RemainFakedInstall=$remainFakedInstall
-                TodayFakedCount=$todayFakedCount
-                ");
-                $currentHourInstall = $service->getCount($currentHour);
 
-                $installCount = (int) ceil($currentHourInstall/60);
+                $remainFakedInstall = $hourlyFakeInstall - $currentHourFakedCount;
+
+                $this->info("$tag HourlyFakeInstall=$hourlyFakeInstall
+                RemainFakedInstall=$remainFakedInstall
+                CurrentHourFakedCount=$currentHourFakedCount
+                ");
+                $installCount = (int) ceil($remainFakedInstall/60);
+
+
 
                 for ($i = 1; $i <= $installCount; $i++) {
                     $install = new CampaignInstall();
@@ -87,7 +89,7 @@ class CampaignAutoFakeProcess extends Command
                     $install->installed_at = date('Y-m-d H:i:s');
                     $install->os = $campaign->os;
                     $install->price = $campaign->price;
-                    $install->ip = long2ip(rand(0, 4294967295));
+                    $install->ip = randomVNIp();
                     $install->campaign_id = $campaign->id;
                     $install->date_install = date('Y-m-d');
                     $install->save();
