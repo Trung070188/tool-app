@@ -59,12 +59,12 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                                                                    <th>Name</th>
-                                                                                    <th>Email</th>
-                                                                                    <th>Phone</th>
-                                                                                    <th>Company</th>
-                                                                                    <th>Description</th>
-                                                                                <th>Action</th>
+                                                                                    <th>Tên</th>
+                                                                                    <th>Tên đăng nhập</th>
+                                                                                    <th>SĐT</th>
+                                                                                    <th>Công ty</th>
+                                                                                    <th>Địa chỉ</th>
+                                                                                <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -74,7 +74,7 @@
                                                v-text="entry.id"></a>
                                         </td>
                                                                                     <td>{{entry.id}} - {{entry.name}}</td>
-                                                                                    <td v-text="entry.email"></td>
+                                                                                    <td v-text="entry.username"></td>
                                                                                     <td v-text="entry.phone"></td>
                                                                                     <td v-text="entry.company"></td>
                                                                                     <td v-text="entry.description"></td>
