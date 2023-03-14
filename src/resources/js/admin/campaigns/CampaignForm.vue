@@ -148,13 +148,11 @@
                                     <div>
                                         <switch-button  v-model="entry.auto_on_status"></switch-button>
                                     </div>
-                                    <template v-if="entry.auto_on_status==1">
                                         <label>Tự động bật lúc</label>
                                         <Datepicker :timepicker="true"  v-model="entry.auto_on_at" name="name"
                                                     class="form-control"
                                                     placeholder="Auto on at"></Datepicker>
                                         <error-label for="f_status" :errors="errors.auto_on_at"></error-label>
-                                    </template>
 
                                 </div>
 
@@ -164,13 +162,11 @@
                                         <switch-button  v-model="entry.auto_off_status"></switch-button>
 
                                     </div>
-                                    <template v-if="entry.auto_off_status==1">
                                         <label>Tự động tắt lúc</label>
                                         <Datepicker :timepicker="true"   v-model="entry.auto_off_at" name="name"
                                                     class="form-control"
                                                     placeholder="Auto off at"></Datepicker>
                                         <error-label for="f_status" :errors="errors.auto_off_at"></error-label>
-                                    </template>
 
                                 </div>
                                 <div class="form-group col-lg-12">
