@@ -16,27 +16,28 @@
                     </svg>
                 </div>
                 <ul class="side-menu open" style="margin-right: 0px;">
-                    <li class="slide " v-for="menu in menus"  :class="{'is-expanded':menu.showSubMenu }">
+                    <li class="slide " v-for="menu in menus" :class="{'is-expanded':menu.showSubMenu }">
                         <a class="side-menu__item"
                            :class="{'is-expanded':menu.showSubMenu }"
                            @click.prevent="toggleMenu(menu)"
-                                                     data-bs-toggle="slide" href="javascript:void(0);">
-                        <i :class="menu.icon"/>
-                        <span class="side-menu__label">{{ menu.name }}</span>
-                        <i v-if="menu.subs && menu.subs.length" class="angle fe fe-chevron-right"></i></a>
+                           data-bs-toggle="slide" href="javascript:void(0);">
+                            <i :class="menu.icon"/>
+                            <span class="side-menu__label">{{ menu.name }}</span>
+                            <i v-if="menu.subs && menu.subs.length" class="angle fe fe-chevron-right"></i></a>
                         <ul class="slide-menu" v-if="menu.subs && menu.subs.length" :class="{open: menu.showSubMenu}">
                             <li class="side-menu__label1"><a href="javascript:void(0);">Dashboards</a></li>
-                            <li class="sub-slide"  v-for="sub in menu.subs" :class="{'is-expanded':sub.showSubMenu }">
+                            <li class="sub-slide" v-for="sub in menu.subs" :class="{'is-expanded':sub.showSubMenu }">
                                 <a class="sub-side-menu__item"
                                    :class="{'active': sub.active , 'is-expanded':sub.showSubMenu}"
                                    @click.prevent="toggleMenu(sub)" data-bs-toggle="slide"
                                    href="javascript:void(0);">
 
-<!--                                    <i :class="sub.icon"/>-->
+                                    <!--                                    <i :class="sub.icon"/>-->
                                     <span class="sub-side-menu__label">{{ sub.name }}</span>
                                     <i v-if="sub.subs && sub.subs.length" class="angle fe fe-chevron-right"></i></a>
-                                    <ul class="sub-slide-menu" v-if="sub.subs && sub.subs.length" :class="{open: sub.showSubMenu}">
-                                    <li class="is-expanded"  v-for="subMenu in sub.subs">
+                                <ul class="sub-slide-menu" v-if="sub.subs && sub.subs.length"
+                                    :class="{open: sub.showSubMenu}">
+                                    <li class="is-expanded" v-for="subMenu in sub.subs">
                                         <a class="slide-item"
                                            :class="{'active': subMenu.active }"
                                            :href="subMenu.url">

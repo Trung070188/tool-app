@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="col-xl-4 d-flex">
                                     <div class="margin-left-auto mb-1">
-                                        <a href="/xadmin/debt_settle/create" class="btn btn-primary">
+                                        <a href="/xadmin/debt_settle/create" class="btn btn-primary" target="_blank">
                                             <i class="fa fa-plus"/>
                                             Thêm
                                         </a>
@@ -78,7 +78,7 @@
 
 
                                         <td class="">
-                                            <a :href="'/xadmin/debt_settle/edit?id='+entry.id" class="btn "><i
+                                            <a :href="'/xadmin/debt_settle/edit?id='+entry.id" class="btn " target="_blank"><i
                                                     class="fa fa-edit"></i></a>
                                             <a @click="remove(entry)" href="javascript:;" class="btn "><i
                                                     class="fa fa-trash"></i></a>
