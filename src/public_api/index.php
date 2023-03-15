@@ -41,6 +41,8 @@ function main(): array
  * @apiName SaveValidInstall
  * @apiGroup API
  * @apiDescription Mã lỗi 0 là thành công, khác 0 là thất bại. Các mã lỗi thất bại là 1,2,3,4,5 do thiếu param hoặc sai key
+ * @apiHeader
+ * Content-Type: application/json
  * @apiParam {String} partner_id (required)
  * @apiParam {String} partner_secret (required)
  * @apiParam {String} partner_campaign_id (required)
