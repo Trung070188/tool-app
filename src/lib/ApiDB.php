@@ -74,17 +74,17 @@ class ApiDB
     {
 
         $stmt = $this->query($sql, $values);
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(\PDO::FETCH_OBJ);
 
         $this->redis = null;
         return $result;
     }
 
-    public function selectFirst($sql, array $values = array())
+    public function selectOne($sql, array $values = array())
     {
 
         $stmt = $this->query($sql, $values);
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(\PDO::FETCH_OBJ);
 
         $result = $result === false ? null : $result;
 
@@ -97,7 +97,7 @@ class ApiDB
     {
 
         $stmt = $this->query($sql, $values);
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(\PDO::FETCH_OBJ);
 
         $lists = array();
 
