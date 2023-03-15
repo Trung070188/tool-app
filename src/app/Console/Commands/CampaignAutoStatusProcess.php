@@ -53,41 +53,42 @@ class CampaignAutoStatusProcess extends Command
          */
         $today = date('Y-m-d');
         foreach ($campaigns as $campaign) {
-            DB::beginTransaction();
+
             try {
                 $tag = '[AutoOffByTotalInstall] [' . $campaign->id . ']';
-                $todayInstallAll = CampaignInstall::query()
+                $allInstalled = CampaignInstall::query()
                     ->where('campaign_id', $campaign->id)
                     ->count();
 
-                if ($todayInstallAll >= intval($campaign->total_install)) {
-                    $campaign->status = 0;
-                    $campaign->save();
-                    $reason = 'Đã đủ số cài đặt tổng: ' . $campaign->total_install;
-                    $log = $this->addAutoOffEventLog($campaign, $reason);
-                    $this->warn( $tag . $log->title);
-                    DB::commit();
-                    continue;
-                }
-
-                $todayInstall = CampaignInstall::query()
+                $todayInstalled = CampaignInstall::query()
                     ->where('date_install', $today)
                     ->where('campaign_id', $campaign->id)
                     ->count();
 
+                $campaignDailyInstall = (int)$campaign->daily_install;
+                $campaignTotalInstall = (int) $campaign->total_install;
 
-                if ($todayInstall >= intval($campaign->daily_install)) {
+                $p1 = get_percent($allInstalled, $campaignTotalInstall);
+                $p2 = get_percent($todayInstalled, $campaignDailyInstall);
+                $this->info("$tag Total $allInstalled/$campaignTotalInstall ($p1%),Daily: $todayInstalled/$campaignDailyInstall ($p2%)");
+
+                if ($allInstalled >= $campaignTotalInstall) {
+                    $campaign->status = 0;
+                    $campaign->open_next_day = 0;
+                    $campaign->save();
+                    $reason = 'Đã đủ số cài đặt tổng: ' . $campaign->total_install;
+                    $log = $this->addAutoOffEventLog($campaign, $reason);
+                    $this->warn( $tag . $log->title);
+                } else  if ($todayInstalled >= $campaignDailyInstall) {
                     $campaign->status = 0;
                     $campaign->save();
                     $reason = 'Đã đủ số cài đặt hàng ngày: ' . $campaign->daily_install;
                     $log = $this->addAutoOffEventLog($campaign, $reason);
                     $this->warn( $tag . $log->title);
-                    DB::commit();
                     continue;
                 }
             } catch (\Throwable $ex) {
                 $this->error($ex);
-                DB::rollBack();
             }
 
         }
@@ -207,6 +208,39 @@ class CampaignAutoStatusProcess extends Command
             } catch (\Throwable $ex) {
                 $this->error($ex);
                 DB::rollBack();
+            }
+
+        }
+    }
+
+    public function processAutoCheck() {
+        $this->info("Process campaign processAutoCheck");
+        $campaigns = Campaign::query()
+            ->where('status', '=', 1)
+            ->get();
+
+        /**
+         * @var Campaign $campaign
+         */
+        $today = date('Y-m-d');
+        foreach ($campaigns as $campaign) {
+
+            try {
+                $tag = '[AutoCheckInstall] [' . $campaign->id . ']';
+                $totalInstalled = CampaignInstall::query()
+                    ->where('campaign_id', $campaign->id)
+                    ->count();
+
+
+                $todayInstalled = CampaignInstall::query()
+                    ->where('date_install', $today)
+                    ->where('campaign_id', $campaign->id)
+                    ->count();
+
+                $this->info("$tag TotalInstalled: $totalInstalled/{$campaign->total_install}, Today: $todayInstalled/$campaign->daily_install");
+
+            } catch (\Throwable $ex) {
+                $this->error($ex);
             }
 
         }
