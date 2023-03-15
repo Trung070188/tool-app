@@ -6,8 +6,8 @@ services:
       context: .
       network: host
     ports:
-      - "8422:80"
-      - "8445:8445"
+      - "127.0.0.1:8422:80"
+      - "127.0.0.1:8445:8445"
     volumes:
       - ./src:/usr/share/nginx/sites
     restart: always
