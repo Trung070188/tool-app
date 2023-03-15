@@ -359,10 +359,10 @@
                     style: 'currency',
                     currency: 'VND'
                 });
-
+                this.total=0;
                 for (let item of this.entries) {
                     let owe=(item.total_install)*(item.price)
-                    if(owe)
+                    if(owe || owe==0)
                     {
                         this.total+=owe;
                     }
@@ -372,17 +372,21 @@
                             currency: 'VND'
                         });
                     }
-                    if (owe) {
+                    if (owe || owe==0) {
                         item.total = parseFloat(owe).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'VND'
                         });
                     }
                 }
-                this.total=parseFloat(this.total).toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'VND'
-                });
+                {
+                    console.log(this.total);
+                    this.total=parseFloat(this.total).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'VND'
+                    });
+                }
+
                 this.customers=res.customers;
                 this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
                 this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;

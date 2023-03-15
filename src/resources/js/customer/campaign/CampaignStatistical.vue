@@ -117,7 +117,7 @@
                                         <td>Tổng</td>
                                         <td></td>
                                         <td>{{totalInstall}}</td>
-                                        <td>{{price}}</td>
+                                        <td></td>
                                         <td>{{totalPrice}}</td>
                                     </tr>
                                     </tbody>
@@ -212,9 +212,10 @@
                     style: 'currency',
                     currency: 'VND'
                 });
+                this.totalPrice=0;
                 for (let item of this.entries) {
                     let owe=(item.total_install)*(item.price)
-                    if(owe)
+                    if(owe || owe==0)
                     {
                         this.totalPrice+=owe;
                     }
