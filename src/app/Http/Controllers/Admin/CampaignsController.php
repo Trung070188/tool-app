@@ -327,14 +327,33 @@ class CampaignsController extends AdminBaseController
     public function dataStatistical(Request $req)
     {
         $customers = Customer::query()->orderBy('id', 'desc')->get();
+        if ($req->created) {
+            $dates = $req->created;
+            $date_range = explode('_', $dates);
+            $start_date = $date_range[0];
+            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+            $end_date = $date_range[1];
+            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+            $fakes = DB::table('campaign_installs')
+                ->whereBetween('faked_at', [$start_date, $end_date])
+                ->select('campaign_id', DB::raw('COUNT(faked_at) as total_fake'))
+                ->whereNotNull('faked_at')
+                ->groupBy('campaign_id');
+            $totalInstall = DB::table('campaign_installs')
+                ->whereBetween('installed_at', [$start_date, $end_date])
+                ->select('campaign_id', DB::raw('COUNT(id) as total_install'))
+                ->groupBy('campaign_id');
 
-        $fakes = DB::table('campaign_installs')
-            ->select('campaign_id', DB::raw('COUNT(faked_at) as total_fake'))
-            ->whereNotNull('faked_at')
-            ->groupBy('campaign_id');
-        $totalInstall = DB::table('campaign_installs')
-            ->select('campaign_id', DB::raw('COUNT(id) as total_install'))
-            ->groupBy('campaign_id');
+        } else {
+            $fakes = DB::table('campaign_installs')
+                ->select('campaign_id', DB::raw('COUNT(faked_at) as total_fake'))
+                ->whereNotNull('faked_at')
+                ->groupBy('campaign_id');
+            $totalInstall = DB::table('campaign_installs')
+                ->select('campaign_id', DB::raw('COUNT(id) as total_install'))
+                ->groupBy('campaign_id');
+
+        }
 
         $query = Campaign::query()->with(['customer', 'campaignPartner'])
             ->leftJoinSub($fakes, 'fakes', function ($join) {
@@ -375,15 +394,15 @@ class CampaignsController extends AdminBaseController
         if ($req->type) {
             $query->where('type', $req->type);
         }
-        if ($req->created) {
-            $dates = $req->created;
-            $date_range = explode('_', $dates);
-            $start_date = $date_range[0];
-            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
-            $end_date = $date_range[1];
-            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
-            $query->whereBetween('created_at', [$start_date, $end_date]);
-        }
+//        if ($req->created) {
+//            $dates = $req->created;
+//            $date_range = explode('_', $dates);
+//            $start_date = $date_range[0];
+//            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+//            $end_date = $date_range[1];
+//            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+//            $query->whereBetween('created_at', [$start_date, $end_date]);
+//        }
 
 //        $query->createdIn($req->created);
         $limit = 25;

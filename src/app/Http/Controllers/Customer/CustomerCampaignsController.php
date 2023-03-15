@@ -63,11 +63,23 @@ class CustomerCampaignsController extends CustomerBaseController
     public function dataStatistical(Request $req)
     {
         $user = Auth::user();
-
-        $totalInstall = DB::table('campaign_installs')
-            ->select('campaign_id', DB::raw('COUNT(id) as total_install'))
-            ->groupBy('campaign_id');
-
+        if ($req->created) {
+            $dates = $req->created;
+            $date_range = explode('_', $dates);
+            $start_date = $date_range[0];
+            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+            $end_date = $date_range[1];
+            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+            $totalInstall = DB::table('campaign_installs')
+                ->whereBetween('installed_at',[$start_date, $end_date])
+                ->select('campaign_id', DB::raw('COUNT(id) as total_install'))
+                ->groupBy('campaign_id');
+        }
+        else{
+            $totalInstall = DB::table('campaign_installs')
+                ->select('campaign_id', DB::raw('COUNT(id) as total_install'))
+                ->groupBy('campaign_id');
+        }
         $query = Campaign::query()
             ->leftJoinSub($totalInstall, 'total_install', function ($join) {
                 $join->on('campaigns.id', '=', 'total_install.campaign_id');
@@ -104,15 +116,15 @@ class CustomerCampaignsController extends CustomerBaseController
         if ($req->type) {
             $query->where('type', $req->type);
         }
-        if ($req->created) {
-            $dates = $req->created;
-            $date_range = explode('_', $dates);
-            $start_date = $date_range[0];
-            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
-            $end_date = $date_range[1];
-            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
-            $query->whereBetween('created_at', [$start_date, $end_date]);
-        }
+//        if ($req->created) {
+//            $dates = $req->created;
+//            $date_range = explode('_', $dates);
+//            $start_date = $date_range[0];
+//            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+//            $end_date = $date_range[1];
+//            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+//            $query->whereBetween('created_at', [$start_date, $end_date]);
+//        }
 
 //        $query->createdIn($req->created);
         $limit = 25;
