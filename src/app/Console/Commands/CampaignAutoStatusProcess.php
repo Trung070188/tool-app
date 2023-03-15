@@ -124,7 +124,6 @@ class CampaignAutoStatusProcess extends Command
          * @var Campaign $campaign
          */
         foreach ($campaigns as $campaign) {
-            DB::beginTransaction();
 
             try {
                 $tag = '[AUTO OFF][' . $campaign->id . ']';
@@ -148,13 +147,11 @@ class CampaignAutoStatusProcess extends Command
 
                     $this->warn( $tag . $log->title);
                     $log->save();
-                    DB::commit();
                 } else {
                     $this->warn($tag . "Not enough time");
                 }
             } catch (\Throwable $ex) {
                 $this->error($ex);
-                DB::rollBack();
             }
 
         }
@@ -176,7 +173,7 @@ class CampaignAutoStatusProcess extends Command
          * @var Campaign $campaign
          */
         foreach ($campaigns as $campaign) {
-            DB::beginTransaction();
+
 
             try {
                 $tag = '[AUTO ON] [' . $campaign->id . ']';
@@ -201,13 +198,13 @@ class CampaignAutoStatusProcess extends Command
                     $log->content = $log->title;
                     $this->warn( $tag . $log->title);
                     $log->save();
-                    DB::commit();
+
                 } else {
                     $this->warn($tag . "Not enough time");
                 }
             } catch (\Throwable $ex) {
                 $this->error($ex);
-                DB::rollBack();
+
             }
 
         }
