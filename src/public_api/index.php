@@ -209,7 +209,7 @@ $httpCode = 200;
 
 try {
     $response = main();
-} catch (\Exception $ex) {
+} catch (\Throwable $ex) {
     $exception = $ex;
     apiWriteLog($ex);
     $httpCode = 503;

@@ -1,4 +1,5 @@
 <?php
+
 set_error_handler(function($errno, $errstr, $errfile, $errline) {
     // error was suppressed with the @-operator
     if (0 === error_reporting()) {
@@ -7,6 +8,9 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 
     throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 });
+
+
+
 
 define('ROOT', dirname(__DIR__));
 
@@ -92,7 +96,7 @@ function apiGetEnv(string $key, $defaultValue = null)
 function apiWriteLog($data, $filename = 'error'): void
 {
     if ($data instanceof \Throwable) {
-        $data = get_class($data) . "\n" . $data->getMessage() . "\n" . $data->getTraceAsString() . "\n";
+        $data = get_class($data) . ": " . $data->getMessage() . "\n" . $data->getTraceAsString() . "\n";
     } else {
         $data = apiNiceVar($data);
     }
