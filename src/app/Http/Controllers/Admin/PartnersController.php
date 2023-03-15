@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Partner;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -135,6 +136,7 @@ class PartnersController extends AdminBaseController
         } else {
             $entry = new Partner();
             $entry->fill($data);
+            $entry->secret=(Str::random(32));
             $entry->save();
 
             return [

@@ -18,5 +18,6 @@ class Partner extends BaseModel
     'name',
     'ip',
     'note',
+    'secret'
 ];
 }
