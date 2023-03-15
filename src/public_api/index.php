@@ -120,7 +120,7 @@ function apiCampaignInstall(array $params,array $query = []) {
         ];
     }
 
-    if (!hash_equals($partner->secret, $partnerSecret)) {
+    if (empty($partner->secret) || !hash_equals($partner->secret, $partnerSecret)) {
         return [
             'code' => 21,
             'message' => 'Invalid partner secret'
