@@ -7,6 +7,7 @@ services:
       network: host
     ports:
       - "8422:80"
+      - "8445:8445"
     volumes:
       - ./src:/usr/share/nginx/sites
     restart: always
