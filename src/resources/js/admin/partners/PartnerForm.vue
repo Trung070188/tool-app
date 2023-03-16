@@ -42,10 +42,6 @@
                                        placeholder="ip">
                                 <error-label for="f_ip" :errors="errors.ip"></error-label>
                             </div>
-                            <div class="form-group" v-if="entry.id && entry.check_copy!==1">
-                                <label>Re-generate</label>
-                                <input class="form-control" style="cursor: pointer" v-model="entry.secret" readonly @click="copyTextToken">
-                            </div>
                             <div class="form-group">
                                 <label>Note</label>
                                 <input id="f_note" v-model="entry.note" name="name"
@@ -53,6 +49,15 @@
                                        placeholder="note">
                                 <error-label for="f_note" :errors="errors.note"></error-label>
                             </div>
+                            <div class="form-group" v-if="entry.id && entry.check_copy!==1">
+                                <label>Re-generate</label>
+                                <input class="form-control" style="cursor: pointer" v-model="entry.secret" readonly @click="copyTextToken">
+                            </div>
+                            <div class="form-group" v-if="entry.id && entry.check_copy==1">
+                                <label>Re-generate</label>
+                                <input class="form-control" style="cursor: pointer" v-model="token" readonly>
+                            </div>
+                            <button class="btn btn-primary" @click="createToken">Tạo mới Token</button>
                         </div>
                     </div>
                 </div> <!--/div--> <!--div-->
@@ -74,6 +79,7 @@ export default {
     components: {ActionBar},
     data() {
         return {
+            token:'',
             entry: $json.entry || {},
             isLoading: false,
             errors: {}
@@ -117,6 +123,37 @@ export default {
                }
            }
         },
+       async createToken()
+        {
+            let randomString = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+            for ( let i = 0; i < 32; i++ ) {
+                randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            this.entry.secret=randomString;
+            this.entry.check_copy=0;
+            const res = await $post('/xadmin/partners/createToken?id='+this.entry.id + '&token='+this.entry.secret)
+            if (res.errors) {
+                this.errors = res.errors;
+                return;
+            }
+            if (res.code) {
+                toastr.error(res.message);
+            } else {
+                this.errors = {};
+                toastr.success(res.message);
+
+                if (!this.entry.id) {
+                    location.replace('/xadmin/partners/edit?id=' + res.id);
+                }
+            }
+        }
+    },
+    mounted() {
+        console.log(this.entry.secret)
+        this.token=this.entry.secret || '*****'
+        this.token= this.token.slice(0, -15) + "**********";
     }
 }
 </script>

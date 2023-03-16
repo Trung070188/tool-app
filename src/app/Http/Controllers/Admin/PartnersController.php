@@ -100,9 +100,9 @@ class PartnersController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-    'name' => 'required|max:200',
-    'ip' => 'required|max:50',
-];
+            'name' => 'required|max:200',
+            'ip' => 'required|max:50',
+        ];
 
         $v = Validator::make($data, $rules);
 
@@ -136,7 +136,6 @@ class PartnersController extends AdminBaseController
         } else {
             $entry = new Partner();
             $entry->fill($data);
-            $entry->secret=(Str::random(32));
             $entry->save();
 
             return [
@@ -261,6 +260,16 @@ class PartnersController extends AdminBaseController
         return [
             'code' => 0,
             'message' => 'Đã copy'
+        ];
+    }
+    public function createToken(Request $req)
+    {
+        $id = $req->id;
+        $token = $req->token;
+        Partner::query()->where('id', $id)->update(['secret'=> $token , 'check_copy' => 0]);
+        return [
+          'code' => 0,
+          'message' => 'Đã tạo mới token'
         ];
     }
 }
