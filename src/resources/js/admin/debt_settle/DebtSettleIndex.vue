@@ -24,24 +24,33 @@
                             <div class="row">
                                 <div class="col-xl-8">
                                     <form class="form-inline">
-                                        <div class="form-group mx-sm-3 mb-2">
-                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword"
-                                                   type="text"
-                                                   class="form-control" placeholder="tìm kiếm" >
-                                        </div>
+<!--                                        <div class="form-group mx-sm-3 mb-2">-->
+<!--                                            <input @keydown.enter="doFilter('keyword', filter.keyword, $event)" v-model="filter.keyword"-->
+<!--                                                   type="text"-->
+<!--                                                   class="form-control" placeholder="tìm kiếm" >-->
+<!--                                        </div>-->
 <!--                                        <div class="form-group mx-sm-3 mb-2">-->
 <!--                                            <Daterangepicker-->
 <!--                                                @update:modelValue="(value) => doFilter('created', value, $event)"-->
 <!--                                                v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>-->
 <!--                                        </div>-->
                                         <div class="form-group mx-sm-3 mb-2">
+                                            <span style="margin-right: 10px">Chọn năm</span>
                                             <select class="form-control" v-model="filter.year">
                                                 <option v-for="year in years" :value="year" v-text="year"></option>
                                             </select>
                                         </div>
                                         <div class="form-group mx-sm-3 mb-2">
+                                            <span style="margin-right: 10px">Chọn tháng</span>
                                             <select class="form-control" v-model="filter.month">
                                                 <option v-for="month in months" :value="month" v-text="month"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <span style="margin-right: 10px">Khách hàng</span>
+                                            <select class="form-control" v-model="filter.customer">
+                                                <option value="0">All</option>
+                                                <option v-for="customer in customers" :value="customer.id">{{customer.id}}-{{customer.name}}</option>
                                             </select>
                                         </div>
 
@@ -139,6 +148,7 @@
             let year = date.getFullYear();
             let month = date.getMonth()+1;
             return {
+                customers: $json.customer || [],
                 years: [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039],
                 months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 totalOwe:'',
@@ -149,7 +159,8 @@
                     keyword: $q.keyword || '',
                     // created: $q.created || created,
                     year: $q.year || year,
-                    month: $q.month || month
+                    month: $q.month || month,
+                    customer: $q.customer || '0'
                 },
                 paginate: {
                     currentPage: 1,
