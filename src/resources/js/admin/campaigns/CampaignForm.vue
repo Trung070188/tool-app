@@ -1,6 +1,6 @@
 <template>
     <div class="main-content app-content"> <!-- container -->
-        <ActionBar label="Lưu lại" @action="save()" @clone="clone()" backUrl="/xadmin/campaigns/index"/>
+        <ActionBar label="Lưu lại" @action="save()" @clone="clone()" :check="check" backUrl="/xadmin/campaigns/index"/>
         <div class="main-container container-fluid"> <!-- breadcrumb -->
             <div class="breadcrumb-header justify-content-between">
 <!--                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">Campaign</span></div>-->
@@ -224,11 +224,12 @@
             }
 
             return {
-                format:format,
-                customers:$json.customer || [],
+                check: 0,
+                format: format,
+                customers: $json.customer || [],
                 entry: $json.entry || {
-                    customer_id:'',
-                    price:''
+                    customer_id: '',
+                    price: ''
                 },
                 isLoading: false,
                 errors: {},
@@ -236,6 +237,10 @@
             }
         },
         mounted() {
+            if(this.entry.id)
+            {
+                this.check = 1;
+            }
             const vm = this;
             $(".js-example-responsive").select2({
             }).on("change", function(e) {

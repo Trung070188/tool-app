@@ -34,7 +34,7 @@
                     <i :class="btnIcon"/>
                     {{btnLabel}}
                 </button>
-                <button v-if="!hideButtonSave" class="btn btn-primary" type="button" @click="clone()">
+                <button v-if="!hideButtonSave && check==1" class="btn btn-primary" type="button" @click="clone()">
                     <i class="fa fa-clone" aria-hidden="true"></i>
                     Clone
                 </button>
@@ -53,7 +53,8 @@ export default {
         'type',
         'showResetButton',
         'buttons',
-        'hideButtonSave'
+        'hideButtonSave',
+        'check'
     ],
     data() {
         return {
