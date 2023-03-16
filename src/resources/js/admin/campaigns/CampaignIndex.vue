@@ -89,7 +89,7 @@
                                                     v-model="filter.customer_id">
                                                 <option value="" disabled selected>Choose customer</option>
                                                 <option v-for="customer in customers" :value="customer.id">
-                                                    {{ customer.name }}
+                                                    {{customer.id}}-{{ customer.name }}
                                                 </option>
                                             </select>
                                         </div>
