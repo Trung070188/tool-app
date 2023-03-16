@@ -42,9 +42,9 @@
                                        placeholder="ip">
                                 <error-label for="f_ip" :errors="errors.ip"></error-label>
                             </div>
-                            <div class="form-group" v-if="entry.id">
+                            <div class="form-group" v-if="entry.id && entry.check_copy!==1">
                                 <label>Re-generate</label>
-                                <input class="form-control" v-model="entry.secret" readonly>
+                                <input class="form-control" style="cursor: pointer" v-model="entry.secret" readonly @click="copyTextToken">
                             </div>
                             <div class="form-group">
                                 <label>Note</label>
@@ -98,7 +98,25 @@ export default {
                     location.replace('/xadmin/partners/edit?id=' + res.id);
                 }
             }
-        }
+        },
+       async copyTextToken() {
+            navigator.clipboard.writeText(this.entry.secret);
+            const res = await $post('/xadmin/partners/checkCopy?id='+this.entry.id)
+           if (res.errors) {
+               this.errors = res.errors;
+               return;
+           }
+           if (res.code) {
+               toastr.error(res.message);
+           } else {
+               this.errors = {};
+               toastr.success(res.message);
+
+               if (!this.entry.id) {
+                   location.replace('/xadmin/partners/edit?id=' + res.id);
+               }
+           }
+        },
     }
 }
 </script>

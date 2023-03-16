@@ -253,4 +253,14 @@ class PartnersController extends AdminBaseController
         $writer->save('php://output');
         die;
     }
+
+    public function checkCopy(Request $req)
+    {
+        $id = $req->id;
+        Partner::query()->where('id', $id)->update(['check_copy' => 1]);
+        return [
+            'code' => 0,
+            'message' => 'Đã copy'
+        ];
+    }
 }
