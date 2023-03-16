@@ -57,7 +57,7 @@
                                 <label>Re-generate</label>
                                 <input class="form-control" style="cursor: pointer" v-model="token" readonly>
                             </div>
-                            <button class="btn btn-primary" @click="createToken">Tạo mới Token</button>
+                            <button v-if="entry.id" class="btn btn-primary" @click="createToken">Tạo mới Token</button>
                         </div>
                     </div>
                 </div> <!--/div--> <!--div-->
@@ -125,6 +125,9 @@ export default {
         },
        async createToken()
         {
+            if (!confirm('Bạn có muốn gen token mới không ?')) {
+                return;
+            }
             let randomString = '';
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
