@@ -177,7 +177,7 @@ class DebtSettlesController extends AdminBaseController
     {
         $query = DB::table('debt_settle')->join('customers', function ($join) {
             $join->on('debt_settle.customer_id', '=', 'customers.id');
-        });
+        })->whereYear('debt_settle.created_at', $req->year)->whereMonth('debt_settle.created_at', $req->month)->orderBy('id', 'desc');
         $query->select([
             'customers.id as customer_id',
             'debt_settle.created_at as created_at',
@@ -194,15 +194,15 @@ class DebtSettlesController extends AdminBaseController
             $query->where('customers.name', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhere('customers.id', $req->keyword);
         }
-        if ($req->created) {
-            $dates = $req->created;
-            $date_range = explode('_', $dates);
-            $start_date = $date_range[0];
-            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
-            $end_date = $date_range[1];
-            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
-            $query->whereBetween('created_at', [$start_date, $end_date]);
-        }
+//        if ($req->created) {
+//            $dates = $req->created;
+//            $date_range = explode('_', $dates);
+//            $start_date = $date_range[0];
+//            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+//            $end_date = $date_range[1];
+//            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+//            $query->whereBetween('created_at', [$start_date, $end_date]);
+//        }
 
 
 //        $query->createdIn($req->created);

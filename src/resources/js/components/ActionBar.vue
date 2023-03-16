@@ -34,6 +34,10 @@
                     <i :class="btnIcon"/>
                     {{btnLabel}}
                 </button>
+                <button v-if="!hideButtonSave" class="btn btn-primary" type="button" @click="clone()">
+                    <i class="fa fa-clone" aria-hidden="true"></i>
+                    Clone
+                </button>
             </div>
         </div>
     </div>
@@ -70,6 +74,10 @@ export default {
         },
         action() {
             this.$emit('action');
+        },
+        clone()
+        {
+            this.$emit('clone')
         }
     }
 }

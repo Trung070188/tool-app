@@ -45,7 +45,7 @@
                                            style="margin-left: 10px" target="_blank"><i class="fa fa-plus"/> Thêm</a>
                                     </div>
                                     <div class="d-flex justify-content-end align-items-center d-none"
-                                         data-kt-customer-table-toolbar="selected" v-if="campaignIds!='' "
+                                         data-kt-customer-table-toolbar="selected" v-if="campaignIds!=''"
                                          style="position: absolute;top: 25px;right: 0px">
                                         <button type="button" class="btn btn-danger"
                                                 data-kt-customer-table-select="delete_selected"

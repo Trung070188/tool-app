@@ -1,6 +1,6 @@
 <template>
     <div class="main-content app-content"> <!-- container -->
-        <ActionBar label="Lưu lại" @action="save()" backUrl="/xadmin/campaigns/index"/>
+        <ActionBar label="Lưu lại" @action="save()" @clone="clone()" backUrl="/xadmin/campaigns/index"/>
         <div class="main-container container-fluid"> <!-- breadcrumb -->
             <div class="breadcrumb-header justify-content-between">
 <!--                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">Campaign</span></div>-->
@@ -288,6 +288,25 @@
                     this.errors = {};
                     toastr.success(res.message);
 
+                    if (!this.entry.id) {
+                        location.replace('/xadmin/campaigns/edit?id=' + res.id);
+                    }
+                }
+            },
+            async clone() {
+                this.isLoading = true;
+                const res = await $post('/xadmin/campaigns/clone', {entry: this.entry});
+                this.isLoading = false;
+                if (res.errors) {
+                    this.errors = res.errors;
+                    return;
+                }
+                if (res.code) {
+                    toastr.error(res.message);
+                } else {
+                    this.errors = {};
+                    toastr.success(res.message);
+                    location.replace('/xadmin/campaigns/index');
                     if (!this.entry.id) {
                         location.replace('/xadmin/campaigns/edit?id=' + res.id);
                     }

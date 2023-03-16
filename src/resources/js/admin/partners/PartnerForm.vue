@@ -42,14 +42,7 @@
                                        placeholder="ip">
                                 <error-label for="f_ip" :errors="errors.ip"></error-label>
                             </div>
-                            <div class="form-group">
-                                <label>Note</label>
-                                <input id="f_note" v-model="entry.note" name="name"
-                                       class="form-control"
-                                       placeholder="note">
-                                <error-label for="f_note" :errors="errors.note"></error-label>
-                            </div>
-                            <div class="form-group" v-if="entry.id && entry.check_copy!==1">
+                            <div class="form-group" v-if="entry.id && entry.check_copy!==1 ">
                                 <label>Re-generate</label>
                                 <input class="form-control" style="cursor: pointer" v-model="entry.secret" readonly @click="copyTextToken">
                             </div>
@@ -57,7 +50,12 @@
                                 <label>Re-generate</label>
                                 <input class="form-control" style="cursor: pointer" v-model="token" readonly>
                             </div>
-                            <button v-if="entry.id" class="btn btn-primary" @click="createToken">Tạo mới Token</button>
+                            <button v-if="entry.id" class="btn btn-primary" @click="createToken" style="font-size: 13px">Tạo mới Token</button>
+                            <div class="form-group mt-2">
+                                <label>Note</label>
+                                <textarea v-model="entry.note" class="form-control" placeholder="note"></textarea>
+                            </div>
+
                         </div>
                     </div>
                 </div> <!--/div--> <!--div-->
@@ -79,7 +77,7 @@ export default {
     components: {ActionBar},
     data() {
         return {
-            token:'',
+            token: '',
             entry: $json.entry || {},
             isLoading: false,
             errors: {}

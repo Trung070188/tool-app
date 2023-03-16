@@ -228,6 +228,27 @@ class CampaignsController extends AdminBaseController
             ];
         }
     }
+    public function clone(Request $req)
+    {
+        if (!$req->isMethod('POST')) {
+            return ['code' => 405, 'message' => 'Method not allow'];
+        }
+
+        $data = $req->get('entry');
+
+        /**
+         * @var  Campaign $entry
+         */
+            $entry = new Campaign();
+            $entry->fill($data);
+            $entry->save();
+
+            return [
+                'code' => 0,
+                'message' => 'Đã thêm',
+                'id' => $entry->id
+            ];
+    }
 
     /**
      * @param Request $req

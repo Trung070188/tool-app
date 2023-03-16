@@ -29,10 +29,20 @@
                                                    type="text"
                                                    class="form-control" placeholder="tìm kiếm" >
                                         </div>
+<!--                                        <div class="form-group mx-sm-3 mb-2">-->
+<!--                                            <Daterangepicker-->
+<!--                                                @update:modelValue="(value) => doFilter('created', value, $event)"-->
+<!--                                                v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>-->
+<!--                                        </div>-->
                                         <div class="form-group mx-sm-3 mb-2">
-                                            <Daterangepicker
-                                                @update:modelValue="(value) => doFilter('created', value, $event)"
-                                                v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>
+                                            <select class="form-control" v-model="filter.year">
+                                                <option v-for="year in years" :value="year" v-text="year"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mx-sm-3 mb-2">
+                                            <select class="form-control" v-model="filter.month">
+                                                <option v-for="month in months" :value="month" v-text="month"></option>
+                                            </select>
                                         </div>
 
                                         <div class="form-group mx-sm-3 mb-2">
@@ -52,8 +62,9 @@
                                     </div>
                                 </div>
                             </div>
-
-
+                            <div class="row" style="position:relative;left:32px;top:-15px">
+                                <button type="button" class="btn btn-primary" @click="doFilter()">Search</button>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
@@ -118,21 +129,27 @@
     import ActionBar from '../../components/ActionBar';
 
 
-    let created = getTimeRangeAll();
+    // let created = getTimeRangeAll();
     const $q = $router.getQuery();
-
     export default {
         name: "DebtSettleIndex.vue",
         components: {ActionBar},
         data() {
+            let date = new Date();
+            let year = date.getFullYear();
+            let month = date.getMonth()+1;
             return {
+                years: [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039],
+                months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 totalOwe:'',
                 totalPayBooking:'',
                 totalPayDebt:'',
                 entries: [],
                 filter: {
                     keyword: $q.keyword || '',
-                    created: $q.created || created,
+                    // created: $q.created || created,
+                    year: $q.year || year,
+                    month: $q.month || month
                 },
                 paginate: {
                     currentPage: 1,
@@ -145,6 +162,7 @@
         },
         methods: {
             async load() {
+                this.doFilter();
                 let query = $router.getQuery();
                 const res = await $get('/xadmin/debt_settle/data', query);
                 this.paginate = res.paginate;
@@ -212,17 +230,10 @@
                 for (var key in this.filter) {
                     this.filter[key] = '';
                 }
-
                 $router.setQuery({});
             },
-            doFilter(field, value, event) {
-                if (event) {
-                    event.preventDefault();
-                }
-
-                const params = {page: 1};
-                params[field] = value;
-                $router.setQuery(params)
+            doFilter() {
+                $router.setQuery(this.filter)
             },
             async toggleStatus(entry) {
                 const res = await $post('/xadmin/debt_settle/toggleStatus', {
