@@ -103,7 +103,7 @@
                                     <tr v-for="entry in entries">
                                        <td v-text="entry.id"></td>
                                         <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
-                                      <a :href="'/customer/campaigns/detail?id='+entry.id"> <td v-text="entry.name"></td></a>
+                                      <a :href="'/customer/campaigns/detail?id='+entry.id + '&time='+filter.created"> <td v-text="entry.name"></td></a>
                                        <td v-text="entry.os"></td>
                                        <td v-text="entry.type"></td>
                                        <td v-text="entry.total_install"></td>
@@ -117,7 +117,7 @@
                                         <td>Tổng</td>
                                         <td></td>
                                         <td>{{totalInstall}}</td>
-                                        <td>{{price}}</td>
+                                        <td></td>
                                         <td>{{totalPrice}}</td>
                                     </tr>
                                     </tbody>
@@ -212,9 +212,10 @@
                     style: 'currency',
                     currency: 'VND'
                 });
+                this.totalPrice=0;
                 for (let item of this.entries) {
                     let owe=(item.total_install)*(item.price)
-                    if(owe)
+                    if(owe || owe==0)
                     {
                         this.totalPrice+=owe;
                     }
@@ -224,7 +225,7 @@
                             currency: 'VND'
                         });
                     }
-                    if (owe) {
+                    if (owe || owe==0) {
                         item.total = parseFloat(owe).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'VND'

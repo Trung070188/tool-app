@@ -112,6 +112,7 @@ class CampaignsController extends AdminBaseController
     public function detail(Request $req)
     {
         $id = $req->id;
+        $time=$req->time;
         $entry = Campaign::find($id);
 
         if (!$entry) {
@@ -121,7 +122,7 @@ class CampaignsController extends AdminBaseController
         /**
          * @var  Customer $entry
          */
-        $jsonData = compact('entry');
+        $jsonData = compact('entry','time');
         $title = 'Thống kê';
         $component = 'CampaignStatisticalDetail';
 
@@ -375,6 +376,7 @@ class CampaignsController extends AdminBaseController
                 DB::raw('COALESCE(fakes.total_fake, 0) as total_fake'),
                 DB::raw('COALESCE(total_install.total_install, 0) as total_install')
             ])
+            ->groupBy('campaigns.id')
             ->orderBy('campaigns.status', 'desc')
             ->orderBy('campaigns.open_next_day', 'desc')
             ->orderBy('campaigns.id', 'desc');
@@ -423,7 +425,13 @@ class CampaignsController extends AdminBaseController
 
     public function dataDetail(Request $req)
     {
-        $dates = $req->created;
+        if($req->created)
+        {
+            $dates=$req->created;
+        }
+        else{
+            $dates=$req->time;
+        }
         $date_range = explode('_', $dates);
         $start_date = $date_range[0];
         $start_date = date('Y-m-d', strtotime($start_date));
@@ -432,88 +440,87 @@ class CampaignsController extends AdminBaseController
         $startHour = '00:00:00';
         $endHour = '23:59:59';
 
-        if ($end_date != $start_date) {
-            $results = DB::table('campaign_installs')->where('campaign_id', $req->id)
-                ->selectRaw('DATE(installed_at) AS date, COUNT(campaign_id) AS campaign_count')
-                ->whereBetween('installed_at', [$start_date.'_'.$startHour, $end_date.'_'.$endHour])
-                ->groupBy('date')
-                ->orderBy('date')
-                ->get();
-            $install_counts = [];
-            foreach ($results as $result) {
-                $install_counts[$result->date] = $result->campaign_count;
-            }
-            $start_datetime = new \DateTime($start_date);
-            $end_datetime = new \DateTime($end_date);
-            $diff = $start_datetime->diff($end_datetime);
-            $num_days = $diff->days + 1;
-            // Thêm 1 vì kể cả ngày cuối cùng
-            $data = [];
-            for ($i = 0; $i < $num_days; $i++) {
-                $date = date('Y-m-d', strtotime($start_date . ' +' . $i . ' day'));
-                $count = isset($install_counts[$date]) ? $install_counts[$date] : 0;
-                $data[] = [
-                    'count' => $count,
-                    'date' => $date
-                ];
-            }
+        $results = DB::table('campaign_installs')->where('campaign_id', $req->id)
+            ->selectRaw('DATE(installed_at) AS date, COUNT(campaign_id) AS campaign_count')
+            ->whereBetween('installed_at', [$start_date . '_' . $startHour, $end_date . '_' . $endHour])
+            ->groupBy('date')
+            ->orderByDesc('date')
+            ->get();
+        $results = $results->reverse();
+        $install_counts = [];
+        foreach ($results as $result) {
+            $install_counts[$result->date] = $result->campaign_count;
+        }
+        $start_datetime = new \DateTime($start_date);
+        $end_datetime = new \DateTime($end_date);
+        $diff = $start_datetime->diff($end_datetime);
+        $num_days = $diff->days + 1;
+        // Thêm 1 vì kể cả ngày cuối cùng
+        $data = [];
+        for ($i = 0; $i < $num_days; $i++) {
+            $date = date('Y-m-d', strtotime($start_date . ' +' . $i . ' day'));
+            $count = isset($install_counts[$date]) ? $install_counts[$date] : 0;
+            $data[] = [
+                'count' => $count,
+                'date' => $date
+            ];
         }
 
-        if ($start_date == $end_date && $req->timeLine == 0) {
-            $results = DB::table('campaign_installs')->where('campaign_id', $req->id)
-                ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
-                ->whereBetween('installed_at', [$start_date . '_' . $startHour, $end_date . '_' . $endHour])
-                ->groupBy('hour')
-                ->orderBy('hour')
-                ->get();
-
-            $hours = range(0, 23);
-
-            $resultArray = array_fill_keys($hours, 0);
-            foreach ($results as $result) {
-                $resultArray[(int)$result->hour] = $result->campaign_count;
-            }
-
-            $data = [];
-            foreach ($resultArray as $hour => $campaignCount) {
-                $data[] = [
-                    'date' => $hour,
-                    'count' => $campaignCount
-                ];
-            }
-
-
-        }
-        if ($start_date == $end_date && $req->timeline != 00) {
-            $end_date = date('Y-m-d', strtotime("+1 day", strtotime($start_date)));
-            $startTimeLine = $req->timeline . ':00:00';
-            $endTimeLine = ($req->timeline - 1) . ':59:59';
-            $resultMap = DB::table('campaign_installs')->where('campaign_id', $req->id)
-                ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
-                ->whereBetween('installed_at', [$start_date . ' ' . $startTimeLine, $end_date . ' ' . $endTimeLine])
-                ->groupBy('hour')
-                ->orderBy('hour')
-                ->pluck('campaign_count', 'hour');
-
-            $startTime = strtotime($start_date . ' ' . $startTimeLine);
-            $endTime = strtotime($end_date . ' ' . $endTimeLine);
-            $formattedTime = [];
-            for ($i = $startTime; $i <= $endTime; $i += 3600) {
-                $date = date('Y-m-d H', $i);
-                $formattedTime[] = $date;
-            }
-            $data = [];
-
-            foreach ($formattedTime as $time) {
-                $hour = substr($time, -2);
-                $data[] = [
-                    'date' => $time,
-                    'count' => $resultMap[$hour] ?? 0
-                ];
-            }
-
-
-        }
+//        if ($start_date == $end_date && $req->timeLine == 0) {
+//            $results = DB::table('campaign_installs')->where('campaign_id', $req->id)
+//                ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
+//                ->whereBetween('installed_at', [$start_date . '_' . $startHour, $end_date . '_' . $endHour])
+//                ->groupBy('hour')
+//                ->orderBy('hour')
+//                ->get();
+//
+//            $hours = range(0, 23);
+//
+//            $resultArray = array_fill_keys($hours, 0);
+//            foreach ($results as $result) {
+//                $resultArray[(int)$result->hour] = $result->campaign_count;
+//            }
+//
+//            $data = [];
+//            foreach ($resultArray as $hour => $campaignCount) {
+//                $data[] = [
+//                    'date' => $hour,
+//                    'count' => $campaignCount
+//                ];
+//            }
+//
+//
+//        }
+//        if ($start_date == $end_date && $req->timeline != 00) {
+//            $end_date = date('Y-m-d', strtotime("+1 day", strtotime($start_date)));
+//            $startTimeLine = $req->timeline . ':00:00';
+//            $endTimeLine = ($req->timeline - 1) . ':59:59';
+//            $resultMap = DB::table('campaign_installs')->where('campaign_id', $req->id)
+//                ->selectRaw('DATE_FORMAT(installed_at, "%H") AS hour, COUNT(campaign_id) AS campaign_count')
+//                ->whereBetween('installed_at', [$start_date . ' ' . $startTimeLine, $end_date . ' ' . $endTimeLine])
+//                ->groupBy('hour')
+//                ->orderBy('hour')
+//                ->pluck('campaign_count', 'hour');
+//
+//            $startTime = strtotime($start_date . ' ' . $startTimeLine);
+//            $endTime = strtotime($end_date . ' ' . $endTimeLine);
+//            $formattedTime = [];
+//            for ($i = $startTime; $i <= $endTime; $i += 3600) {
+//                $date = date('Y-m-d H', $i);
+//                $formattedTime[] = $date;
+//            }
+//            $data = [];
+//
+//            foreach ($formattedTime as $time) {
+//                $hour = substr($time, -2);
+//                $data[] = [
+//                    'date' => $time,
+//                    'count' => $resultMap[$hour] ?? 0
+//                ];
+//            }
+//
+//
+//        }
 
         return [
             'code' => 200,

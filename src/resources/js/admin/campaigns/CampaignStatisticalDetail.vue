@@ -20,46 +20,46 @@
                                 <h4 class="card-title mg-b-0">Thống kê chi tiết : {{entry.name}}</h4></div>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="form-group col-lg-3">
-                                    <label>Timeline</label>
-                                    <select class="form-select form-control" v-model="filter.timeline">
-                                        <option value="00">00</option>
-                                        <option value="01">01</option>
-                                        <option value="02">02</option>
-                                        <option value="03">03</option>
-                                        <option value="04">04</option>
-                                        <option value="05">05</option>
-                                        <option value="06">06</option>
-                                        <option value="07">07</option>
-                                        <option value="08">08</option>
-                                        <option value="09">09</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                        <option value="13">13</option>
-                                        <option value="14">14</option>
-                                        <option value="15">15</option>
-                                        <option value="16">16</option>
-                                        <option value="17">17</option>
-                                        <option value="18">18</option>
-                                        <option value="19">19</option>
-                                        <option value="20">20</option>
-                                        <option value="21">21</option>
-                                        <option value="22">22</option>
-                                        <option value="23">23</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label>Thời gian tùy chọn</label>
-                                    <Daterangepicker
-                                        @update:modelValue="(value) => doFilter('created', value, $event)"
-                                        v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <button class="btn btn-primary" @click="doFilter()">Tìm kiếm</button>
-                            </div>
+<!--                            <div class="row">-->
+<!--                                <div class="form-group col-lg-3">-->
+<!--                                    <label>Timeline</label>-->
+<!--                                    <select class="form-select form-control" v-model="filter.timeline">-->
+<!--                                        <option value="00">00</option>-->
+<!--                                        <option value="01">01</option>-->
+<!--                                        <option value="02">02</option>-->
+<!--                                        <option value="03">03</option>-->
+<!--                                        <option value="04">04</option>-->
+<!--                                        <option value="05">05</option>-->
+<!--                                        <option value="06">06</option>-->
+<!--                                        <option value="07">07</option>-->
+<!--                                        <option value="08">08</option>-->
+<!--                                        <option value="09">09</option>-->
+<!--                                        <option value="10">10</option>-->
+<!--                                        <option value="11">11</option>-->
+<!--                                        <option value="12">12</option>-->
+<!--                                        <option value="13">13</option>-->
+<!--                                        <option value="14">14</option>-->
+<!--                                        <option value="15">15</option>-->
+<!--                                        <option value="16">16</option>-->
+<!--                                        <option value="17">17</option>-->
+<!--                                        <option value="18">18</option>-->
+<!--                                        <option value="19">19</option>-->
+<!--                                        <option value="20">20</option>-->
+<!--                                        <option value="21">21</option>-->
+<!--                                        <option value="22">22</option>-->
+<!--                                        <option value="23">23</option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                                <div class="form-group col-lg-3">-->
+<!--                                    <label>Thời gian tùy chọn</label>-->
+<!--                                    <Daterangepicker-->
+<!--                                        @update:modelValue="(value) => doFilter('created', value, $event)"-->
+<!--                                        v-model="filter.created" placeholder="Ngày tạo"></Daterangepicker>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row mb-2">-->
+<!--                                <button class="btn btn-primary" @click="doFilter()">Tìm kiếm</button>-->
+<!--                            </div>-->
                             <div class="table-responsive">
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
@@ -105,6 +105,7 @@ export default {
     components: {ActionBar},
     data() {
         return {
+            time:$json.time || {},
             entry:$json.entry || [],
             entries: [],
             filter: {
@@ -135,9 +136,8 @@ export default {
         return result;
 },
         async load() {
-            this.doFilter();
             let query = $router.getQuery();
-            const res = await $get('/xadmin/campaigns/dataDetail?id='+this.entry.id, query);
+            const res = await $get('/xadmin/campaigns/dataDetail?id='+this.entry.id + '&time=' + this.time, query);
             // this.paginate = res.paginate;
             this.entries =this.addZeroToIndex(res.data);
         },

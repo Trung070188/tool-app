@@ -2,12 +2,15 @@
     <div class="sticky dark-theme" style="margin-bottom: -63px;">
         <aside id="sidebar" ref='sidebar' class="app-sidebar ps--active-y navbar-nav-scroll">
 
-                <div class="main-sidebar-header active"><a class="header-logo active d-flex" href="/xadmin/dashboard/index">
-                <img src="/images/logo.png" class="main-logo desktop-logo" alt="logo">
-                <img src="/images/logo.png" class="main-logo desktop-logo desktop-dark" alt="logo">
-                <img src="/images/logo.png" style="position: absolute" class="main-logo  mobile-logo" alt="logo">
+                <div class="main-sidebar-header active">
+                    <a class="header-logo active d-flex" href="/xadmin/dashboard/index">
+                <img src="/images/user.png" class="main-logo desktop-logo" alt="logo" style="width: 70px;height: 70px">
+                <img src="/images/user.png" class="main-logo desktop-logo desktop-dark" alt="logo" style="width: 70px;height: 70px">
+                <img src="/images/user.png" style="position: absolute;width: 70px;height: 70px" class="main-logo  mobile-logo" alt="logo">
                 <!--                <img src="/assets/img/brand/vnpost_logo.svg" class="main-logo  mobile-dark" alt="logo">-->
-            </a></div>
+            </a>
+                    <div style="text-align: center;color: aliceblue;margin-top: 5px">{{auth.name}}</div>
+                </div>
             <div class="main-sidemenu is-expanded">
                 <div class="slide-left disabled active d-none" id="slide-left">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24"
@@ -77,6 +80,7 @@ import {clone} from "../../utils";
 export default {
     name: "SideBar",
     data() {
+
         const menus = clone(window.$sideBarMenus);
         const pathname = location.pathname.split('?')[0];
 
@@ -119,6 +123,7 @@ export default {
         });
 
         return {
+            auth: window.$auth,
             menus,
             hoverMenu: false
         }
