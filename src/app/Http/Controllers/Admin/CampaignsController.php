@@ -286,6 +286,7 @@ class CampaignsController extends AdminBaseController
         $customers = Customer::query()->orderBy('id', 'desc')->get();
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%')
+                ->orWhere('id', $req->keyword)
                 ->orWhere('package_id', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhereHas('customer', function ($join) use ($req) {
                     $join->where('name', 'LIKE', '%' . $req->keyword . '%')->orwhere('id', 'LIKE', '%' . $req->keyword . '%');
@@ -382,6 +383,7 @@ class CampaignsController extends AdminBaseController
             ->orderBy('campaigns.id', 'desc');
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%')
+                ->orWhere('id', $req->keyword)
                 ->orWhere('package_id', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhereHas('customer', function ($join) use ($req) {
                     $join->where('name', 'LIKE', '%' . $req->keyword . '%')->orwhere('id', 'LIKE', '%' . $req->keyword . '%');
