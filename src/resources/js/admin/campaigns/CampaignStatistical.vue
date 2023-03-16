@@ -218,13 +218,13 @@
 </template>
 
 <script>
-    import {$get, $post, getTimeRangeAll} from "../../utils";
+import {$get, $post, getTimeNow} from "../../utils";
     import $router from '../../lib/SimpleRouter';
     import ActionBar from '../../components/ActionBar';
     import SwitchButton from "../../components/SwitchButton";
 
 
-    let created = getTimeRangeAll();
+    let created = getTimeNow();
     const $q = $router.getQuery();
 
     export default {
@@ -343,6 +343,7 @@
             },
             async load() {
                 let query = $router.getQuery();
+                this.doFilter();
                 const res = await $get('/xadmin/campaigns/dataStatistical', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;

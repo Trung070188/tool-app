@@ -129,12 +129,12 @@
 </template>
 
 <script>
-    import {$get, $post, getTimeRangeAll} from "../../../utils";
+import {$get, $post, getTimeNow} from "../../../utils";
     import $router from '../../../lib/SimpleRouter';
     import ActionBar from '../../../components/ActionBar';
 
 
-    let created = getTimeRangeAll();
+    let created = getTimeNow();
     const $q = $router.getQuery();
 
     export default {
@@ -166,6 +166,7 @@
         methods: {
             async load() {
                 let query = $router.getQuery();
+                this.doFilter();
                 const res = await $get('/xadmin/campaign_installs/data', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
