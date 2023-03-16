@@ -1,0 +1,37 @@
+/**
+ * @api {POST} https://api.seogameapp.com/api/campaigns/install Save a valid install
+ * @apiName SaveValidInstall
+ * @apiGroup API
+ * @apiDescription Mã lỗi 0 là thành công, khác 0 là thất bại. Các mã lỗi thất bại là 1,2,3,4,5 do thiếu param hoặc sai key
+ * @apiHeader
+ * Content-Type: application/json
+ * @apiParam {String} partner_id (required)
+ * @apiParam {String} partner_secret (required)
+ * @apiParam {String} partner_campaign_id (required)
+ * @apiParam {String} package_id (required)
+ * @apiParam {String} ip (required) User's IP
+ * @apiParam {String} os (required) android|ios
+ * @apiPayloadExample
+ *  {
+"partner_id": 2,
+"partner_secret": "e4je7eJEgj5ZOzeWEsAiz2qg7wp9nKgt",
+"partner_campaign_id": 2,
+"device_id": "abc",
+"package_id": "com.b52tg445aw.whitestarworld",
+"ip": "::1",
+"os": "android"
+}
+ *
+ * @apiSuccessExample Success-Response:
+{
+"code": 1,
+"message": "OK"
+}
+ * @apiSuccessExample Error-Response:
+{
+"code": 1,
+"message": "Missing request params"
+}
+
+
+ */

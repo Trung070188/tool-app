@@ -73,7 +73,8 @@ function main(): array
 
 
  */
-function apiCampaignInstall(array $params,array $query = []) {
+function apiCampaignInstall(array $params,array $query = []): array
+{
     $requiredParams = [
         'partner_id',
         'partner_secret',
