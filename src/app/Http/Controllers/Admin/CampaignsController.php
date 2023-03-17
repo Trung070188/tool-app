@@ -250,6 +250,7 @@ class CampaignsController extends AdminBaseController
         $entry->os = $data['os'];
         $entry->daily_install = $data['daily_install'];
         $entry->hourly_fake_install = $data['hourly_fake_install'];
+        $entry->total_install = $data['total_install'];
         $entry->save();
 
             return [
