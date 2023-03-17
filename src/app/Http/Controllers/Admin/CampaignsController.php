@@ -246,6 +246,10 @@ class CampaignsController extends AdminBaseController
         $entry->price = $data['price'];
         $entry->type = $data['type'];
         $entry->store_url = $data['store_url'];
+        $entry->customer_id = $data['customer_id'];
+        $entry->os = $data['os'];
+        $entry->daily_install = $data['daily_install'];
+        $entry->hourly_fake_install = $data['hourly_fake_install'];
         $entry->save();
 
             return [
