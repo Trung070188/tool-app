@@ -239,9 +239,14 @@ class CampaignsController extends AdminBaseController
         /**
          * @var  Campaign $entry
          */
-            $entry = new Campaign();
-            $entry->fill($data);
-            $entry->save();
+        $entry = new Campaign();
+        $entry->name = $data['name'];
+        $entry->package_id = $data['package_id'];
+        $entry->icon = $data['icon'];
+        $entry->price = $data['price'];
+        $entry->type = $data['type'];
+        $entry->store_url = $data['store_url'];
+        $entry->save();
 
             return [
                 'code' => 0,
@@ -303,14 +308,19 @@ class CampaignsController extends AdminBaseController
      */
     public function data(Request $req)
     {
-        $query = Campaign::query()->with(['campaignPartner', 'customer'])->orderBy('status','desc')->orderBy('open_next_day','desc')->orderBy('id', 'desc');
-        $customers = Customer::query()->orderBy('id', 'desc')->get();
+
+        $query = Campaign::query()->with(['campaignPartner', 'customer'])
+            ->orderBy('status','desc')
+            ->orderBy('open_next_day','desc')
+            ->orderBy('id', 'desc');
+        $customers = Customer::query()
+            ->orderBy('id', 'desc')->get();
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhere('id', $req->keyword)
                 ->orWhere('package_id', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhereHas('customer', function ($join) use ($req) {
-                    $join->where('name', 'LIKE', '%' . $req->keyword . '%')->orwhere('id', 'LIKE', '%' . $req->keyword . '%');
+                    $join->where('name', 'LIKE', '%' . $req->keyword . '%');
                 });
         }
         if ($req->customer_id) {

@@ -183,7 +183,10 @@ class CampaignPartnersController extends AdminBaseController
     */
     public function data(Request $req)
     {
-        $query = CampaignPartner::query()->with(['campaign:id,name', 'partner:id,name'])->orderBy('id', 'desc');
+        $query = CampaignPartner::query()->with(['campaign:id,name', 'partner:id,name'])
+            ->orderBy('status', 'desc')
+            ->orderBy('open_next_day', 'desc')
+            ->orderBy('id', 'desc');
 
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%');

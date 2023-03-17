@@ -311,7 +311,7 @@
                 } else {
                     this.errors = {};
                     toastr.success(res.message);
-                    location.replace('/xadmin/campaigns/index');
+                    location.replace('/xadmin/campaigns/edit?id=' +res.id);
                     if (!this.entry.id) {
                         location.replace('/xadmin/campaigns/edit?id=' + res.id);
                     }
