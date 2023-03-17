@@ -139,13 +139,13 @@
 </template>
 
 <script>
-    import {$get, $post, getTimeRangeAll} from "../../utils";
+import {$get, $post, getTimeRangeWeek} from "../../utils";
     import $router from '../../lib/SimpleRouter';
     import ActionBar from '../../components/ActionBar';
     import SwitchButton from "../../components/SwitchButton";
 
 
-    let created = getTimeRangeAll();
+    let created = getTimeRangeWeek();
     const $q = $router.getQuery();
 
     export default {
@@ -198,6 +198,7 @@
                 $router.setQuery({});
             },
             async load() {
+                this.doFilter();
                 let query = $router.getQuery();
                 const res = await $get('/customer/campaigns/dataStatistical', query);
                 this.paginate = res.paginate;

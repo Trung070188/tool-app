@@ -378,6 +378,12 @@ export function getTimeNow() {
     const end = moment().format('YYYY-MM-DD');
     return start + '_' + end;
 }
+export function getTimeRangeWeek(day = 7) {
+    const start = moment().subtract(day - 1, 'days').format('YYYY-MM-DD');
+    const end = moment().format('YYYY-MM-DD');
+    return start + '_' + end;
+}
+
 
 export function cloneObject(obj) {
     return JSON.parse(JSON.stringify(obj));
