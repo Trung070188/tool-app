@@ -20,7 +20,7 @@
                         <a class="side-menu__item"
                            :class="{'is-expanded':menu.showSubMenu }"
                            @click.prevent="toggleMenu(menu)"
-                                                     data-bs-toggle="slide" href="javascript:void(0);">
+                                                     data-bs-toggle="slide" :href="menu.url">
                         <i :class="menu.icon"/>
                         <span class="side-menu__label">{{ menu.name }}</span>
                         <i v-if="menu.subs && menu.subs.length" class="angle fe fe-chevron-right"></i></a>
@@ -30,7 +30,7 @@
                                 <a class="sub-side-menu__item"
                                    :class="{'active': sub.active , 'is-expanded':sub.showSubMenu}"
                                    @click.prevent="toggleMenu(sub)" data-bs-toggle="slide"
-                                   href="javascript:void(0);">
+                                   :href="sub.url">
 
 <!--                                    <i :class="sub.icon"/>-->
                                     <span class="sub-side-menu__label">{{ sub.name }}</span>
