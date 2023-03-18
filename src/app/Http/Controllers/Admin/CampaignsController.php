@@ -416,9 +416,7 @@ class CampaignsController extends AdminBaseController
             ->where('campaigns.status', '<>', 0)
             ->where('total_install.total_install', '<>', 0)
             ->groupBy('campaigns.id')
-            ->orderBy('campaigns.status', 'desc')
-            ->orderBy('campaigns.open_next_day', 'desc')
-            ->orderBy('campaigns.id', 'desc');
+            ->orderBy('campaigns.status', 'desc');
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhere('id', $req->keyword)

@@ -97,10 +97,10 @@ class CustomerCampaignsController extends CustomerBaseController
                 'campaigns.created_at',
                 DB::raw('COALESCE(total_install.total_install, 0) as total_install')
             ])
+            ->where('total_install.total_install', '<>', 0)
+            ->where('campaigns.status', '<>', 0)
             ->where('campaigns.customer_id', $user->id)
-            ->orderBy('campaigns.status','desc')
-            ->orderBy('campaigns.open_next_day','desc')
-            ->orderBy('campaigns.id', 'desc');
+            ->orderBy('campaigns.status','desc');
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhere('package_id', 'LIKE', '%' . $req->keyword . '%')
