@@ -42,13 +42,15 @@
                                        placeholder="ip">
                                 <error-label for="f_ip" :errors="errors.ip"></error-label>
                             </div>
-                            <div class="form-group" v-if="entry.id && entry.check_copy!==1 ">
+                            <div class="form-group" v-if="entry.id && entry.check_copy!==1" @click="copyTextToken">
                                 <label>Re-generate</label>
-                                <input class="form-control" style="cursor: pointer" v-model="entry.secret" readonly @click="copyTextToken">
+                                <input class="form-control" style="cursor: pointer" v-model="entry.secret" readonly>
+                                <i class="fa fa-clone copy" aria-hidden="true"></i>
+
                             </div>
                             <div class="form-group" v-if="entry.id && entry.check_copy==1">
                                 <label>Re-generate</label>
-                                <input class="form-control" style="cursor: pointer" v-model="token" readonly>
+                                <input class="form-control" v-model="token" readonly>
                             </div>
                             <button v-if="entry.id" class="btn btn-primary" @click="createToken" style="font-size: 13px">Tạo mới Token</button>
                             <div class="form-group mt-2">
@@ -160,5 +162,13 @@ export default {
 </script>
 
 <style scoped>
+ .copy{
+     float: right;
+     margin-top: -25px;
+     font-size: 18px;
+     color: #c1c1c1;
+     margin-right: 10px;
+     cursor: pointer;
 
+ }
 </style>
