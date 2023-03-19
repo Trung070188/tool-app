@@ -80,7 +80,7 @@
 <!--                                                <option value="" disabled selected>Choose customer</option>-->
 <!--                                                <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>-->
 <!--                                            </select>-->
-                                            <select class="js-example-responsive" style="width: 100%" v-model="filter.customer_id">
+                                            <select class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%" v-model="filter.customer_id">
                                                 <option v-for="customer in customers" :value="customer.id">{{customer.id}}-{{customer.name}}</option>
                                             </select>
                                         </div>
@@ -270,10 +270,19 @@ import {$get, $post, getTimeNow} from "../../utils";
         },
         mounted() {
             const vm = this;
-            $(".js-example-responsive").select2({
+            $(document).ready(function() {
+                $('.js-example-basic-multiple').select2(
+                    {
+                        placeholder: "All"
+                    }
+                );
             }).on("change", function(e) {
                 vm.filter.customer_id = $(this).val();
             });
+            // $(".js-example-responsive").select2({
+            // }).on("change", function(e) {
+            //     vm.filter.customer_id = $(this).val();
+            // });
             $router.on('/', this.load).init();
         },
         methods: {
