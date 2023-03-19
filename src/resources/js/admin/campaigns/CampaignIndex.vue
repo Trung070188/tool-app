@@ -85,7 +85,7 @@
                                         </div>
                                         <div class="form-group col-lg-2">
                                             <label>Customer </label>
-                                            <select class="js-example-responsive" style="width: 100%" v-model="filter.customer_id">
+                                            <select class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%" v-model="filter.customer_id">
                                                 <option v-for="customer in customers" :value="customer.id">{{customer.id}}-{{customer.name}}</option>
                                             </select>
 
@@ -269,7 +269,12 @@ export default {
     },
     mounted() {
         const vm = this;
-        $(".js-example-responsive").select2({
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2(
+                {
+                    placeholder: "All"
+                }
+            );
         }).on("change", function(e) {
             vm.filter.customer_id = $(this).val();
         });
