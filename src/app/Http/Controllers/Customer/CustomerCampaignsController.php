@@ -86,8 +86,9 @@ class CustomerCampaignsController extends CustomerBaseController
                 $join->on('campaigns.id', '=', 'total_install.campaign_id');
             })
             ->where(function ($q) {
-                $q->where('total_install.total_install', '<>', 0)
-                    ->orWhere('campaigns.status', '<>', 0);
+                $q->where('campaigns.status', '=', 0)
+                    ->where('total_install.total_install', '<>', 0)
+                    ->orWhere('campaigns.status', '=', 1);
             })
             ->where('campaigns.customer_id', $user->id)
             ->select([
