@@ -400,6 +400,10 @@ class CampaignsController extends AdminBaseController
             ->leftJoinSub($totalInstall, 'total_install', function ($join) {
                 $join->on('campaigns.id', '=', 'total_install.campaign_id');
             })
+            ->where(function ($q) {
+                $q->where('total_install.total_install', '<>', 0)
+                    ->orWhere('campaigns.status', '<>', 0);
+            })
             ->select([
                 'campaigns.id',
                 'campaigns.name',
@@ -413,13 +417,6 @@ class CampaignsController extends AdminBaseController
                 DB::raw('COALESCE(fakes.total_fake, 0) as total_fake'),
                 DB::raw('COALESCE(total_install.total_install, 0) as total_install')
             ])
-            ->where(function ($q)
-            {
-                $q->where('total_install.total_install', '<>', 0)
-                    ->orWhere('campaigns.status', '<>', 0);
-            })
-            ->where('campaigns.status', '<>', 0)
-            ->where('total_install.total_install', '<>', 0)
             ->groupBy('campaigns.id')
             ->orderBy('campaigns.status', 'desc');
         if ($req->keyword) {
