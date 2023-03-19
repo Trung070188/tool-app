@@ -85,6 +85,11 @@ class CustomerCampaignsController extends CustomerBaseController
             ->leftJoinSub($totalInstall, 'total_install', function ($join) {
                 $join->on('campaigns.id', '=', 'total_install.campaign_id');
             })
+            ->where(function ($q) {
+                $q->where('total_install.total_install', '<>', 0)
+                    ->orWhere('campaigns.status', '<>', 0);
+            })
+            ->where('campaigns.customer_id', $user->id)
             ->select([
                 'campaigns.id',
                 'campaigns.name',
@@ -97,10 +102,7 @@ class CustomerCampaignsController extends CustomerBaseController
                 'campaigns.created_at',
                 DB::raw('COALESCE(total_install.total_install, 0) as total_install')
             ])
-            ->where('total_install.total_install', '<>', 0)
-            ->where('campaigns.status', '<>', 0)
-            ->where('campaigns.customer_id', $user->id)
-            ->orderBy('campaigns.status','desc');
+            ->orderBy('campaigns.status', 'desc');
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhere('package_id', 'LIKE', '%' . $req->keyword . '%')
