@@ -206,7 +206,7 @@
                                     </tbody>
                                 </table>
                                 <div class="float-right" style="margin-top:10px; ">
-                                    <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>
+<!--                                    <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>-->
                                 </div>
                             </div>
                         </div>
@@ -261,12 +261,12 @@ import {$get, $post, getTimeNow} from "../../utils";
                 isShowFilter:isShowFilter,
                 entries: [],
                 filter: filter,
-                limit: $q.limit || 25,
-
-                paginate: {
-                    currentPage: 1,
-                    lastPage: 1
-                }
+                // limit: $q.limit || 25,
+                //
+                // paginate: {
+                //     currentPage: 1,
+                //     lastPage: 1
+                // }
             }
         },
         mounted() {

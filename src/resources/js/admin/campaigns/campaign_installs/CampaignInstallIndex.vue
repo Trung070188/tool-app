@@ -113,7 +113,7 @@
                                 </table>
                                 <div style="float: left;display: inline-block;margin-top: 10px" v-text=" 'Showing '+from +' to '+ to +' of '+ entries.length + ' entries' " v-if="entries.length > 0"></div>
                                 <div class="float-right" style="margin-top:10px; ">
-                                    <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>
+<!--                                    <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>-->
                                 </div>
                             </div>
                         </div>
@@ -151,13 +151,13 @@ import {$get, $post, getTimeNow} from "../../../utils";
                     partner_name:$q.partner_name || '',
                     created: $q.created || created,
                 },
-                limit: $q.limit || 25,
-                from: 0,
-                to: 0,
-                paginate: {
-                    currentPage: 1,
-                    lastPage: 1
-                }
+                // limit: $q.limit || 25,
+                // from: 0,
+                // to: 0,
+                // paginate: {
+                //     currentPage: 1,
+                //     lastPage: 1
+                // }
             }
         },
         mounted() {

@@ -447,11 +447,7 @@ class CampaignsController extends AdminBaseController
 //        }
 
 //        $query->createdIn($req->created);
-        $limit = 25;
-        if ($req->limit) {
-            $limit = $req->limit;
-        }
-        $entries = $query->paginate($limit);
+        $entries = $query->paginate();
         return [
             'code' => 0,
             'customers' => $customers,

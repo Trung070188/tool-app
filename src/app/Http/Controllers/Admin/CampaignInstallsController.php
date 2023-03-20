@@ -231,14 +231,14 @@ class CampaignInstallsController extends AdminBaseController
            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
            $campaignInstall->whereBetween('campaigns.created_at',[$start_date,$end_date]);
        }
-        $limit = 25;
-        if ($req->limit) {
-            $limit = $req->limit;
-        }
+//        $limit = 25;
+//        if ($req->limit) {
+//            $limit = $req->limit;
+//        }
         $campaigns=Campaign::query()->orderBy('name','desc')->get();
         $partners=Partner::query()->orderBy('name','desc')->get();
 
-        $entries = $campaignInstall->paginate($limit);
+        $entries = $campaignInstall->paginate();
 
         return [
             'code' => 0,
