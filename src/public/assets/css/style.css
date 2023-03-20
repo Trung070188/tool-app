@@ -26879,6 +26879,9 @@ a.option-dots {
         margin-left: 240px;
     }
 }
+.cursor-pointer{
+    cursor: pointer;
+}
 
 .main-sidebar-header {
     height: 120px;
