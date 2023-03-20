@@ -17,7 +17,7 @@
                 </div>
                 <ul class="side-menu open" style="margin-right: 0px;">
                     <li class="slide " v-for="menu in menus"  :class="{'is-expanded':menu.showSubMenu }">
-                        <a class="side-menu__item"
+                        <a class="side-menu__item cursor-pointer"
                            :class="{'is-expanded':menu.showSubMenu }"
                            @click.prevent="toggleMenu(menu)"
                                                      data-bs-toggle="slide" :href="menu.url">
@@ -27,7 +27,7 @@
                         <ul class="slide-menu" v-if="menu.subs && menu.subs.length" :class="{open: menu.showSubMenu}">
                             <li class="side-menu__label1"><a href="javascript:void(0);">Dashboards</a></li>
                             <li class="sub-slide"  v-for="sub in menu.subs" :class="{'is-expanded':sub.showSubMenu }">
-                                <a class="sub-side-menu__item"
+                                <a class="sub-side-menu__item cursor-pointer"
                                    :class="{'active': sub.active , 'is-expanded':sub.showSubMenu}"
                                    @click.prevent="toggleMenu(sub)" data-bs-toggle="slide"
                                    :href="sub.url">
@@ -37,7 +37,7 @@
                                     <i v-if="sub.subs && sub.subs.length" class="angle fe fe-chevron-right"></i></a>
                                     <ul class="sub-slide-menu" v-if="sub.subs && sub.subs.length" :class="{open: sub.showSubMenu}">
                                     <li class="is-expanded"  v-for="subMenu in sub.subs">
-                                        <a class="slide-item"
+                                        <a class="slide-item cursor-pointer"
                                            :class="{'active': subMenu.active }"
                                            :href="subMenu.url">
                                             {{ subMenu.name }}

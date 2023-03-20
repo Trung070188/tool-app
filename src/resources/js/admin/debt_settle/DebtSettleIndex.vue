@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="form-group mx-sm-3 mb-2">
                                             <span style="margin-right: 10px">Khách hàng</span>
-                                            <select class="form-control" v-model="filter.customer">
+                                            <select class="js-example-responsive" v-model="filter.customer">
                                                 <option value="0">All</option>
                                                 <option v-for="customer in customers" :value="customer.id">{{customer.id}}-{{customer.name}}</option>
                                             </select>
@@ -117,7 +117,7 @@
                                     </tbody>
                                 </table>
                                 <div class="float-right" style="margin-top:10px; ">
-                                    <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>
+<!--                                    <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>-->
                                 </div>
                             </div>
                         </div>
@@ -162,13 +162,19 @@
                     month: $q.month || month,
                     customer: $q.customer || '0'
                 },
-                paginate: {
-                    currentPage: 1,
-                    lastPage: 1
-                }
+                // paginate: {
+                //     currentPage: 1,
+                //     lastPage: 1
+                // }
             }
         },
         mounted() {
+            const vm = this;
+            $(".js-example-responsive").select2({
+                placeholder: "All"
+            }).on("change", function(e) {
+                vm.filter.customer = $(this).val();
+            });
             $router.on('/', this.load).init();
         },
         methods: {
