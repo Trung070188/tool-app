@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Campaign;
+use App\Models\CampaignPartner;
 use App\Models\Partner;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -181,33 +182,39 @@ class CampaignInstallsController extends AdminBaseController
     */
     public function data(Request $req)
     {
-        $campaignInstall=DB::table('campaign_installs')->join('partner_campaigns',function ($join)
-        {
-            $join->on('partner_campaigns.id','=','campaign_installs.partner_campaign_id');
-        })
-            ->leftJoin('campaigns',function ($join)
-            {
-                $join->on('campaigns.id','=','partner_campaigns.campaign_id');
-            })
-            ->leftJoin('partners',function ($join)
-            {
-                $join->on('partners.id','=','partner_campaigns.partner_id');
-            })->whereNull('campaign_installs.faked_at');
-        $campaignInstall = $campaignInstall->select([
-            'campaigns.name as campaign',
-            'campaigns.created_at as created_at',
-            'campaigns.updated_at as updated_at',
-            'campaign_installs.id as id',
-            'campaign_installs.campaign_id as campaignId',
-            'campaign_installs.device_id as device_id',
-            'campaign_installs.ip as campaign_installs',
-            'campaign_installs.os as os',
-            'campaign_installs.ip as ip',
-            'partner_campaigns.price as price',
-            'campaign_installs.partner_id as partner_id',
-            'partners.name as partner_name',
-            DB::raw('COUNT(campaign_installs.id) as total_install')
-        ])->groupBy('campaign_installs.id');
+        $campaignInstall = CampaignPartner::query()
+            ->with(['partner:id,name','campaign:id,name'])
+            ->withCount('campaignInstall');
+//        $campaignInstall=DB::table('campaign_installs')
+//            ->where('campaign_installs.faked_at', '=', Null)
+//            ->join('partner_campaigns',function ($join)
+//        {
+//            $join->on('partner_campaigns.id','=','campaign_installs.partner_campaign_id');
+//        })
+//            ->leftJoin('campaigns',function ($join)
+//            {
+//                $join->on('campaigns.id','=','partner_campaigns.campaign_id');
+//            })
+//            ->leftJoin('partners',function ($join)
+//            {
+//                $join->on('partners.id','=','partner_campaigns.partner_id');
+//            })->whereNull('campaign_installs.faked_at');
+//        $campaignInstall = $campaignInstall->select([
+//            'campaigns.name as campaign',
+//            'campaigns.created_at as created_at',
+//            'campaigns.updated_at as updated_at',
+//            'campaign_installs.id as id',
+//            'campaign_installs.campaign_id as campaignId',
+//            'campaign_installs.device_id as device_id',
+//            'campaign_installs.ip as campaign_installs',
+//            'campaign_installs.os as os',
+//            'campaign_installs.ip as ip',
+//            'partner_campaigns.price as price',
+//            'campaign_installs.partner_id as partner_id',
+//            'partners.name as partner_name',
+//            DB::raw('COUNT(campaign_installs.id) as total_install')
+//        ])->groupBy('campaign_installs.id')->get();
+//        dd($campaignInstall);
 
         if ($req->keyword) {
             $campaignInstall->where('campaigns.name', 'LIKE', '%' . $req->keyword. '%')
@@ -215,11 +222,11 @@ class CampaignInstallsController extends AdminBaseController
         }
         if($req->campaign)
         {
-           $campaignInstall->where('campaigns.name', $req->campaign);
+           $campaignInstall->where('campaign_id', $req->campaign);
         }
         if($req->partner_name)
         {
-            $campaignInstall->where('partners.name',  $req->partner_name);
+            $campaignInstall->where('partner_id',  $req->partner_name);
         }
        if($req->created)
        {
@@ -229,7 +236,11 @@ class CampaignInstallsController extends AdminBaseController
            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
            $end_date = $date_range[1];
            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
-           $campaignInstall->whereBetween('campaigns.created_at',[$start_date,$end_date]);
+           $campaignInstall->whereHas('campaignInstall', function ($q) use ($start_date,$end_date)
+           {
+               $q->whereBetween('installed_at', [$start_date,$end_date]);
+
+           });
        }
 //        $limit = 25;
 //        if ($req->limit) {
