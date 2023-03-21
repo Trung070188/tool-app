@@ -182,9 +182,26 @@ class CampaignInstallsController extends AdminBaseController
     */
     public function data(Request $req)
     {
+        if($req->created)
+        {
+            $dates = $req->created;
+            $date_range = explode('_', $dates);
+            $start_date = $date_range[0];
+            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
+            $end_date = $date_range[1];
+            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
+        }
         $campaignInstall = CampaignPartner::query()
             ->with(['partner:id,name','campaign:id,name'])
-            ->withCount('campaignInstall');
+            ->withCount('campaignInstall')
+            ->when($req->created, function ($query) use ($start_date,$end_date)
+            {
+                $query->whereHas('campaignInstall', function ($q) use ($start_date, $end_date)
+            {
+                $q->whereBetween('installed_at', [$start_date, $end_date]);
+            });
+            });
+
 //        $campaignInstall=DB::table('campaign_installs')
 //            ->where('campaign_installs.faked_at', '=', Null)
 //            ->join('partner_campaigns',function ($join)
@@ -228,20 +245,6 @@ class CampaignInstallsController extends AdminBaseController
         {
             $campaignInstall->where('partner_id',  $req->partner_name);
         }
-       if($req->created)
-       {
-           $dates = $req->created;
-           $date_range = explode('_', $dates);
-           $start_date = $date_range[0];
-           $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
-           $end_date = $date_range[1];
-           $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
-           $campaignInstall->whereHas('campaignInstall', function ($q) use ($start_date,$end_date)
-           {
-               $q->whereBetween('installed_at', [$start_date,$end_date]);
-
-           });
-       }
 //        $limit = 25;
 //        if ($req->limit) {
 //            $limit = $req->limit;
