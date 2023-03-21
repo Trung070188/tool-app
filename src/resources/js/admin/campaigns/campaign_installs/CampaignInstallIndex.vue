@@ -100,7 +100,7 @@
                                     <tbody>
                                     <tr v-for="entry in entries">
                                         <td>
-                                            <template v-if="entry.campaign">{{entry.campaign.name}}</template>
+                                            <template v-if="entry.campaign">{{entry.campaign_id}}-{{entry.campaign.name}}</template>
                                         </td>
                                         <td>
                                             <template v-if="entry.partner"> {{entry.partner.name}}</template>
@@ -113,6 +113,19 @@
                                         <td >{{entry.sharePrice}}</td>
                                         <td ></td>
                                         <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td ></td>
+                                        <td ></td>
+                                        <td ></td>
+                                        <td ></td>
+                                        <td ></td>
+                                        <td >Tổng</td>
+                                        <td ></td>
+                                        <td >{{totalPriceShare}}</td>
+                                        <td ></td>
+                                        <td ></td>
 
                                     </tr>
                                     </tbody>
@@ -148,6 +161,7 @@ import {$get, $post, getTimeNow} from "../../../utils";
         components: {ActionBar},
         data() {
             return {
+                totalPriceShare:0,
                 campaigns:[],
                 partners:[],
                 entries: [],
@@ -187,10 +201,15 @@ import {$get, $post, getTimeNow} from "../../../utils";
                 const res = await $get('/xadmin/campaign_installs/data', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
+                this.totalPriceShare = 0;
                 for (let item of this.entries) {
                     if (item.price) {
-                        let sharePrice=(item.price) * (item.campaign_install_count)
-                        item.sharePrice=parseFloat(sharePrice).toLocaleString('en-US',{
+                        let sharePrice = 0;
+                        sharePrice = (item.price) * (item.campaign_install_count)
+                        if (sharePrice) {
+                            this.totalPriceShare += sharePrice;
+                        }
+                        item.sharePrice = parseFloat(sharePrice).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'VND'
                         })
@@ -200,8 +219,12 @@ import {$get, $post, getTimeNow} from "../../../utils";
                         });
                     }
                 }
-                this.campaigns=res.campaigns;
-                this.partners=res.partners;
+                this.totalPriceShare = parseFloat(this.totalPriceShare).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'VND'
+                });
+                this.campaigns = res.campaigns;
+                this.partners = res.partners;
                 this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
                 this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;
 

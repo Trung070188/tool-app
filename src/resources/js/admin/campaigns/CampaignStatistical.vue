@@ -391,7 +391,6 @@ import {$get, $post, getTimeNow} from "../../utils";
                     }
                 }
                 {
-                    console.log(this.total);
                     this.total=parseFloat(this.total).toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'VND'
