@@ -1,4 +1,5 @@
 <?php
+define('ROOT', dirname(dirname(__DIR__)));
 
 set_error_handler(function($errno, $errstr, $errfile, $errline) {
     // error was suppressed with the @-operator
@@ -12,7 +13,7 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 
 
 
-define('ROOT', dirname(__DIR__));
+
 
 function apiDump(...$args) {
     $isCLI = !isset($_SERVER['REQUEST_URI']);
@@ -224,4 +225,34 @@ function apiLogResponse($response, \Throwable $e = null, $httpCode = 200, $param
     } catch (\Throwable $ex) {
         apiWriteLog($ex);
     }
+}
+
+function apiGetConnectedPartner(array $params = [])
+{
+    $partnerId = $params['partner_id'];
+    $partnerSecret = $params['partner_secret'];
+
+    $db = apiGetDb();
+    $partner = $db->selectOne("SELECT * FROM partners WHERE id=?", [
+        $partnerId
+    ]);
+
+    if (!$partner) {
+        return [
+            'code' => 2,
+            'message' => 'Invalid partner'
+        ];
+    }
+
+    if (empty($partner->secret) || !hash_equals($partner->secret, $partnerSecret)) {
+        return [
+            'code' => 21,
+            'message' => 'Invalid partner secret'
+        ];
+    }
+
+    return [
+        'code' => 0,
+        'partner' => $partner
+    ];
 }
