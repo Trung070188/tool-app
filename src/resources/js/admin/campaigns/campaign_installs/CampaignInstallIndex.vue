@@ -124,6 +124,7 @@
                                     </tr>
                                     <tr>
                                         <td ></td>
+                                        <td ></td>
                                         <td >Tổng</td>
                                         <td >{{total}}</td>
                                         <td ></td>
@@ -132,7 +133,7 @@
                                         <td ></td>
                                         <td >{{totalPriceShare}}</td>
                                         <td ></td>
-                                        <td ></td>
+                                        <td></td>
 
                                     </tr>
                                     </tbody>
@@ -207,7 +208,7 @@ import {$get, $post, getTimeNow} from "../../../utils";
                 let query = $router.getQuery();
                 this.doFilter();
                 const res = await $get('/xadmin/campaign_installs/data', query);
-                this.paginate = res.paginate;
+                // this.paginate = res.paginate;
                 this.entries = res.data;
                 this.total=this.entries.reduce((accumulator, currentValue)=>{
                     return accumulator + parseInt(currentValue['campaign_install_count']);

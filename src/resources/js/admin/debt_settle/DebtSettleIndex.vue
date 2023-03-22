@@ -182,7 +182,7 @@
                 this.doFilter();
                 let query = $router.getQuery();
                 const res = await $get('/xadmin/debt_settle/data', query);
-                this.paginate = res.paginate;
+                // this.paginate = res.paginate;
                 this.entries = res.data;
                 this.totalPayBooking=this.entries.reduce((accumulator, currentValue)=>{
                     return accumulator + parseInt(currentValue['pay_booking']);

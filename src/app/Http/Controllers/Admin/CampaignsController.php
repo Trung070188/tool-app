@@ -447,15 +447,15 @@ class CampaignsController extends AdminBaseController
 //        }
 
 //        $query->createdIn($req->created);
-        $entries = $query->paginate();
+//        $entries = $query->paginate();
         return [
             'code' => 0,
             'customers' => $customers,
-            'data' => $entries->items(),
-            'paginate' => [
-                'currentPage' => $entries->currentPage(),
-                'lastPage' => $entries->lastPage(),
-            ]
+            'data' => $query->get(),
+//            'paginate' => [
+//                'currentPage' => $entries->currentPage(),
+//                'lastPage' => $entries->lastPage(),
+//            ]
         ];
     }
 

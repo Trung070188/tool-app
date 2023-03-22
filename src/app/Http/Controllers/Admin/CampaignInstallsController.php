@@ -233,16 +233,16 @@ class CampaignInstallsController extends AdminBaseController
             $campaigns=Campaign::query()->orderBy('name','desc')->get();
             $partners=Partner::query()->orderBy('name','desc')->get();
 
-            $entries = $campaignInstall->paginate();
+//            $entries = $campaignInstall->paginate();
             return [
                 'code' => 0,
-                'data' => $entries->items() ?? [],
+                'data' => $campaignInstall->get() ?? [],
                 'campaigns'=>$campaigns ?? [],
                 'partners'=>$partners ?? [],
-                'paginate' => [
-                    'currentPage' => $entries->currentPage(),
-                    'lastPage' => $entries->lastPage(),
-                ]
+//                'paginate' => [
+//                    'currentPage' => $entries->currentPage(),
+//                    'lastPage' => $entries->lastPage(),
+//                ]
             ];
 
         }
