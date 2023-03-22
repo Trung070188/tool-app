@@ -84,6 +84,7 @@
                                 <table class="table mg-b-0 text-md-nowrap">
                                     <thead>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Campaign</th>
                                         <th>Partner</th>
                                         <th>Total</th>
@@ -99,6 +100,7 @@
                                     </thead>
                                     <tbody>
                                     <tr v-for="entry in entries">
+                                        <td v-text="entry.id"></td>
                                         <td>
 
                                             <template v-if="entry.campaign">
