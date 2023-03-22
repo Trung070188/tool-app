@@ -100,7 +100,12 @@
                                     <tbody>
                                     <tr v-for="entry in entries">
                                         <td>
-                                            <template v-if="entry.campaign">{{entry.campaign_id}}-{{entry.campaign.name}}</template>
+
+                                            <template v-if="entry.campaign">
+                                                <a :href="'/xadmin/campaign_installs/detail?id='+entry.id + '&created=' + this.filter.created">
+                                                    {{entry.campaign_id}}-{{entry.campaign.name}}
+                                                </a>
+                                            </template>
                                         </td>
                                         <td>
                                             <template v-if="entry.partner"> {{entry.partner.name}}</template>

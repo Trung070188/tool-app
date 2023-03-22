@@ -77,7 +77,7 @@
                                         <td v-text="entry.name"></td>
                                         <td>
                                             <template v-if="entry.campaign">
-                                                {{entry.campaign.name}}
+                                               {{entry.campaign_id}}-{{entry.campaign.name}}
                                             </template>
                                         </td>
                                         <td>

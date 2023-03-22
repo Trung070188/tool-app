@@ -1,6 +1,6 @@
 <template>
     <div class="main-content app-content"> <!-- container -->
-        <ActionBar label="Lưu lại" @action="save()" backUrl="/xadmin/campaign_partners/index"/>
+        <ActionBar label="Lưu lại" @action="save()" :check="check" @clone="clone()" backUrl="/xadmin/campaign_partners/index"/>
         <div class="main-container container-fluid"> <!-- breadcrumb -->
             <div class="breadcrumb-header justify-content-between">
 <!--                <div class="left-content"><span class="main-content-title mg-b-0 mg-b-lg-1">CampaignPartner</span></div>-->
@@ -147,17 +147,21 @@
         components: {RichtextEditor, SwitchButton, ActionBar},
         data() {
             return {
-                campaigns:$json.campaigns,
-                partners:$json.partners,
-                dataFilterCampaign:{
-                },
-                campaignId:'',
+                check: 0,
+                campaigns: $json.campaigns,
+                partners: $json.partners,
+                dataFilterCampaign: {},
+                campaignId: '',
                 entry: $json.entry || {},
                 isLoading: false,
                 errors: {}
             }
         },
         mounted() {
+            if(this.entry.id)
+            {
+                this.check = 1
+            }
             const vm = this;
             $(".js-example-responsive").select2({
             }).on("change", function(e) {
@@ -188,6 +192,26 @@
                     }
                 }
             },
+
+            async clone() {
+                this.isLoading = true;
+                const res = await $post('/xadmin/campaign_partners/clone', {entry: this.entry});
+                this.isLoading = false;
+                if (res.errors) {
+                    this.errors = res.errors;
+                    return;
+                }
+                if (res.code) {
+                    toastr.error(res.message);
+                } else {
+                    this.errors = {};
+                    toastr.success(res.message);
+                    location.replace('/xadmin/campaign_partners/edit?id=' +res.id);
+                    if (!this.entry.id) {
+                        location.replace('/xadmin/campaign_partners/edit?id=' + res.id);
+                    }
+                }
+            }
         }
     }
 </script>
