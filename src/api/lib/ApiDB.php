@@ -1,5 +1,6 @@
 <?php
 
+
 class ApiDB
 {
     public static $queryHistory = [];
@@ -13,9 +14,9 @@ class ApiDB
     public function connect()
     {
         if ($this->pdo === null) {
-            $db =  apiGetEnv('DB_DATABASE');
-            $host =  apiGetEnv('DB_HOST');
-            $username =  apiGetEnv('DB_USERNAME');
+            $db = apiGetEnv('DB_DATABASE');
+            $host = apiGetEnv('DB_HOST');
+            $username = apiGetEnv('DB_USERNAME');
             $port = apiGetEnv('DB_PORT', 3306);
             $password = apiGetEnv('DB_PASSWORD');
 
@@ -56,7 +57,7 @@ class ApiDB
         } else if ($value instanceof \DateTime) {
             $value = $value->format('Y-m-d H:i:s');
         } else if (is_object($value)) {
-            $value = (string) $value;
+            $value = (string)$value;
         }
 
         return $value;
@@ -131,8 +132,8 @@ class ApiDB
             $values[] = $this->convertPrepareValue($v);
         }
 
-        $query = array (
-            'INSERT INTO `' . $table . '`(' . implode(',', $insertStates) .')',
+        $query = array(
+            'INSERT INTO `' . $table . '`(' . implode(',', $insertStates) . ')',
             'VALUES(' . implode(',', $valueStates) . ')',
         );
 
@@ -174,11 +175,11 @@ class ApiDB
 
         foreach ($wheres as $field => $value) {
             $whereState[] = "`$field`=?";
-            $values[] =  $this->convertPrepareValue($value);
+            $values[] = $this->convertPrepareValue($value);
 
         }
 
-        $query = array (
+        $query = array(
             'UPDATE ' . "`$table`",
             'SET ' . implode(',', $updateSetStates),
             'WHERE ' . implode(' AND ', $whereState),
@@ -209,7 +210,8 @@ class ApiDB
      * Interpolate Query:  for debug only
      * @return string The interpolated query
      */
-    public static function getInterpolatedSql($query, $params) {
+    public static function getInterpolatedSql($query, $params)
+    {
         $query = preg_replace('/\s+/', ' ', $query);
         $keys = array();
         $values = $params;
@@ -217,7 +219,7 @@ class ApiDB
         # build a regular expression for each parameter
         foreach ($params as $key => $value) {
             if (is_string($key)) {
-                $keys[] = '/:'.$key.'/';
+                $keys[] = '/:' . $key . '/';
             } else {
                 $keys[] = '/[?]/';
             }
@@ -227,14 +229,14 @@ class ApiDB
             } else if ($value instanceof \DateTime) {
                 $value = $value->format('Y-m-d H:i:s');
             } else if (is_object($value)) {
-                $value = (string) $value;
+                $value = (string)$value;
             }
 
             if (is_string($value)) {
                 $values[$key] = "'" . self::quoteValue($value) . "'";
             }
 
-            if (is_null($value)){
+            if (is_null($value)) {
                 $values[$key] = 'NULL';
             }
 
@@ -252,7 +254,7 @@ class ApiDB
      */
     public static function quoteValue($inp)
     {
-        if (is_array($inp)){
+        if (is_array($inp)) {
             return array_map(__METHOD__, $inp);
         }
 
