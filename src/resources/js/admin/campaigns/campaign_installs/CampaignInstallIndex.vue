@@ -122,11 +122,11 @@
                                     </tr>
                                     <tr>
                                         <td ></td>
-                                        <td ></td>
-                                        <td ></td>
-                                        <td ></td>
-                                        <td ></td>
                                         <td >Tổng</td>
+                                        <td >{{total}}</td>
+                                        <td ></td>
+                                        <td ></td>
+                                        <td ></td>
                                         <td ></td>
                                         <td >{{totalPriceShare}}</td>
                                         <td ></td>
@@ -166,14 +166,15 @@ import {$get, $post, getTimeNow} from "../../../utils";
         components: {ActionBar},
         data() {
             return {
-                totalPriceShare:0,
-                campaigns:[],
-                partners:[],
+                total: 0,
+                totalPriceShare: 0,
+                campaigns: [],
+                partners: [],
                 entries: [],
                 filter: {
                     keyword: $q.keyword || '',
-                    campaign:$q.campaign || '',
-                    partner_name:$q.partner_name || '',
+                    campaign: $q.campaign || '',
+                    partner_name: $q.partner_name || '',
                     created: $q.created || created,
                 },
                 // limit: $q.limit || 25,
@@ -206,6 +207,9 @@ import {$get, $post, getTimeNow} from "../../../utils";
                 const res = await $get('/xadmin/campaign_installs/data', query);
                 this.paginate = res.paginate;
                 this.entries = res.data;
+                this.total=this.entries.reduce((accumulator, currentValue)=>{
+                    return accumulator + parseInt(currentValue['campaign_install_count']);
+                },0);
                 this.totalPriceShare = 0;
                 for (let item of this.entries) {
                     if (item.price) {
