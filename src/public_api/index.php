@@ -36,6 +36,7 @@ function main(): array
     require_once  ROOT . '/api/routes/api_' . $filename . '.php';
     $callback =  'api'. implode("", $parts);
 
+
     if (!function_exists($callback)) {
         http_response_code(404);
 
@@ -56,6 +57,8 @@ $httpCode = 200;
 try {
     $response = main();
 } catch (\Throwable $ex) {
+    $APP_DEBUG = apiGetEnv('APP_DEBUG');
+
     $exception = $ex;
     apiWriteLog($ex);
     $httpCode = 503;
@@ -65,6 +68,13 @@ try {
         'code' => 503,
         'message' => 'Internal server error'
     ];
+    if ($APP_DEBUG) {
+        $response['exception'] = [
+            'class' => get_class($ex),
+            'message' => $ex->getMessage(),
+            'trace' => explode("\n", $ex->getTraceAsString())
+        ];
+    }
 }
 
 apiLogResponse($response, $exception, $httpCode);

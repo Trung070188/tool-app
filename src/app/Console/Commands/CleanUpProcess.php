@@ -34,8 +34,10 @@ class CleanUpProcess extends Command
             $prev = date('Y-m-d H:i:s', strtotime('-3 days'));
         }
 
-        $deleted = DB::table('xlogger')->where('time', '<=', $prev)->delete();
-        $this->info("DELETED $deleted FROM xlogger");
+        $deleted1 = DB::table('xlogger')->where('time', '<=', $prev)->delete();
+        $deleted2 = DB::table('api_logs')->where('time', '<=', $prev)->delete();
+        $this->info("DELETED $deleted1 FROM xlogger");
+        $this->info("DELETED $deleted2 FROM api_logs");
         return 0;
     }
 }

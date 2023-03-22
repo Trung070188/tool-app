@@ -18,18 +18,30 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 function apiDump(...$args) {
     $isCLI = !isset($_SERVER['REQUEST_URI']);
     if ($isCLI) {
-        foreach ($args as $arg) {
-            echo apiNiceVar($arg);
-            echo PHP_EOL . "-------------------------------------------------" . PHP_EOL;
+        if (count($args) === 1) {
+            echo apiNiceVar($args[0]);
+        } else {
+            foreach ($args as $arg) {
+                echo apiNiceVar($arg);
+                echo PHP_EOL . "-------------------------------------------------" . PHP_EOL;
+            }
         }
-    } else {
-        echo "<pre>";
 
-        foreach ($args as $arg) {
-            echo apiNiceVar($arg);
-            echo "<br>-------------------------------------------------<br/>";
+    } else {
+        if (count($args) === 1) {
+            echo "<pre>";
+            echo apiNiceVar($args[0]);
+            echo "</pre>";
+        } else {
+            echo "<pre>";
+
+            foreach ($args as $arg) {
+                echo apiNiceVar($arg);
+                echo "<br>-------------------------------------------------<br/>";
+            }
+            echo "</pre>";
         }
-        echo "</pre>";
+
     }
 
     die;
