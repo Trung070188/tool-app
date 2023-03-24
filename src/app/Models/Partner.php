@@ -15,8 +15,10 @@ class Partner extends BaseModel
 {
     protected $table = 'partners';
     protected $fillable = [
-    'name',
-    'ip',
-    'note',
+        'name',
+        'ip',
+        'note',
+        'secret',
+        'check_copy'
 ];
 }

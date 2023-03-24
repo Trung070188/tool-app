@@ -45,7 +45,7 @@
                                            style="margin-left: 10px" target="_blank"><i class="fa fa-plus"/> Thêm</a>
                                     </div>
                                     <div class="d-flex justify-content-end align-items-center d-none"
-                                         data-kt-customer-table-toolbar="selected" v-if="campaignIds!='' "
+                                         data-kt-customer-table-toolbar="selected" v-if="campaignIds!=''"
                                          style="position: absolute;top: 25px;right: 0px">
                                         <button type="button" class="btn btn-danger"
                                                 data-kt-customer-table-select="delete_selected"
@@ -85,13 +85,18 @@
                                         </div>
                                         <div class="form-group col-lg-2">
                                             <label>Customer </label>
-                                            <select required class="form-control form-select"
-                                                    v-model="filter.customer_id">
-                                                <option value="" disabled selected>Choose customer</option>
-                                                <option v-for="customer in customers" :value="customer.id">
-                                                    {{ customer.name }}
-                                                </option>
+                                            <select class="js-example-responsive" style="width: 100%" v-model="filter.customer_id">
+                                                <option value="0">All</option>
+                                                <option v-for="customer in customers" :value="customer.id">{{customer.id}}-{{customer.name}}</option>
                                             </select>
+
+<!--                                            <select required class="form-control form-select"-->
+<!--                                                    v-model="filter.customer_id">-->
+<!--                                                <option value="" disabled selected>Choose customer</option>-->
+<!--                                                <option v-for="customer in customers" :value="customer.id">-->
+<!--                                                    {{customer.id}}-{{ customer.name }}-->
+<!--                                                </option>-->
+<!--                                            </select>-->
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label>Creation date </label>
@@ -264,6 +269,12 @@ export default {
         }
     },
     mounted() {
+        const vm = this;
+        $(".js-example-responsive").select2({
+            placeholder: "All"
+        }).on("change", function(e) {
+            vm.filter.customer_id = $(this).val();
+        });
         $router.on('/', this.load).init();
     },
     methods: {

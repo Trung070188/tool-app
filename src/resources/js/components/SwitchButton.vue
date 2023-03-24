@@ -1,3 +1,41 @@
+<!--<template>-->
+<!--    <label class="switch"><input ref="input" v-model="isChecked" @change="toggle()" type="checkbox" :disabled="disabled"> <span-->
+<!--        class="slider round"></span></label>-->
+<!--</template>-->
+
+<!--<script>-->
+
+<!--export default {-->
+<!--    name: "SwitchButton",-->
+<!--    data: function () {-->
+<!--        const v = typeof this.modelValue === 'boolean' ? this.modelValue : parseInt(this.modelValue);-->
+<!--        return {-->
+<!--            isChecked: !!v,-->
+<!--            watchIgnored: true,-->
+<!--        }-->
+<!--    },-->
+<!--    mounted: function () {-->
+<!--    },-->
+<!--    props: ['modelValue', 'input_id','disabled'],-->
+<!--    watch: {-->
+<!--        modelValue: function (v) {-->
+<!--            if ( this.watchIgnored) {-->
+<!--                this.watchIgnored = false;-->
+<!--                return;-->
+<!--            }-->
+
+<!--            this.isChecked = v;-->
+<!--        }-->
+<!--    },-->
+<!--    methods: {-->
+<!--        toggle: function () {-->
+<!--            this.watchIgnored = true;-->
+<!--            this.$emit('update:modelValue', this.$refs.input.checked ? 1 : 0);-->
+
+<!--        }-->
+<!--    }-->
+<!--}-->
+<!--</script>-->
 <template>
     <label class="switch"><input ref="input" v-model="isChecked" @change="toggle()" type="checkbox" :disabled="disabled"> <span
         class="slider round"></span></label>
@@ -7,33 +45,32 @@
 
 export default {
     name: "SwitchButton",
-    data: function () {
-        const v = typeof this.modelValue === 'boolean' ? this.modelValue : parseInt(this.modelValue);
-        return {
-            isChecked: !!v,
-            watchIgnored: true,
+    computed: {
+        computedValue: {
+            get: function () {
+                return this.modelValue;
+            },
+            set: function (newValue) {
+                this.$emit('update:modelValue', newValue);
+            }
+        },
+        isChecked: {
+            get: function () {
+                return this.computedValue === 1;
+            },
+            set: function (newValue) {
+                this.computedValue = newValue ? 1 : 0;
+            }
         }
     },
     mounted: function () {
     },
     props: ['modelValue', 'input_id','disabled'],
-    watch: {
-        modelValue: function (v) {
-            if ( this.watchIgnored) {
-                this.watchIgnored = false;
-                return;
-            }
-
-            this.isChecked = v;
-        }
-    },
     methods: {
         toggle: function () {
-            this.watchIgnored = true;
-            this.$emit('update:modelValue', this.$refs.input.checked ? 1 : 0);
-
+            this.isChecked = this.$refs.input.checked;
         }
-    }
+    },
 }
 </script>
 

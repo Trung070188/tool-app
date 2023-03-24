@@ -28,6 +28,7 @@ RUN apt-get install -y nginx
 RUN apt-get install -y git
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 COPY ./conf/site.conf /etc/nginx/conf.d/site.conf
+COPY ./conf/site_api.conf /etc/nginx/conf.d/site_api.conf
 COPY ./conf/entrypoint.sh /etc/entrypoint.sh
 COPY ./conf/schedule.sh /etc/schedule.sh
 COPY ./conf/queue.sh /etc/queue.sh

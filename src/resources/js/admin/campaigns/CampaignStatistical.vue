@@ -76,9 +76,13 @@
                                         </div>
                                         <div class="form-group col-lg-2">
                                             <label>Customer </label>
-                                            <select required class="form-control form-select" v-model="filter.customer_id">
-                                                <option value="" disabled selected>Choose customer</option>
-                                                <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>
+<!--                                            <select required class="form-control form-select" v-model="filter.customer_id">-->
+<!--                                                <option value="" disabled selected>Choose customer</option>-->
+<!--                                                <option v-for="customer in customers" :value="customer.id">{{customer.name}}</option>-->
+<!--                                            </select>-->
+                                            <select class="js-example-responsive" style="width: 100%" v-model="filter.customer_id">
+                                                <option value="0">All</option>
+                                                <option v-for="customer in customers" :value="customer.id">{{customer.id}}-{{customer.name}}</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-lg-4">
@@ -160,7 +164,7 @@
                                     <tr v-for="entry in entries">
                                         <td v-text="entry.id"></td>
                                         <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
-                                        <a :href="'/xadmin/campaigns/detail?id='+entry.id">
+                                        <a :href="'/xadmin/campaigns/detail?id='+entry.id + '&time='+filter.created">
                                             <td v-text="entry.name"></td>
                                         </a>
                                         <td v-text="entry.os"></td>
@@ -202,7 +206,7 @@
                                     </tbody>
                                 </table>
                                 <div class="float-right" style="margin-top:10px; ">
-                                    <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>
+<!--                                    <Paginate :value="paginate" :pagechange="onPageChange"></Paginate>-->
                                 </div>
                             </div>
                         </div>
@@ -218,13 +222,13 @@
 </template>
 
 <script>
-    import {$get, $post, getTimeRangeAll} from "../../utils";
+import {$get, $post, getTimeNow} from "../../utils";
     import $router from '../../lib/SimpleRouter';
     import ActionBar from '../../components/ActionBar';
     import SwitchButton from "../../components/SwitchButton";
 
 
-    let created = getTimeRangeAll();
+    let created = getTimeNow();
     const $q = $router.getQuery();
 
     export default {
@@ -257,15 +261,21 @@
                 isShowFilter:isShowFilter,
                 entries: [],
                 filter: filter,
-                limit: $q.limit || 25,
-
-                paginate: {
-                    currentPage: 1,
-                    lastPage: 1
-                }
+                // limit: $q.limit || 25,
+                //
+                // paginate: {
+                //     currentPage: 1,
+                //     lastPage: 1
+                // }
             }
         },
         mounted() {
+            const vm = this;
+            $(".js-example-responsive").select2({
+                placeholder: "All"
+            }).on("change", function(e) {
+                vm.filter.customer_id = $(this).val();
+            });
             $router.on('/', this.load).init();
         },
         methods: {
@@ -343,8 +353,9 @@
             },
             async load() {
                 let query = $router.getQuery();
+                this.doFilter();
                 const res = await $get('/xadmin/campaigns/dataStatistical', query);
-                this.paginate = res.paginate;
+                // this.paginate = res.paginate;
                 this.entries = res.data;
                 this.totalFake=this.entries.reduce((accumulator, currentValue)=>{
                     return accumulator + parseInt(currentValue['total_fake']);
@@ -359,10 +370,10 @@
                     style: 'currency',
                     currency: 'VND'
                 });
-
+                this.total=0;
                 for (let item of this.entries) {
                     let owe=(item.total_install)*(item.price)
-                    if(owe)
+                    if(owe || owe==0)
                     {
                         this.total+=owe;
                     }
@@ -372,17 +383,20 @@
                             currency: 'VND'
                         });
                     }
-                    if (owe) {
+                    if (owe || owe==0) {
                         item.total = parseFloat(owe).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'VND'
                         });
                     }
                 }
-                this.total=parseFloat(this.total).toLocaleString('en-US', {
-                    style: 'currency',
-                    currency: 'VND'
-                });
+                {
+                    this.total=parseFloat(this.total).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'VND'
+                    });
+                }
+
                 this.customers=res.customers;
                 this.from = (this.paginate.currentPage - 1) * (this.limit) + 1;
                 this.to = (this.paginate.currentPage - 1) * (this.limit) + this.entries.length;

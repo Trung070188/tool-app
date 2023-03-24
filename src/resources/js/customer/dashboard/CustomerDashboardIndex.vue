@@ -54,6 +54,7 @@
                                         <th>Icon</th>
                                         <th>Tên ứng dụng</th>
                                         <th>Hệ điều hành</th>
+                                        <th>Package</th>
                                         <th>Type</th>
                                         <th>Trạng thái</th>
                                     </tr>
@@ -64,6 +65,7 @@
                                         <td ><img v-if="entry.icon && entry.icon.length > 0" :src="entry.icon[0].url" style="width: 32px;height: 32px"></td>
                                         <td v-text="entry.name"></td>
                                         <td v-text="entry.os"></td>
+                                        <td v-text="entry.package_id"></td>
                                         <td v-text="entry.type"></td>
                                         <td><switch-button v-model="entry.status" :disabled="true"></switch-button></td>
                                     </tr>

@@ -34,6 +34,10 @@
                     <i :class="btnIcon"/>
                     {{btnLabel}}
                 </button>
+                <button v-if="!hideButtonSave && check==1" class="btn btn-primary" type="button" @click="clone()">
+                    <i class="fa fa-clone" aria-hidden="true"></i>
+                    Clone
+                </button>
             </div>
         </div>
     </div>
@@ -49,7 +53,8 @@ export default {
         'type',
         'showResetButton',
         'buttons',
-        'hideButtonSave'
+        'hideButtonSave',
+        'check'
     ],
     data() {
         return {
@@ -70,6 +75,10 @@ export default {
         },
         action() {
             this.$emit('action');
+        },
+        clone()
+        {
+            this.$emit('clone')
         }
     }
 }

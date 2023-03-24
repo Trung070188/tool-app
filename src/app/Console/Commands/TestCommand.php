@@ -41,24 +41,7 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $ip = DB::selectOne("SELECT * FROM ipinfo WHERE country=? ORDER BY RAND() LIMIT 1", ["VN"]);
-
-        dd(long2ip(rand($ip->from_int, $ip->to_int)));
-        /*$total = 1200;
-        $installed = 0;
-        for ($hour = 0; $hour <= 23; $hour++) {
-            $remain = $total - $installed;
-            $service = new FakeInstallService($remain);
-            $currentHourInstall = $service->getCount($hour);
-            $installPerMinute = $currentHourInstall/60;
-
-            for ($i = 0; $i < 60; $i++) {
-
-            }
-            $installed += $currentHourInstall;
-            echo "Hour $hour, Install = " . $currentHourInstall . ". Remain=$remain, TotalInstalled=$installed\n";
-        }*/
-
+        dd(get_percent(100,20));
 
     }
 

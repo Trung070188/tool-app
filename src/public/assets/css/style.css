@@ -26879,9 +26879,12 @@ a.option-dots {
         margin-left: 240px;
     }
 }
+.cursor-pointer{
+    cursor: pointer;
+}
 
 .main-sidebar-header {
-    height: 64px;
+    height: 120px;
     padding: 12px 20px;
     width: 300px;
     background: #fff;
@@ -26899,7 +26902,7 @@ a.option-dots {
 }
 
 .main-sidemenu {
-    margin-top: 85px;
+    margin-top: 130px;
     height: 90%;
 }
 

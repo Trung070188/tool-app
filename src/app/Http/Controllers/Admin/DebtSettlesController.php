@@ -17,25 +17,27 @@ class DebtSettlesController extends AdminBaseController
 {
 
     /**
-    * Index page
-    * @uri  /xadmin/debt_settle/index
-    * @throw  NotFoundHttpException
-    * @return  View
-    */
+     * Index page
+     * @uri  /xadmin/debt_settle/index
+     * @throw  NotFoundHttpException
+     * @return  View
+     */
     public function index()
     {
         $title = 'DebtSettle';
         $component = 'DebtSettleIndex';
-        return vue(compact('title', 'component'));
+        $customer = Customer::query()->orderBy('id', 'desc')->get();
+        $jsonData = compact('customer');
+        return vue(compact('title', 'component'), $jsonData);
     }
 
     /**
-    * Create new entry
-    * @uri  /xadmin/debt_settle/create
-    * @throw  NotFoundHttpException
-    * @return  View
-    */
-    public function create (Request $req)
+     * Create new entry
+     * @uri  /xadmin/debt_settle/create
+     * @throw  NotFoundHttpException
+     * @return  View
+     */
+    public function create(Request $req)
     {
         $component = 'DebtSettleForm';
         $title = 'Create debt settle';
@@ -43,11 +45,11 @@ class DebtSettlesController extends AdminBaseController
     }
 
     /**
-    * @uri  /xadmin/debt_settle/edit?id=$id
-    * @throw  NotFoundHttpException
-    * @return  View
-    */
-    public function edit (Request $req)
+     * @uri  /xadmin/debt_settle/edit?id=$id
+     * @throw  NotFoundHttpException
+     * @return  View
+     */
+    public function edit(Request $req)
     {
         $id = $req->id;
         $entry = DebtSettle::find($id);
@@ -57,8 +59,8 @@ class DebtSettlesController extends AdminBaseController
         }
 
         /**
-        * @var  DebtSettle $entry
-        */
+         * @var  DebtSettle $entry
+         */
         $jsonData = compact('entry');
         $title = 'Edit';
         $component = 'DebtSettleForm';
@@ -67,9 +69,9 @@ class DebtSettlesController extends AdminBaseController
     }
 
     /**
-    * @uri  /xadmin/debt_settle/remove
-    * @return  array
-    */
+     * @uri  /xadmin/debt_settle/remove
+     * @return  array
+     */
     public function remove(Request $req)
     {
         $id = $req->id;
@@ -88,9 +90,9 @@ class DebtSettlesController extends AdminBaseController
     }
 
     /**
-    * @uri  /xadmin/debt_settle/save
-    * @return  array
-    */
+     * @uri  /xadmin/debt_settle/save
+     * @return  array
+     */
     public function save(Request $req)
     {
         if (!$req->isMethod('POST')) {
@@ -100,8 +102,8 @@ class DebtSettlesController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-    'customer_id' => 'numeric',
-];
+            'customer_id' => 'numeric',
+        ];
 
         $v = Validator::make($data, $rules);
 
@@ -113,8 +115,8 @@ class DebtSettlesController extends AdminBaseController
         }
 
         /**
-        * @var  DebtSettle $entry
-        */
+         * @var  DebtSettle $entry
+         */
         if (isset($data['id'])) {
             $entry = DebtSettle::find($data['id']);
             if (!$entry) {
@@ -145,8 +147,8 @@ class DebtSettlesController extends AdminBaseController
     }
 
     /**
-    * @param  Request $req
-    */
+     * @param Request $req
+     */
     public function toggleStatus(Request $req)
     {
         $id = $req->get('id');
@@ -169,15 +171,15 @@ class DebtSettlesController extends AdminBaseController
     }
 
     /**
-    * Ajax data for index page
-    * @uri  /xadmin/debt_settle/data
-    * @return  array
-    */
+     * Ajax data for index page
+     * @uri  /xadmin/debt_settle/data
+     * @return  array
+     */
     public function data(Request $req)
     {
         $query = DB::table('debt_settle')->join('customers', function ($join) {
             $join->on('debt_settle.customer_id', '=', 'customers.id');
-        });
+        })->whereYear('debt_settle.created_at', $req->year)->whereMonth('debt_settle.created_at', $req->month)->orderBy('id', 'desc');
         $query->select([
             'customers.id as customer_id',
             'debt_settle.created_at as created_at',
@@ -194,55 +196,48 @@ class DebtSettlesController extends AdminBaseController
             $query->where('customers.name', 'LIKE', '%' . $req->keyword . '%')
                 ->orWhere('customers.id', $req->keyword);
         }
-        if ($req->created) {
-            $dates = $req->created;
-            $date_range = explode('_', $dates);
-            $start_date = $date_range[0];
-            $start_date = date('Y-m-d 00:00:00', strtotime($start_date));
-            $end_date = $date_range[1];
-            $end_date = date('Y-m-d 23:59:59', strtotime($end_date));
-            $query->whereBetween('created_at', [$start_date, $end_date]);
+        if($req->customer)
+        {
+            $query->where('customers.id', $req->customer);
         }
 
-
-//        $query->createdIn($req->created);
-
-        $entries = $query->paginate();
         return [
             'code' => 0,
-            'data' => $entries->items(),
-            'paginate' => [
-                'currentPage' => $entries->currentPage(),
-                'lastPage' => $entries->lastPage(),
-            ]
+            'data' => $query->get(),
+//            'paginate' => [
+//                'currentPage' => $entries->currentPage(),
+//                'lastPage' => $entries->lastPage(),
+//            ]
         ];
     }
+
     public function dataCreate(Request $req)
     {
-        $customers=Customer::query()->orderBy('id','desc')->get();
+        $customers = Customer::query()->orderBy('id', 'desc')->get();
         return [
-          'customers'=>$customers
+            'customers' => $customers
         ];
     }
+
     public function dataEdit(Request $req)
     {
-        $customer=Customer::query()->where('id',$req->customer)->first();
-        $listCustomers=Customer::query()->orderBy('id','desc')->get();
+        $customer = Customer::query()->where('id', $req->customer)->first();
+        $listCustomers = Customer::query()->orderBy('id', 'desc')->get();
 
         return [
-            'customer'=>$customer,
-            'listCustomer'=>$listCustomers
+            'customer' => $customer,
+            'listCustomer' => $listCustomers
         ];
 
     }
 
     public function export()
     {
-                $keys = [
-                            'customer_id' => ['A', 'customer_id'],
-                            'pay_booking' => ['B', 'pay_booking'],
-                            'pay_debt' => ['C', 'pay_debt'],
-                            ];
+        $keys = [
+            'customer_id' => ['A', 'customer_id'],
+            'pay_booking' => ['B', 'pay_booking'],
+            'pay_debt' => ['C', 'pay_debt'],
+        ];
 
         $query = DebtSettle::query()->orderBy('id', 'desc');
 
@@ -255,7 +250,7 @@ class DebtSettlesController extends AdminBaseController
                 $sheet->setCellValue($v . "1", $key);
             } elseif (is_array($v)) {
                 list($c, $n) = $v;
-                 $sheet->setCellValue($c . "1", $n);
+                $sheet->setCellValue($c . "1", $n);
             }
         }
 

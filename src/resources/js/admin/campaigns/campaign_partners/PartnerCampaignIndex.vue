@@ -62,6 +62,9 @@
                                         <th> Name</th>
                                         <th>Campaign</th>
                                         <th>Partner</th>
+                                        <th>Share data</th>
+                                        <th>Status</th>
+                                        <th>Open next day</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -74,13 +77,22 @@
                                         <td v-text="entry.name"></td>
                                         <td>
                                             <template v-if="entry.campaign">
-                                                {{entry.campaign.name}}
+                                               {{entry.campaign_id}}-{{entry.campaign.name}}
                                             </template>
                                         </td>
                                         <td>
                                             <template v-if="entry.partner">
                                                 {{entry.partner.name}}
                                             </template>
+                                        </td>
+                                        <td>
+                                            <switch-button v-model="entry.share_data"></switch-button>
+                                        </td>
+                                        <td>
+                                            <switch-button v-model="entry.status"></switch-button>
+                                        </td>
+                                        <td>
+                                            <switch-button v-model="entry.open_next_day"></switch-button>
                                         </td>
                                         <td class="">
                                             <a :href="'/xadmin/campaign_partners/edit?id='+entry.id" class="btn " target="_blank"><i
@@ -111,6 +123,7 @@
     import {$get, $post, getTimeRangeAll} from "../../../utils";
     import $router from '../../../lib/SimpleRouter';
     import ActionBar from '../../../components/ActionBar';
+    import SwitchButton from "../../../components/SwitchButton.vue";
 
 
     let created = getTimeRangeAll();
@@ -118,7 +131,7 @@
 
     export default {
         name: "PartnerCampaignIndex.vue",
-        components: {ActionBar},
+        components: {SwitchButton, ActionBar},
         data() {
             return {
                 entries: [],

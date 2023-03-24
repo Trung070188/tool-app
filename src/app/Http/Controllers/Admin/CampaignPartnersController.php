@@ -153,6 +153,39 @@ class CampaignPartnersController extends AdminBaseController
     }
 
     /**
+     * clone
+     */
+    public function clone(Request $req)
+    {
+        if (!$req->isMethod('POST')) {
+            return ['code' => 405, 'message' => 'Method not allow'];
+        }
+
+        $data = $req->get('entry');
+
+        /**
+         * @var  Campaign $entry
+         */
+        $entry = new CampaignPartner();
+        $entry->name = $data['name'];
+        $entry->campaign_id = $data['campaign_id'];
+        $entry->partner_id = $data['partner_id'];
+        $entry->price = $data['price'];
+        $entry->os = $data['os'];
+        $entry->url_partner = $data['url_partner'];
+        $entry->total_install = $data['total_install'];
+        $entry->daily_install = $data['daily_install'];
+        $entry->note = $data['note'];
+        $entry->save();
+
+        return [
+            'code' => 0,
+            'message' => 'Đã thêm',
+            'id' => $entry->id
+        ];
+    }
+
+    /**
     * @param  Request $req
     */
     public function toggleStatus(Request $req)
@@ -183,7 +216,10 @@ class CampaignPartnersController extends AdminBaseController
     */
     public function data(Request $req)
     {
-        $query = CampaignPartner::query()->with(['campaign:id,name', 'partner:id,name'])->orderBy('id', 'desc');
+        $query = CampaignPartner::query()->with(['campaign:id,name', 'partner:id,name'])
+            ->orderBy('status', 'desc')
+            ->orderBy('open_next_day', 'desc')
+            ->orderBy('id', 'desc');
 
         if ($req->keyword) {
             $query->where('name', 'LIKE', '%' . $req->keyword . '%');

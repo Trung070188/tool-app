@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Partner;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -99,9 +100,9 @@ class PartnersController extends AdminBaseController
         $data = $req->get('entry');
 
         $rules = [
-    'name' => 'required|max:200',
-    'ip' => 'required|max:50',
-];
+            'name' => 'required|max:200',
+            'ip' => 'required|max:50',
+        ];
 
         $v = Validator::make($data, $rules);
 
@@ -250,5 +251,25 @@ class PartnersController extends AdminBaseController
         // Write file to the browser
         $writer->save('php://output');
         die;
+    }
+
+    public function checkCopy(Request $req)
+    {
+        $id = $req->id;
+        Partner::query()->where('id', $id)->update(['check_copy' => 1]);
+        return [
+            'code' => 0,
+            'message' => 'Đã copy'
+        ];
+    }
+    public function createToken(Request $req)
+    {
+        $id = $req->id;
+        $token = $req->token;
+        Partner::query()->where('id', $id)->update(['secret'=> $token , 'check_copy' => 0]);
+        return [
+          'code' => 0,
+          'message' => 'Đã tạo mới token'
+        ];
     }
 }

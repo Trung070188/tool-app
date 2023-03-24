@@ -37,4 +37,9 @@ class CampaignPartner extends BaseModel
         return $this->belongsTo(Partner::class, 'partner_id');
     }
 
+    public function campaignInstall()
+    {
+        return $this->hasMany(CampaignInstall::class, 'partner_campaign_id');
+    }
+
 }

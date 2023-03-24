@@ -92,16 +92,17 @@
 </template>
 
 <script>
-import {$get, $post, getTimeNow} from "../../utils";
-import $router from '../../lib/SimpleRouter';
-import ActionBar from '../../components/ActionBar';
 
+
+import {$get, getTimeNow} from "../../../utils";
+import $router from "../../../lib/SimpleRouter";
+import ActionBar from "../../../components/ActionBar.vue";
 
 let created = getTimeNow();
 const $q = $router.getQuery();
 
 export default {
-    name: "CampaignDetail.vue",
+    name: "StatisticalDetail.vue",
     components: {ActionBar},
     data() {
         return {
@@ -136,9 +137,8 @@ export default {
         return result;
 },
         async load() {
-            this.doFilter();
             let query = $router.getQuery();
-            const res = await $get('/customer/campaigns/dataDetail?id='+this.entry.id + '&time='+this.time, query);
+            const res = await $get('/xadmin/campaign_installs/dataDetail?id='+this.entry.id + '&time=' + this.time, query);
             // this.paginate = res.paginate;
             this.entries =this.addZeroToIndex(res.data);
         },

@@ -21,6 +21,7 @@ import PartnerCampaignIndex from "./admin/campaigns/campaign_partners/PartnerCam
 import PartnerCampaignForm from "./admin/campaigns/campaign_partners/PartnerCampaignForm";
 import DebtSettleForm from "./admin/debt_settle/DebtSettleForm";
 import DebtSettleIndex from "./admin/debt_settle/DebtSettleIndex";
+import StatisticalDetail from "./admin/campaigns/campaign_installs/StatisticalDetail.vue";
 
 
 export default {
@@ -47,6 +48,7 @@ export default {
     PartnerCampaignForm,
     DebtSettleForm,
     DebtSettleIndex,
+    StatisticalDetail
 
 
 
